@@ -1,3 +1,3 @@
 export const aha = () => {
-    return 'a';
-}
+  return 'a';
+};
