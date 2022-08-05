@@ -17,8 +17,10 @@
     "type-check": "tsc --project ./tsconfig.types.json"
   },
   "dependencies": {
+    "@blockfrost/openapi": "^0.1.41",
     "@emurgo/cardano-serialization-lib-nodejs": "^11.0.0",
-    "bech32": "^2.0.0"
+    "bech32": "^2.0.0",
+    "yaml": "^2.1.1"
   },
   "devDependencies": {
     "@types/node": "^18.6.3",
