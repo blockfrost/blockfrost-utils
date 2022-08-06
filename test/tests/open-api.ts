@@ -1,5 +1,12 @@
 import { expect, describe, test } from 'vitest';
 import { openApi } from '../../src/index';
+import {
+  error400,
+  error403,
+  error418,
+  error429,
+  error500,
+} from '../utils/open-api';
 
 describe('open api utils', () => {
   test('health schema - no refs', () => {
@@ -15,96 +22,11 @@ describe('open api utils', () => {
           required: ['is_healthy'],
           type: 'object',
         },
-        '400': {
-          properties: {
-            error: {
-              example: 'Bad Request',
-              type: 'string',
-            },
-            message: {
-              example: 'Backend did not understand your request.',
-              type: 'string',
-            },
-            status_code: {
-              example: 400,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '403': {
-          properties: {
-            error: {
-              example: 'Forbidden',
-              type: 'string',
-            },
-            message: {
-              example: 'Invalid project token.',
-              type: 'string',
-            },
-            status_code: {
-              example: 403,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '418': {
-          properties: {
-            error: {
-              example: 'Requested Banned',
-              type: 'string',
-            },
-            message: {
-              example: 'IP has been auto-banned for flooding.',
-              type: 'string',
-            },
-            status_code: {
-              example: 418,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '429': {
-          properties: {
-            error: {
-              example: 'Project Over Limit',
-              type: 'string',
-            },
-            message: {
-              example: 'Usage is over limit.',
-              type: 'string',
-            },
-            status_code: {
-              example: 429,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '500': {
-          properties: {
-            error: {
-              example: 'Internal Server Error',
-              type: 'string',
-            },
-            message: {
-              example: 'An unexpected response was received from the backend.',
-              type: 'string',
-            },
-            status_code: {
-              example: 500,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
+        '400': error400,
+        '403': error403,
+        '418': error418,
+        '429': error429,
+        '500': error500,
       },
     });
   });
@@ -165,114 +87,11 @@ describe('open api utils', () => {
             ],
           },
         },
-        '400': {
-          properties: {
-            error: {
-              example: 'Bad Request',
-              type: 'string',
-            },
-            message: {
-              example: 'Backend did not understand your request.',
-              type: 'string',
-            },
-            status_code: {
-              example: 400,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '403': {
-          properties: {
-            error: {
-              example: 'Forbidden',
-              type: 'string',
-            },
-            message: {
-              example: 'Invalid project token.',
-              type: 'string',
-            },
-            status_code: {
-              example: 403,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '404': {
-          properties: {
-            error: {
-              example: 'Not Found',
-              type: 'string',
-            },
-            message: {
-              example: 'The requested component has not been found.',
-              type: 'string',
-            },
-            status_code: {
-              example: 404,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '418': {
-          properties: {
-            error: {
-              example: 'Requested Banned',
-              type: 'string',
-            },
-            message: {
-              example: 'IP has been auto-banned for flooding.',
-              type: 'string',
-            },
-            status_code: {
-              example: 418,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '429': {
-          properties: {
-            error: {
-              example: 'Project Over Limit',
-              type: 'string',
-            },
-            message: {
-              example: 'Usage is over limit.',
-              type: 'string',
-            },
-            status_code: {
-              example: 429,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '500': {
-          properties: {
-            error: {
-              example: 'Internal Server Error',
-              type: 'string',
-            },
-            message: {
-              example: 'An unexpected response was received from the backend.',
-              type: 'string',
-            },
-            status_code: {
-              example: 500,
-              type: 'integer',
-            },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
+        '400': error400,
+        '403': error403,
+        '418': error418,
+        '429': error429,
+        '500': error500,
       },
     });
   });
@@ -351,72 +170,11 @@ describe('open api utils', () => {
             { type: 'object' },
           ],
         },
-        '400': {
-          properties: {
-            error: { example: 'Bad Request', type: 'string' },
-            message: {
-              example: 'Backend did not understand your request.',
-              type: 'string',
-            },
-            status_code: { example: 400, type: 'integer' },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '403': {
-          properties: {
-            error: { example: 'Forbidden', type: 'string' },
-            message: { example: 'Invalid project token.', type: 'string' },
-            status_code: { example: 403, type: 'integer' },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '404': {
-          properties: {
-            error: { example: 'Not Found', type: 'string' },
-            message: {
-              example: 'The requested component has not been found.',
-              type: 'string',
-            },
-            status_code: { example: 404, type: 'integer' },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '418': {
-          properties: {
-            error: { example: 'Requested Banned', type: 'string' },
-            message: {
-              example: 'IP has been auto-banned for flooding.',
-              type: 'string',
-            },
-            status_code: { example: 418, type: 'integer' },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '429': {
-          properties: {
-            error: { example: 'Project Over Limit', type: 'string' },
-            message: { example: 'Usage is over limit.', type: 'string' },
-            status_code: { example: 429, type: 'integer' },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
-        '500': {
-          properties: {
-            error: { example: 'Internal Server Error', type: 'string' },
-            message: {
-              example: 'An unexpected response was received from the backend.',
-              type: 'string',
-            },
-            status_code: { example: 500, type: 'integer' },
-          },
-          required: ['status_code', 'error', 'message'],
-          type: 'object',
-        },
+        '400': error400,
+        '403': error403,
+        '418': error418,
+        '429': error429,
+        '500': error500,
       },
     });
   });
@@ -476,73 +234,11 @@ describe('open api utils', () => {
               ],
             },
           },
-          '400': {
-            properties: {
-              error: { example: 'Bad Request', type: 'string' },
-              message: {
-                example: 'Backend did not understand your request.',
-                type: 'string',
-              },
-              status_code: { example: 400, type: 'integer' },
-            },
-            required: ['status_code', 'error', 'message'],
-            type: 'object',
-          },
-          '403': {
-            properties: {
-              error: { example: 'Forbidden', type: 'string' },
-              message: { example: 'Invalid project token.', type: 'string' },
-              status_code: { example: 403, type: 'integer' },
-            },
-            required: ['status_code', 'error', 'message'],
-            type: 'object',
-          },
-          '404': {
-            properties: {
-              error: { example: 'Not Found', type: 'string' },
-              message: {
-                example: 'The requested component has not been found.',
-                type: 'string',
-              },
-              status_code: { example: 404, type: 'integer' },
-            },
-            required: ['status_code', 'error', 'message'],
-            type: 'object',
-          },
-          '418': {
-            properties: {
-              error: { example: 'Requested Banned', type: 'string' },
-              message: {
-                example: 'IP has been auto-banned for flooding.',
-                type: 'string',
-              },
-              status_code: { example: 418, type: 'integer' },
-            },
-            required: ['status_code', 'error', 'message'],
-            type: 'object',
-          },
-          '429': {
-            properties: {
-              error: { example: 'Project Over Limit', type: 'string' },
-              message: { example: 'Usage is over limit.', type: 'string' },
-              status_code: { example: 429, type: 'integer' },
-            },
-            required: ['status_code', 'error', 'message'],
-            type: 'object',
-          },
-          '500': {
-            properties: {
-              error: { example: 'Internal Server Error', type: 'string' },
-              message: {
-                example:
-                  'An unexpected response was received from the backend.',
-                type: 'string',
-              },
-              status_code: { example: 500, type: 'integer' },
-            },
-            required: ['status_code', 'error', 'message'],
-            type: 'object',
-          },
+          '400': error400,
+          '403': error403,
+          '418': error418,
+          '429': error429,
+          '500': error500,
         },
       },
     );
