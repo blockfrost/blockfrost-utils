@@ -201,6 +201,20 @@ export const getSchemaForEndpoint = (endpointName: string) => {
           },
         };
       }
+
+      // 4 bug -> edge case
+      if (endpointName === '/scripts/{script_hash}/json') {
+        responses.response[200] = {
+          type: 'object',
+          properties: {
+            json_value: {
+              nullable: true,
+            },
+          },
+          required: ['json'],
+        };
+      }
+
     }
 
     // errors and others
@@ -210,6 +224,7 @@ export const getSchemaForEndpoint = (endpointName: string) => {
     }
   }
 
+  // use this to debug custom schemas
   // if (endpointName === '/metadata/txs/labels/{label}') {
   //   console.log(JSON.stringify(responses));
   // }
