@@ -19,6 +19,14 @@ export const errorHandler = (
   request: FastifyRequest,
   reply: FastifyReply,
 ): FastifyReply => {
+  // Validation errors from parsing POST body or request parameters
+  // Note: Response body is not validated, but it could still throw
+  // serialization error (generic js Error) if it doesn't match the provided schema.
+  if (error.statusCode === 400 || error.validation) {
+    return handle400(reply, error);
+  }
+
+  // TODO: investigate if these are needed
   if (reply.statusCode === 400) {
     return handle400(reply, error);
   }
@@ -31,7 +39,8 @@ export const errorHandler = (
     return handle500(reply, error, request);
   }
 
-  return reply.send(error);
+  // Handle generic js errors
+  return handle500(reply, error, request);
 };
 
 export const handle400 = (
@@ -109,8 +118,7 @@ export const handle500 = (
   request: FastifyRequest,
 ): FastifyReply => {
   if (process.env.NODE_ENV !== 'test') {
-    console.log('Error in', request.url);
-    console.log(error);
+    console.error(`Error in ${request.url}.`, error);
   }
 
   return reply
