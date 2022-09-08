@@ -34,7 +34,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@blockfrost/openapi", "npm:0.1.41"],\
-            ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.0"],\
             ["@types/node", "npm:18.6.3"],\
             ["@typescript-eslint/eslint-plugin", "virtual:743a0c41c55817d88668da02e16581806485c6b72aa2740ecec3f8c1cd178475e7baf2b839bef56103a8658e4bdaf77cf76c00c4f722616cbffd4360de2c2f3b#npm:5.32.0"],\
             ["@typescript-eslint/parser", "virtual:743a0c41c55817d88668da02e16581806485c6b72aa2740ecec3f8c1cd178475e7baf2b839bef56103a8658e4bdaf77cf76c00c4f722616cbffd4360de2c2f3b#npm:5.27.0"],\
@@ -70,15 +69,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@blockfrost/openapi", "npm:0.1.41"],\
             ["@redocly/openapi-cli", "npm:1.0.0-beta.94"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@emurgo/cardano-serialization-lib-nodejs", [\
-        ["npm:11.0.0", {\
-          "packageLocation": "./.yarn/cache/@emurgo-cardano-serialization-lib-nodejs-npm-11.0.0-1fa6537d87-b22b707e83.zip/node_modules/@emurgo/cardano-serialization-lib-nodejs/",\
-          "packageDependencies": [\
-            ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -978,7 +968,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["blockfrost-utils", "workspace:."],\
             ["@blockfrost/openapi", "npm:0.1.41"],\
-            ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.0"],\
             ["@types/node", "npm:18.6.3"],\
             ["@typescript-eslint/eslint-plugin", "virtual:743a0c41c55817d88668da02e16581806485c6b72aa2740ecec3f8c1cd178475e7baf2b839bef56103a8658e4bdaf77cf76c00c4f722616cbffd4360de2c2f3b#npm:5.32.0"],\
             ["@typescript-eslint/parser", "virtual:743a0c41c55817d88668da02e16581806485c6b72aa2740ecec3f8c1cd178475e7baf2b839bef56103a8658e4bdaf77cf76c00c4f722616cbffd4360de2c2f3b#npm:5.27.0"],\
