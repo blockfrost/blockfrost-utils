@@ -4,4 +4,5 @@ import * as fastify from './fastify';
 import * as pagination from './pagination';
 import * as cardano from './cardano';
 
+export { MetricsCollector } from './metrics-collector';
 export { openApi, validation, fastify, pagination, cardano };
