@@ -12,6 +12,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@blockfrost/blockfrost-utils@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@blockfrost/blockfrost-utils@workspace:."
+  dependencies:
+    "@blockfrost/openapi": ^0.1.41
+    "@types/node": ^16
+    "@typescript-eslint/eslint-plugin": ^5.30.0
+    "@typescript-eslint/parser": 5.27.0
+    bech32: ^2.0.0
+    c8: ^7.12.0
+    eslint: ^8.21.0
+    eslint-config-prettier: 8.5.0
+    eslint-plugin-import: 2.26.0
+    eslint-plugin-prettier: 4.0.0
+    fastify: ^4.3.0
+    prettier: 2.6.2
+    rimraf: ^3.0.2
+    typescript: ^4.7.4
+    vite: ^3.0.4
+    vitest: ^0.21.0
+    yaml: ^2.1.1
+  languageName: unknown
+  linkType: soft
+
 "@blockfrost/openapi@npm:^0.1.41":
   version: 0.1.41
   resolution: "@blockfrost/openapi@npm:0.1.41"
@@ -294,7 +318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.6.3":
+"@types/node@npm:*":
   version: 18.6.3
   resolution: "@types/node@npm:18.6.3"
   checksum: 38495b8fd27200d2b7ab9ccd8c1e2475d2411fba15330f2cba869a85ef79dd42382a2658c8dd298ace8c21ed3bfafcdea408faecd74928b144377d07d00e7c8c
@@ -305,6 +329,13 @@ __metadata:
   version: 14.18.23
   resolution: "@types/node@npm:14.18.23"
   checksum: 119d5ab18426694ade0d3feefbdb42afc5a47b9144e523293f1554f9d34b41c7f21eafc9d0f1295db5700d134aa74e7fd37556e9438f6d64dbeddf791527e1e4
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16":
+  version: 16.11.58
+  resolution: "@types/node@npm:16.11.58"
+  checksum: efdf14c62e6c1a8e758416aaa3ae4b81015ffd4e1f31c05680d1242817ba23f0b4b1345886fe5aeb3c05d818bcaed1a7af4d637e7cca5723a5e4ac8b759d3ace
   languageName: node
   linkType: hard
 
@@ -732,30 +763,6 @@ __metadata:
   checksum: ccd267956c58d2315f5d3ea6757cf09863c5fc703e50fbeb13a7dc849b812ef76e3cf9ca8f35a0c48498776a7478d7b4a0418e1e2b8cb9cb9731f2922aaad7f8
   languageName: node
   linkType: hard
-
-"blockfrost-utils@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "blockfrost-utils@workspace:."
-  dependencies:
-    "@blockfrost/openapi": ^0.1.41
-    "@types/node": ^18.6.3
-    "@typescript-eslint/eslint-plugin": ^5.30.0
-    "@typescript-eslint/parser": 5.27.0
-    bech32: ^2.0.0
-    c8: ^7.12.0
-    eslint: ^8.21.0
-    eslint-config-prettier: 8.5.0
-    eslint-plugin-import: 2.26.0
-    eslint-plugin-prettier: 4.0.0
-    fastify: ^4.3.0
-    prettier: 2.6.2
-    rimraf: ^3.0.2
-    typescript: ^4.7.4
-    vite: ^3.0.4
-    vitest: ^0.21.0
-    yaml: ^2.1.1
-  languageName: unknown
-  linkType: soft
 
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
