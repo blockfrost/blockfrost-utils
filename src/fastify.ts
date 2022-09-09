@@ -1,4 +1,4 @@
-import { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
 
 export const notFoundHandler = (
   _request: FastifyRequest,

@@ -214,7 +214,6 @@ export const getSchemaForEndpoint = (endpointName: string) => {
           required: ['json'],
         };
       }
-
     }
 
     // errors and others
