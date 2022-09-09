@@ -1,5 +1,7 @@
+import { ByronAddress } from '@emurgo/cardano-serialization-lib-nodejs';
 import { bech32 } from 'bech32';
 
+type BlockfrostNetwork = 'mainnet' | 'testnet' | 'preview' | 'preprod';
 // prefixes based on CIP5 https://github.com/cardano-foundation/CIPs/blob/master/CIP-0005/CIP-0005.md
 const Prefixes = Object.freeze({
   ADDR: 'addr',
@@ -78,6 +80,54 @@ export const paymentCredToBech32Address = (
   } catch {
     return undefined;
   }
+};
+
+export const detectAndValidateAddressType = (
+  input: string,
+  network: BlockfrostNetwork,
+): 'byron' | 'shelley' | undefined => {
+  // differentiate between various address era formats (byron, shelley)
+  try {
+    if (ByronAddress.is_valid(input)) {
+      // valid byron
+      return 'byron';
+    } else {
+      // check if it's not shelley (also check network mismatch i.e. mainnet/testnet)
+      const bech32Info = bech32.decode(input, 1000);
+      if (
+        (bech32Info.prefix === Prefixes.ADDR && network === 'mainnet') ||
+        (bech32Info.prefix === Prefixes.ADDR_TEST && network !== 'mainnet')
+      ) {
+        // valid shelley - addr1 for mainnet or addr_test1 for testnet
+        return 'shelley';
+      } else if (bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH) {
+        // valid shelley - payment_cred
+        return 'shelley';
+      } else {
+        return undefined;
+      }
+    }
+  } catch {
+    return undefined;
+  }
+};
+
+export const getAddressTypeAndPaymentCred = (
+  address: string,
+  network: BlockfrostNetwork,
+) => {
+  // check for address validity (undefined) and type (byron, shelley)
+  const addressType = detectAndValidateAddressType(address, network);
+
+  // if shelley, check for paymentCred and compute paymentCred hex
+  // if an error occurs or paymentCred can't be computed, '' is returned
+  // querying '' in SQL is faster than null for payment_cred, so let's replace undefined by ''
+  const paymentCred =
+    addressType === 'shelley'
+      ? paymentCredFromBech32Address(address) ?? ''
+      : '';
+
+  return { addressType, paymentCred };
 };
 
 // Decode bech32 script address, drop its first byte (header)

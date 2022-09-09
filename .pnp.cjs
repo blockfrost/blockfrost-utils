@@ -34,6 +34,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@blockfrost/openapi", "npm:0.1.41"],\
+            ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.5"],\
             ["@types/node", "npm:16.11.58"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
             ["@typescript-eslint/parser", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.27.0"],\
@@ -69,6 +70,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@blockfrost/blockfrost-utils", "workspace:."],\
             ["@blockfrost/openapi", "npm:0.1.41"],\
+            ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.5"],\
             ["@types/node", "npm:16.11.58"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
             ["@typescript-eslint/parser", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.27.0"],\
@@ -95,6 +97,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@blockfrost/openapi", "npm:0.1.41"],\
             ["@redocly/openapi-cli", "npm:1.0.0-beta.94"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@emurgo/cardano-serialization-lib-nodejs", [\
+        ["npm:11.0.5", {\
+          "packageLocation": "./.yarn/cache/@emurgo-cardano-serialization-lib-nodejs-npm-11.0.5-c55a619ace-3efc625048.zip/node_modules/@emurgo/cardano-serialization-lib-nodejs/",\
+          "packageDependencies": [\
+            ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.5"]\
           ],\
           "linkType": "HARD"\
         }]\

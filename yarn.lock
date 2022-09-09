@@ -17,6 +17,7 @@ __metadata:
   resolution: "@blockfrost/blockfrost-utils@workspace:."
   dependencies:
     "@blockfrost/openapi": ^0.1.41
+    "@emurgo/cardano-serialization-lib-nodejs": ^11.0.5
     "@types/node": ^16
     "@typescript-eslint/eslint-plugin": ^5.30.0
     "@typescript-eslint/parser": 5.27.0
@@ -42,6 +43,13 @@ __metadata:
   dependencies:
     "@redocly/openapi-cli": ^1.0.0-beta.78
   checksum: ccbfa6ef387c96ec87d77e7ffe6bea8f25192852d981bfeabaee4e45ab8fa14911fd360123ff48c36a6374f4ce6f4e7f344bc3e991ebbf8da83397b08df86a67
+  languageName: node
+  linkType: hard
+
+"@emurgo/cardano-serialization-lib-nodejs@npm:^11.0.5":
+  version: 11.0.5
+  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:11.0.5"
+  checksum: 3efc62504890f7eb9117535280807c0566abd6a4752c86f4c154b59b3f441d3e813160c9634d1439475141204fee69448cdc721537a68f7e685aee8cfd03d909
   languageName: node
   linkType: hard
 
