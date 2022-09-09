@@ -130,3 +130,10 @@ export const handle500 = (
       status_code: 500,
     });
 };
+
+export const handleInvalidAddress = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Invalid address for this network or malformed address format.',
+  );
+};
