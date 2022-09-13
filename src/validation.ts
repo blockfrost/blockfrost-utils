@@ -18,11 +18,50 @@ const MAX_SIGNED_BIGINT = BigInt('9223372036854775807');
 
 const hexre = new RegExp('^[A-Fa-f0-9]+$');
 
-const validateHex = (input: string): boolean => {
+export const validateHex = (input: string): boolean => {
   try {
     return hexre.test(input);
   } catch {
     return false;
+  }
+};
+
+export const validateStakeAddress = (
+  input: string,
+  network: BlockfrostNetwork,
+): boolean => {
+  // validate stake address  (also check network mismatch i.e. mainnet/testnet)
+  try {
+    const bech32Info = bech32.decode(input, 1000);
+
+    if (
+      (bech32Info.prefix === Prefixes.STAKE && network === 'mainnet') ||
+      (bech32Info.prefix === Prefixes.STAKE_TEST && network !== 'mainnet')
+    )
+      return true;
+    else {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+};
+
+export const convertStakeAddress = (
+  input: string,
+  network: BlockfrostNetwork,
+): string | undefined => {
+  try {
+    if (!validateHex(input)) return undefined;
+
+    const words = bech32.toWords(Buffer.from(input, 'hex'));
+    // if it's in hex, we'll convert it to Bech32
+
+    return network === 'mainnet'
+      ? bech32.encode(Prefixes.STAKE, words)
+      : bech32.encode(Prefixes.STAKE_TEST, words);
+  } catch {
+    return undefined;
   }
 };
 
@@ -201,19 +240,11 @@ export const validateInRangeUnsignedInt = (
 };
 
 export const validateDerivationXpub = (input: string): boolean => {
-  try {
-    return validateHex(input) && input.length === 128;
-  } catch {
-    return false;
-  }
+  return validateHex(input) && input.length === 128;
 };
 
 export const validateBlockHash = (input: string): boolean => {
-  try {
-    return validateHex(input) && input.length === 64;
-  } catch {
-    return false;
-  }
+  return validateHex(input) && input.length === 64;
 };
 
 export const isNumber = (value: string | number | undefined): boolean => {
