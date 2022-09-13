@@ -79,3 +79,356 @@ export const paymentCredFromBech32Address = [
     result: undefined,
   },
 ] as const;
+
+export const validateAndConvertPool = [
+  {
+    description: 'Valid pool Bech32',
+    input: 'pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy',
+    result: 'pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy',
+  },
+  {
+    description: 'Valid pool Hex',
+    input: '0f292fcaa02b8b2f9b3c8f9fd8e0bb21abedb692a6d5058df3ef2735',
+    result: 'pool1pu5jlj4q9w9jlxeu370a3c9myx47md5j5m2str0naunn2q3lkdy',
+  },
+  {
+    description: 'Valid Bech32, but not pool id',
+    input:
+      'addr1qyw8xfunw6lhzzzsdrx5ze6j8ayxjhecv4ty5jtaey5jvwquwvnexa4lwyy9q6xdg9n4y06gd90nse2kffyhmjffycuq405jv6',
+    result: undefined,
+  },
+  {
+    description: 'Invalid pool',
+    input: 'stonks_pool',
+    result: undefined,
+  },
+];
+
+export const paymentCredToBech32Address = [
+  {
+    description: 'Valid paymentCred address',
+    input: '1c73279376bf71085068cd4167523f48695f3865564a497dc9292638',
+    result: 'addr_vkh1r3ej0ymkhacss5rge4qkw53lfp547wr92e9yjlwf9ynrsk5q93m',
+  },
+];
+
+export const validateStakeAddress = [
+  {
+    description: 'Valid stake address',
+    input: 'stake1uxmdw34s0rkc26d9x9aax69pcua8eukm2tytlx3szg75mcg5z5nss',
+    network: 'mainnet',
+    result: true,
+  },
+  {
+    description: 'Valid stake address, wrong network',
+    input: 'stake1uxmdw34s0rkc26d9x9aax69pcua8eukm2tytlx3szg75mcg5z5nss',
+    network: 'testnet',
+    result: false,
+  },
+  {
+    description: 'Non valid/malformed stake address',
+    input: 'stake_stonks',
+    network: 'mainnet',
+    result: false,
+  },
+  {
+    description: 'TESTNET: Valid stake address',
+    input: 'stake_test1urtemlwr6hmw6q5mc5p0q6z06g4f3v33czec67yf688w4wsw6rnpq',
+    network: 'testnet',
+    result: true,
+  },
+  {
+    description: 'TESTNET: Valid stake address, wrong network',
+    input:
+      'stake_test1uzxpncx82vfkl5ml00ws44hzfdh64r22kr93e79jqsumv0q8g8cy08878787',
+    network: 'mainnet',
+    result: false,
+  },
+  {
+    description: 'TESTNET: Non valid/malformed stake address',
+    input: 'stake_stonks_testnet',
+    network: 'testnet',
+    result: false,
+  },
+] as const;
+
+export const convertStakeAddress = [
+  {
+    description: 'Valid onchain address',
+    input: 'e1ffd02ae28da95344585e7aa1fdad328b11c997a763a94216c6d903d2',
+    network: 'mainnet',
+    result: 'stake1u8laq2hz3k54x3zctea2rlddx293rjvh5a36jsskcmvs85sf0vdl6',
+  },
+  {
+    description: 'Valid non-onchain address',
+    input: 'e1b94ee4b98a8ada410ae6eff01969e64f365d7a407b8eaf4cb430a61a',
+    network: 'mainnet',
+    result: 'stake1uxu5ae9e329d5sg2umhlqxtfue8nvht6gpacat6vksc2vxsmnmm4g',
+  },
+  {
+    description: 'Non-valid non-onchain address',
+    input: 'stonks',
+    network: 'mainnet',
+    result: undefined,
+  },
+  {
+    description: 'TESTNET: valid onchain address',
+    input: 'e04f1606da213feae8ddd434a7a3467ca48f25deac14ecf7adadbe3238',
+    network: 'testnet',
+    result: 'stake_test1up83vpk6yyl746xa6s620g6x0jjg7fw74s2weaad4klrywqg2nh3w',
+  },
+  {
+    description: 'TESTNET: valid non-onchain address',
+    input: 'e05a29b4c93eb2affed20854d8f0c07aafe3b04eff4212bb079e0f20fb',
+    network: 'testnet',
+    result: 'stake_test1updzndxf86e2llkjpp2d3uxq02h78vzwlapp9wc8nc8jp7cgqjwlv',
+  },
+  {
+    description: 'TESTNET: valid non-onchain address',
+    input: 'stonks',
+    network: 'testnet',
+    result: undefined,
+  },
+] as const;
+
+export const validateBlockHash = [
+  {
+    description: 'Valid hex, valid length',
+    input: '5f20df933584822601f9e3f8c024eb5eb252fe8cefb24d1317dc3d432e940ebb',
+    result: true,
+  },
+  {
+    description: 'Valid hex, invalid length',
+    input: 'deadbeef',
+    result: false,
+  },
+  {
+    description: 'Invalid hex, valid length',
+    input: 'Ae2tdPwUPEZEdDxg52so2k6iB5tLtNoATiNdKMCBHiAQHWGTpd2n6Lrym7Cabc69',
+    result: false,
+  },
+  {
+    description: 'Invalid hex, invalid length',
+    input: 'deadbppf',
+    result: false,
+  },
+] as const;
+
+export const validateDerivationXpub = [
+  {
+    description: 'Valid xpub',
+    input:
+      '6d17587575a3b4f0f86ebad3977e8f7e4981faa863eccf5c1467065c74fe3435943769446dd290d103fb3d360128e86de4b47faea73ffb0900c94c6a61ef9ea2',
+    result: true,
+  },
+  {
+    description: 'Invalid xpub',
+    input: 'stonks',
+    result: false,
+  },
+] as const;
+
+export const validateInRangeUnsignedInt = [
+  {
+    description: 'Invalid unsigned gint - empty input',
+    input: '',
+    result: false,
+  },
+  {
+    description: 'Valid unsigned int - zero num input',
+    input: 0,
+    result: true,
+  },
+  {
+    description: 'Valid unsigned int - zero string input',
+    input: '0',
+    result: true,
+  },
+  {
+    description: 'Valid unsigned int - string input',
+    input: '42',
+    result: true,
+  },
+  {
+    description: 'Valid unsigned int - max string input',
+    input: '2147483648',
+    result: true,
+  },
+  {
+    description: 'Valid unsigned int - max num input',
+    input: 2147483648,
+    result: true,
+  },
+  {
+    description: 'Valid unsigned int - over max num input',
+    input: 2147483649,
+    result: false,
+  },
+  {
+    description: 'Valid unsigned int - over max string input',
+    input: '2147483649',
+    result: false,
+  },
+  {
+    description: 'Valid unsigned int - invalid string input',
+    input: 'stonks',
+    result: false,
+  },
+  {
+    description: 'Valid unsigned int - negative num input',
+    input: -1,
+    result: false,
+  },
+  {
+    description: 'Valid unsigned int - negative string input',
+    input: '-1',
+    result: false,
+  },
+] as const;
+
+export const validatePositiveInRangeSignedInt = [
+  {
+    description: 'Invalid signed int - empty input',
+    input: '',
+    result: false,
+  },
+  {
+    description: 'Valid signed int - zero num input',
+    input: 0,
+    result: true,
+  },
+  {
+    description: 'Valid signed int - zero string input',
+    input: '0',
+    result: true,
+  },
+  {
+    description: 'Valid signed int - string input',
+    input: '42',
+    result: true,
+  },
+  {
+    description: 'Valid signed int - max num input',
+    input: 2147483647,
+    result: true,
+  },
+  {
+    description: 'Valid signed int - max string input',
+    input: '2147483647',
+    result: true,
+  },
+  {
+    description: 'Valid signed int - over max num input',
+    input: 2147483648,
+    result: false,
+  },
+  {
+    description: 'Valid signed int - over max string input',
+    input: '2147483648',
+    result: false,
+  },
+  {
+    description: 'Valid signed int - invalid string input',
+    input: 'stonks',
+    result: false,
+  },
+  {
+    description: 'Valid signed int - negative num input',
+    input: -1,
+    result: false,
+  },
+  {
+    description: 'Valid signed int - negative string input',
+    input: '-1',
+    result: false,
+  },
+] as const;
+
+export const validatePositiveInRangeSignedBigInt = [
+  {
+    description: 'Invalid signed bigint - empty input',
+    input: '',
+    result: false,
+  },
+  {
+    description: 'Valid signed bigint - zero string input',
+    input: '0',
+    result: true,
+  },
+  {
+    description: 'Valid signed bigint - input',
+    input: '42',
+    result: true,
+  },
+  {
+    description: 'Valid signed bigint - max input',
+    input: '9223372036854775807',
+    result: true,
+  },
+  {
+    description: 'Valid signed bigint - over max input',
+    input: '9223372036854775808',
+    result: false,
+  },
+  {
+    description: 'Valid signed bigint - invalid input',
+    input: 'stonks',
+    result: false,
+  },
+  {
+    description: 'Valid signed bigint - negative input',
+    input: '-1',
+    result: false,
+  },
+];
+
+export const isNumber = [
+  {
+    description: 'isNumber hash',
+    input: '5f20df933584822601f9e3f8c024eb5eb252fe8cefb24d1317dc3d432e940ebb',
+    result: false,
+  },
+  {
+    description: 'isNumber number',
+    input: '271471741',
+    result: true,
+  },
+  {
+    description: 'isNumber number with non num char at the end',
+    input: '271471741x',
+    result: false,
+  },
+  {
+    description: 'isNumber empty string',
+    input: '',
+    result: false,
+  },
+  {
+    description: 'isNumber undefined',
+    input: undefined,
+    result: false,
+  },
+] as const;
+
+export const validateHex = [
+  {
+    description: 'Valid hex',
+    input: '5f20df933584822601f9e3f8c024eb5eb252fe8cefb24d1317dc3d432e940ebb',
+    result: true,
+  },
+  {
+    description: 'Valid hex',
+    input: 'deadbeef',
+    result: true,
+  },
+  {
+    description: 'Invalid hex',
+    input: 'Ae2tdPwUPEZEdDxg52so2k6iB5tLtNoATiNdKMCBHiAQHWGTpd2n6Lrym7Cabc69',
+    result: false,
+  },
+  {
+    description: 'Invalid hex',
+    input: 'deadbppf',
+    result: false,
+  },
+];
