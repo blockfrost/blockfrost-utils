@@ -26,6 +26,10 @@ export const errorHandler = (
     return handle400(reply, error);
   }
 
+  if (error.statusCode === 415) {
+    return handle415(reply, error);
+  }
+
   // TODO: investigate if these are needed
   if (reply.statusCode === 400) {
     return handle400(reply, error);
@@ -35,11 +39,7 @@ export const errorHandler = (
     return handle404(reply);
   }
 
-  if (reply.statusCode >= 500 && reply.statusCode < 600) {
-    return handle500(reply, error, request);
-  }
-
-  // Handle generic js errors
+  // Fallback and handling of generic js errors
   return handle500(reply, error, request);
 };
 
@@ -110,6 +110,19 @@ export const handle404 = (reply: FastifyReply): FastifyReply =>
       error: 'Not Found',
       message: 'The requested component has not been found.',
       status_code: 404,
+    });
+
+export const handle415 = (
+  reply: FastifyReply,
+  error: FastifyError,
+): FastifyReply =>
+  reply
+    .code(415)
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .send({
+      error: 'Unsupported Media Type',
+      message: error.message,
+      status_code: 415,
     });
 
 export const handle500 = (
