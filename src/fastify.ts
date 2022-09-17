@@ -1,5 +1,9 @@
 import type { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
 
+type FastifyErrorWithStatusCode = FastifyError & {
+  statusCode: NonNullable<FastifyError['statusCode']>;
+};
+
 export const notFoundHandler = (
   _request: FastifyRequest,
   reply: FastifyReply,
@@ -39,7 +43,11 @@ export const errorHandler = (
     return handle404(reply);
   }
 
-  // Fallback and handling of generic js errors
+  if (error.statusCode !== undefined) {
+    // Handle other Fastify errors with statusCode
+    return handleFastifyError(reply, error as FastifyErrorWithStatusCode);
+  }
+  // Handle generic js errors
   return handle500(reply, error, request);
 };
 
@@ -143,6 +151,20 @@ export const handle500 = (
       status_code: 500,
     });
 };
+
+export const handleFastifyError = (
+  reply: FastifyReply,
+  error: FastifyErrorWithStatusCode,
+): FastifyReply =>
+  reply
+    .code(error.statusCode)
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .send({
+      // error.name is always "FastifyError", use error.code to provide more info to a client (eg. FST_ERR_CTP_INVALID_MEDIA_TYPE)
+      error: error.name,
+      message: error.message,
+      status_code: error.statusCode,
+    });
 
 export const handleInvalidAddress = (reply: FastifyReply) => {
   return handle400Custom(
