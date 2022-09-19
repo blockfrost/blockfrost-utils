@@ -30,10 +30,6 @@ export const errorHandler = (
     return handle400(reply, error);
   }
 
-  if (error.statusCode === 415) {
-    return handle415(reply, error);
-  }
-
   // TODO: investigate if these are needed
   if (reply.statusCode === 400) {
     return handle400(reply, error);
@@ -43,9 +39,21 @@ export const errorHandler = (
     return handle404(reply);
   }
 
+  if (error.statusCode === 415) {
+    return handle415(reply, error);
+  }
+
+  if (error.statusCode === 500) {
+    return handle500(reply, error, request);
+  }
+
   if (error.statusCode !== undefined) {
     // Handle other Fastify errors with statusCode
-    return handleFastifyError(reply, error as FastifyErrorWithStatusCode);
+    return handleFastifyError(
+      reply,
+      error as FastifyErrorWithStatusCode,
+      request,
+    );
   }
   // Handle generic js errors
   return handle500(reply, error, request);
@@ -155,8 +163,12 @@ export const handle500 = (
 export const handleFastifyError = (
   reply: FastifyReply,
   error: FastifyErrorWithStatusCode,
-): FastifyReply =>
-  reply
+  request: FastifyRequest,
+): FastifyReply => {
+  if (process.env.NODE_ENV !== 'test') {
+    console.error(`Error in ${request.url}.`, error);
+  }
+  return reply
     .code(error.statusCode)
     .header('Content-Type', 'application/json; charset=utf-8')
     .send({
@@ -165,6 +177,7 @@ export const handleFastifyError = (
       message: error.message,
       status_code: error.statusCode,
     });
+};
 
 export const handleInvalidAddress = (reply: FastifyReply) => {
   return handle400Custom(
