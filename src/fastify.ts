@@ -185,3 +185,10 @@ export const handleInvalidAddress = (reply: FastifyReply) => {
     'Invalid address for this network or malformed address format.',
   );
 };
+
+export const handleInvalidStakeAddress = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Invalid or malformed stake address format.',
+  );
+};
