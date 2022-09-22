@@ -192,3 +192,10 @@ export const handleInvalidStakeAddress = (reply: FastifyReply) => {
     'Invalid or malformed stake address format.',
   );
 };
+
+export const handleInvalidPool = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Invalid or malformed pool id format.',
+  );
+};
