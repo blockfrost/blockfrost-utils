@@ -187,15 +187,9 @@ export const handleInvalidAddress = (reply: FastifyReply) => {
 };
 
 export const handleInvalidStakeAddress = (reply: FastifyReply) => {
-  return handle400Custom(
-    reply,
-    'Invalid or malformed stake address format.',
-  );
+  return handle400Custom(reply, 'Invalid or malformed stake address format.');
 };
 
 export const handleInvalidPool = (reply: FastifyReply) => {
-  return handle400Custom(
-    reply,
-    'Invalid or malformed pool id format.',
-  );
+  return handle400Custom(reply, 'Invalid or malformed pool id format.');
 };
