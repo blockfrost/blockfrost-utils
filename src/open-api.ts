@@ -5,8 +5,13 @@ const file = fs.readFileSync(schema, 'utf8');
 const spec = YAML.parse(file);
 
 export const getSchemaForEndpoint = (endpointName: string) => {
-  const responses: any = { response: {} };
+  if (!spec.paths[endpointName]) {
+    throw Error(
+      `Missing Blockfrost OpenAPI schema for endpoint "${endpointName}".`,
+    );
+  }
 
+  const responses: any = { response: {} };
   for (const response of Object.keys(spec.paths[endpointName].get.responses)) {
     // success 200
     if (response === '200') {
