@@ -1,22 +1,32 @@
-import fs from 'fs';
-import YAML from 'yaml';
-const schema = require.resolve('@blockfrost/openapi');
-const file = fs.readFileSync(schema, 'utf8');
-const spec = YAML.parse(file);
+/* 
+  How to parse spec for this function
+  
+  import fs from 'fs';
+  import YAML from 'yaml';
+  const schema = require.resolve('@blockfrost/openapi/openapi.yaml');
+  const file = fs.readFileSync(schema, 'utf8');
+  const spec = YAML.parse(file);
 
-export const getSchemaForEndpoint = (endpointName: string) => {
-  if (!spec.paths[endpointName]) {
+*/
+
+export const getSchemaForEndpoint = (
+  endpointName: string,
+  parsedYamlSpec: any,
+) => {
+  if (!parsedYamlSpec.paths[endpointName]) {
     throw Error(
       `Missing Blockfrost OpenAPI schema for endpoint "${endpointName}".`,
     );
   }
 
   const responses: any = { response: {} };
-  for (const response of Object.keys(spec.paths[endpointName].get.responses)) {
+  for (const response of Object.keys(
+    parsedYamlSpec.paths[endpointName].get.responses,
+  )) {
     // success 200
     if (response === '200') {
       const referenceOrValue =
-        spec.paths[endpointName].get.responses['200'].content[
+        parsedYamlSpec.paths[endpointName].get.responses['200'].content[
           'application/json'
         ].schema;
 
@@ -26,7 +36,8 @@ export const getSchemaForEndpoint = (endpointName: string) => {
           '#/components/schemas/',
           '',
         );
-        const schemaReferenceOrValue = spec.components.schemas[schemaName];
+        const schemaReferenceOrValue =
+          parsedYamlSpec.components.schemas[schemaName];
 
         // is nested reference
         if (
@@ -41,14 +52,16 @@ export const getSchemaForEndpoint = (endpointName: string) => {
           if (schemaReferenceOrValue.type) {
             responses.response[200] = {
               ...schemaReferenceOrValue,
-              items: spec.components.schemas[nestedSchemaName],
+              items: parsedYamlSpec.components.schemas[nestedSchemaName],
             };
           } else {
-            responses.response[200] = spec.components.schemas[nestedSchemaName];
+            responses.response[200] =
+              parsedYamlSpec.components.schemas[nestedSchemaName];
           }
         } else {
           // is not nested reference
-          responses.response[200] = spec.components.schemas[schemaName];
+          responses.response[200] =
+            parsedYamlSpec.components.schemas[schemaName];
         }
       } else {
         // is not reference
@@ -65,7 +78,9 @@ export const getSchemaForEndpoint = (endpointName: string) => {
             '',
           );
 
-          anyOfResult['anyOf'].push(spec.components.schemas[schemaName]);
+          anyOfResult['anyOf'].push(
+            parsedYamlSpec.components.schemas[schemaName],
+          );
         }
 
         responses.response[200] = anyOfResult;
@@ -224,7 +239,9 @@ export const getSchemaForEndpoint = (endpointName: string) => {
     // errors and others
     else {
       responses.response[response] =
-        spec.components.responses[response].content['application/json'].schema;
+        parsedYamlSpec.components.responses[response].content[
+          'application/json'
+        ].schema;
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@blockfrost/blockfrost-utils",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": "git@github.com:blockfrost/blockfrost-utils.git",
   "license": "Apache-2.0",
   "author": "blockfrost.io",
@@ -19,12 +19,11 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@blockfrost/openapi": "^0.1.41",
     "@emurgo/cardano-serialization-lib-nodejs": "^11.0.5",
-    "bech32": "^2.0.0",
-    "yaml": "^2.1.1"
+    "bech32": "^2.0.0"
   },
   "devDependencies": {
+    "@blockfrost/openapi": "^0.1.41",
     "@types/node": "^16",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "5.27.0",

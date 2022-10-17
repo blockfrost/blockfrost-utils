@@ -1,5 +1,8 @@
 import { expect, describe, test } from 'vitest';
 import { openApi } from '../../src/index';
+import fs from 'fs';
+import YAML from 'yaml';
+
 import {
   error400,
   error403,
@@ -8,9 +11,13 @@ import {
   error500,
 } from '../utils/open-api';
 
+const schema = require.resolve('@blockfrost/openapi/openapi.yaml');
+const file = fs.readFileSync(schema, 'utf8');
+const spec = YAML.parse(file);
+
 describe('open api utils', () => {
   test('health schema - no refs', () => {
-    expect(openApi.getSchemaForEndpoint('/health')).toMatchObject({
+    expect(openApi.getSchemaForEndpoint('/health', spec)).toMatchObject({
       response: {
         '200': {
           properties: {
@@ -33,7 +40,7 @@ describe('open api utils', () => {
 
   test('epochs - nested refs', () => {
     expect(
-      openApi.getSchemaForEndpoint('/epochs/{number}/previous'),
+      openApi.getSchemaForEndpoint('/epochs/{number}/previous', spec),
     ).toMatchObject({
       response: {
         '200': {
@@ -98,7 +105,7 @@ describe('open api utils', () => {
 
   test('anyOf case - all refs', () => {
     expect(
-      openApi.getSchemaForEndpoint('/pools/{pool_id}/metadata'),
+      openApi.getSchemaForEndpoint('/pools/{pool_id}/metadata', spec),
     ).toMatchObject({
       response: {
         '200': {
@@ -180,67 +187,67 @@ describe('open api utils', () => {
   });
 
   test('array and refs', () => {
-    expect(openApi.getSchemaForEndpoint('/epochs/{number}/next')).toMatchObject(
-      {
-        response: {
-          '200': {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                epoch: {
-                  type: 'integer',
-                },
-                start_time: {
-                  type: 'integer',
-                },
-                end_time: {
-                  type: 'integer',
-                },
-                first_block_time: {
-                  type: 'integer',
-                },
-                last_block_time: {
-                  type: 'integer',
-                },
-                block_count: {
-                  type: 'integer',
-                },
-                tx_count: {
-                  type: 'integer',
-                },
-                output: {
-                  type: 'string',
-                },
-                fees: {
-                  type: 'string',
-                },
-                active_stake: {
-                  nullable: true,
-                  type: 'string',
-                },
+    expect(
+      openApi.getSchemaForEndpoint('/epochs/{number}/next', spec),
+    ).toMatchObject({
+      response: {
+        '200': {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              epoch: {
+                type: 'integer',
               },
-              required: [
-                'epoch',
-                'start_time',
-                'end_time',
-                'first_block_time',
-                'last_block_time',
-                'block_count',
-                'tx_count',
-                'output',
-                'fees',
-                'active_stake',
-              ],
+              start_time: {
+                type: 'integer',
+              },
+              end_time: {
+                type: 'integer',
+              },
+              first_block_time: {
+                type: 'integer',
+              },
+              last_block_time: {
+                type: 'integer',
+              },
+              block_count: {
+                type: 'integer',
+              },
+              tx_count: {
+                type: 'integer',
+              },
+              output: {
+                type: 'string',
+              },
+              fees: {
+                type: 'string',
+              },
+              active_stake: {
+                nullable: true,
+                type: 'string',
+              },
             },
+            required: [
+              'epoch',
+              'start_time',
+              'end_time',
+              'first_block_time',
+              'last_block_time',
+              'block_count',
+              'tx_count',
+              'output',
+              'fees',
+              'active_stake',
+            ],
           },
-          '400': error400,
-          '403': error403,
-          '418': error418,
-          '429': error429,
-          '500': error500,
         },
+        '400': error400,
+        '403': error403,
+        '418': error418,
+        '429': error429,
+        '500': error500,
       },
-    );
+    });
   });
 });
