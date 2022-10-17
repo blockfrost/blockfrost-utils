@@ -1,6 +1,6 @@
 import fs from 'fs';
 import YAML from 'yaml';
-const schema = require.resolve('@blockfrost/openapi');
+const schema = require.resolve('@blockfrost/openapi/openapi.yaml');
 const file = fs.readFileSync(schema, 'utf8');
 const spec = YAML.parse(file);
 
