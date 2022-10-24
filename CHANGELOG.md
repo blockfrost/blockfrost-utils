@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2022-10-24
+
 ### Changed
 
 - `getAddressTypeAndPaymentCred` to return undefined instead of `''` when there is not valid `paymentCred`
