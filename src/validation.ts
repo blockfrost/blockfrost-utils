@@ -159,12 +159,12 @@ export const getAddressTypeAndPaymentCred = (
   const addressType = detectAndValidateAddressType(address, network);
 
   // if shelley, check for paymentCred and compute paymentCred hex
-  // if an error occurs or paymentCred can't be computed, '' is returned
-  // querying '' in SQL is faster than null for payment_cred, so let's replace undefined by ''
+  // if an error occurs or paymentCred can't be computed, undefined is returned
+  // which is then handled in the DB as NULL
   const paymentCred =
     addressType === 'shelley'
-      ? paymentCredFromBech32Address(address) ?? ''
-      : '';
+      ? paymentCredFromBech32Address(address)
+      : undefined;
 
   return { addressType, paymentCred };
 };
