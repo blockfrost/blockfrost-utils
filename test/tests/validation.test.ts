@@ -125,4 +125,14 @@ describe('validation utils', () => {
       expect(result).toBe(fixture.result);
     });
   });
+
+
+  fixtures.getAddressTypeAndPaymentCred.map(fixture => {
+    test(`getAddressTypeAndPaymentCred ${fixture.description}`, async () => {
+      const result = validationUtils.getAddressTypeAndPaymentCred(fixture.address, fixture.network);
+
+      expect(result).toStrictEqual(fixture.result);
+    });
+  });
+
 });
