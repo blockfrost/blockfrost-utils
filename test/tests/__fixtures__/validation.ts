@@ -431,68 +431,160 @@ export const validateHex = [
     input: 'deadbppf',
     result: false,
   },
-
 ];
 
 export const getAddressTypeAndPaymentCred = [
   {
     description: 'Valid byron address, mainnet',
-    address: 'DdzFFzCqrhsixScxYMqkcp1Q8p1m7Zg7VU3WiMNfVivwqdMNu8aSYm2wVGGw5hZjp1CHpLfuwoZMRtxf2QhChhbZNeT3ioChYzcBRhcs',
-    network: "mainnet",
+    address:
+      'DdzFFzCqrhsixScxYMqkcp1Q8p1m7Zg7VU3WiMNfVivwqdMNu8aSYm2wVGGw5hZjp1CHpLfuwoZMRtxf2QhChhbZNeT3ioChYzcBRhcs',
+    network: 'mainnet',
     result: { addressType: 'byron', paymentCred: undefined },
   },
   {
     description: 'Valid byron address, mainnet',
     address: 'Ae2tdPwUPEYwNguM7TB3dMnZMfZxn1pjGHyGdjaF4mFqZF9L3bj6cdhiH8t',
-    network: "mainnet",
+    network: 'mainnet',
     result: { addressType: 'byron', paymentCred: undefined },
   },
   {
     description: 'Valid shelley address, mainnet',
-    address: 'addr1qyg5yk36ee0rhl5hw5kxcfng5ygrsv55tuchs0nxjmh9uqmpmpaxya7n6kzmyy6f72st0akwx8zg5n6emrxa5mhywg9q3v23dv',
-    network: "mainnet",
+    address:
+      'addr1qyg5yk36ee0rhl5hw5kxcfng5ygrsv55tuchs0nxjmh9uqmpmpaxya7n6kzmyy6f72st0akwx8zg5n6emrxa5mhywg9q3v23dv',
+    network: 'mainnet',
     result: { addressType: 'shelley', paymentCred: undefined },
   },
   {
     description: 'Valid shelley address, testnet',
     address: 'addr_test1wruv9whqljf3jhv3tk5q8v0e6aa5dqap8tz3yw64q3d4vtsfzmhu7',
-    network: "testnet",
+    network: 'testnet',
     result: { addressType: 'shelley', paymentCred: undefined },
   },
   {
     description: 'Valid shelley address, preview',
     address: 'addr_test1vpfwv0ezc5g8a4mkku8hhy3y3vp92t7s3ul8g778g5yegsgalc6gc',
-    network: "preview",
+    network: 'preview',
     result: { addressType: 'shelley', paymentCred: undefined },
   },
   {
     description: 'Valid shelley address, preprod',
     address: 'addr_test1vpfwv0ezc5g8a4mkku8hhy3y3vp92t7s3ul8g778g5yegsgalc6gc',
-    network: "preprod",
+    network: 'preprod',
     result: { addressType: 'shelley', paymentCred: undefined },
   },
   {
     description: 'Valid paymentCred address, mainnet',
     address: 'addr_vkh1lu3rzd3pwjp54twx32ye9g4gqkr34x7cyp4urt8luq22jvjx5ul',
-    network: "mainnet",
-    result: { addressType: 'shelley', paymentCred: '\\xff2231362174834aadc68a8992a2a805871a9bd8206bc1acffe014a9' },
+    network: 'mainnet',
+    result: {
+      addressType: 'shelley',
+      paymentCred:
+        '\\xff2231362174834aadc68a8992a2a805871a9bd8206bc1acffe014a9',
+    },
   },
   {
     description: 'Invalid shelley address, valid network',
     address: 'addr1stonks',
-    network: "mainnet",
+    network: 'mainnet',
     result: { addressType: undefined, paymentCred: undefined },
   },
   {
     description: 'Valid shelley address, invalid network',
-    address: 'addr1qyg5yk36ee0rhl5hw5kxcfng5ygrsv55tuchs0nxjmh9uqmpmpaxya7n6kzmyy6f72st0akwx8zg5n6emrxa5mhywg9q3v23dv',
-    network: "testnet",
+    address:
+      'addr1qyg5yk36ee0rhl5hw5kxcfng5ygrsv55tuchs0nxjmh9uqmpmpaxya7n6kzmyy6f72st0akwx8zg5n6emrxa5mhywg9q3v23dv',
+    network: 'testnet',
     result: { addressType: undefined, paymentCred: undefined },
   },
   {
     description: 'Inalid paymentCred address, valid network',
     address: 'addr_vkh1luluwu',
-    network: "mainnet",
+    network: 'mainnet',
     result: { addressType: undefined, paymentCred: undefined },
+  },
+] as const;
+
+export const validatePolicy = [
+  {
+    description: 'Valid policy',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87ae',
+    result: true,
+  },
+  {
+    description: 'Valid policy',
+    input: 'b863bc7369f46136ac1048adb2fa7dae3af944c3bbb2be2f216a8d4f',
+    result: true,
+  },
+  {
+    description: 'Invalid policy ( < length)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87a',
+    result: false,
+  },
+  {
+    description: 'Invalid policy ( > length)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87aef',
+    result: false,
+  },
+  {
+    description: 'Invalid policy (hex)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87ag',
+    result: false,
+  },
+  {
+    description: 'Invalid policy ( < length & hex)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87g',
+    result: false,
+  },
+  {
+    description: 'Invalid policy ( > length & hex)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87aeg',
+    result: false,
+  },
+];
+
+export const validateAsset = [
+  {
+    description: 'Valid asset (min length)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87ae',
+    result: true,
+  },
+  {
+    description: 'Valid asset (in between length)',
+    input:
+      '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87ae6e7574636f696e',
+    result: true,
+  },
+  {
+    description: 'Valid asset (max length)',
+    input:
+      'fc373a6cfc24c11d925dc48535f661d54edbb04646bea645e7d58ee0447261676f6e73496e6665726e6f516d516d446d357337694376397136653569',
+    result: true,
+  },
+  {
+    description: 'Invalid asset ( < length)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87a',
+    result: false,
+  },
+  {
+    description: 'Invalid asset ( > length)',
+    input:
+      'fc373a6cfc24c11d925dc48535f661d54edbb04646bea645e7d58ee0447261676f6e73496e6665726e6f516d516d446d3573376943763971366535699',
+    result: false,
+  },
+  {
+    description: 'Invalid asset (hex)',
+    input:
+      '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87ae6e7574636f696eg',
+    result: false,
+  },
+  {
+    description: 'Invalid asset ( < length & hex)',
+    input: '00000002df633853f6a47465c9496721d2d5b1291b8398016c0e87g',
+    result: false,
+  },
+  {
+    description: 'Invalid asset ( > length & hex)',
+    input:
+      'fc373a6cfc24c11d925dc48535f661d54edbb04646bea645e7d58ee0447261676f6e73496e6665726e6f516d516d446d357337694376397136653569g',
+    result: false,
   },
 ];

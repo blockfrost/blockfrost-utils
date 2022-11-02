@@ -251,3 +251,14 @@ export const isNumber = (value: string | number | undefined): boolean => {
   if (value === '') return false;
   return !Number.isNaN(Number(value));
 };
+
+export const validatePolicy = (input: string): boolean => {
+  // policy is always 56 chars long
+  return validateHex(input) && input.length === 56;
+};
+
+export const validateAsset = (input: string): boolean => {
+  // policy is always 56 chars long
+  // asset name is not mandatory, hence between 0 and 64 chars long (56+64=120)
+  return validateHex(input) && input.length >= 56 && input.length <= 120;
+};
