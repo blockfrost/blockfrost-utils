@@ -186,10 +186,18 @@ export const handleInvalidAddress = (reply: FastifyReply) => {
   );
 };
 
-export const handleInvalidStakeAddress = (reply: FastifyReply) => {
-  return handle400Custom(reply, 'Invalid or malformed stake address format.');
+export const handleInvalidAsset = (reply: FastifyReply) => {
+  return handle400Custom(reply, 'Invalid or malformed asset format.');
+};
+
+export const handleInvalidPolicy = (reply: FastifyReply) => {
+  return handle400Custom(reply, 'Invalid or malformed policy format.');
 };
 
 export const handleInvalidPool = (reply: FastifyReply) => {
   return handle400Custom(reply, 'Invalid or malformed pool id format.');
+};
+
+export const handleInvalidStakeAddress = (reply: FastifyReply) => {
+  return handle400Custom(reply, 'Invalid or malformed stake address format.');
 };

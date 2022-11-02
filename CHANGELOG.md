@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `validatePolicy` and `validateAsset` to validation functions
+- invalid asset and invalid policy 400 handlers
 
 ## [1.0.1] - 2022-10-24
 
