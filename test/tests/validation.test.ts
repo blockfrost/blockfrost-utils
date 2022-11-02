@@ -126,13 +126,30 @@ describe('validation utils', () => {
     });
   });
 
-
   fixtures.getAddressTypeAndPaymentCred.map(fixture => {
     test(`getAddressTypeAndPaymentCred ${fixture.description}`, async () => {
-      const result = validationUtils.getAddressTypeAndPaymentCred(fixture.address, fixture.network);
+      const result = validationUtils.getAddressTypeAndPaymentCred(
+        fixture.address,
+        fixture.network,
+      );
 
       expect(result).toStrictEqual(fixture.result);
     });
   });
 
+  fixtures.validatePolicy.map(fixture => {
+    test(`validatePolicy ${fixture.description}`, async () => {
+      const result = validationUtils.validatePolicy(fixture.input);
+
+      expect(result).toStrictEqual(fixture.result);
+    });
+  });
+
+  fixtures.validateAsset.map(fixture => {
+    test(`validateAsset ${fixture.description}`, async () => {
+      const result = validationUtils.validateAsset(fixture.input);
+
+      expect(result).toStrictEqual(fixture.result);
+    });
+  });
 });
