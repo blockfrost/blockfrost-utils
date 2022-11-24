@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `getCIPstandard`, `getOnchainMetadata`, `getOnchainMetadataVersion` functions
 
+### Removed 
+
+- BREAKING CHANGE: `getSchemaForEndpoint` is now part of the `@blockrost/openapi` package
+
 ## [1.1.0] - 2022-11-02
 
 ### Added
