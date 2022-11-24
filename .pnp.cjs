@@ -33,7 +33,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["@blockfrost/openapi", "npm:0.1.41"],\
+            ["@blockfrost/openapi", "npm:0.1.47"],\
             ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.5"],\
             ["@types/node", "npm:16.11.58"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
@@ -69,7 +69,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@blockfrost/blockfrost-utils", "workspace:."],\
-            ["@blockfrost/openapi", "npm:0.1.41"],\
+            ["@blockfrost/openapi", "npm:0.1.47"],\
             ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.5"],\
             ["@types/node", "npm:16.11.58"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
@@ -92,11 +92,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@blockfrost/openapi", [\
-        ["npm:0.1.41", {\
-          "packageLocation": "./.yarn/cache/@blockfrost-openapi-npm-0.1.41-945e9b0daa-ccbfa6ef38.zip/node_modules/@blockfrost/openapi/",\
+        ["npm:0.1.47", {\
+          "packageLocation": "./.yarn/cache/@blockfrost-openapi-npm-0.1.47-e76d3ea6c0-a4444d6a07.zip/node_modules/@blockfrost/openapi/",\
           "packageDependencies": [\
-            ["@blockfrost/openapi", "npm:0.1.41"],\
-            ["@redocly/openapi-cli", "npm:1.0.0-beta.94"]\
+            ["@blockfrost/openapi", "npm:0.1.47"],\
+            ["@redocly/openapi-cli", "npm:1.0.0-beta.94"],\
+            ["yaml", "npm:2.1.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4822,6 +4823,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/yaml-npm-2.1.1-e717f9b915-f48bb20991.zip/node_modules/yaml/",\
           "packageDependencies": [\
             ["yaml", "npm:2.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.1.3", {\
+          "packageLocation": "./.yarn/cache/yaml-npm-2.1.3-654a90032d-9131606232.zip/node_modules/yaml/",\
+          "packageDependencies": [\
+            ["yaml", "npm:2.1.3"]\
           ],\
           "linkType": "HARD"\
         }]\

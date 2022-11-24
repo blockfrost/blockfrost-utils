@@ -1,6 +1,6 @@
 import { expect, describe, test } from 'vitest';
 import { jsonToPrometheus } from '../../src/metrics-collector/utils';
-import * as fixtures from './__fixtures__/metrics-collector';
+import * as fixtures from '../fixtures/metrics-collector';
 
 describe('metrics collector', () => {
   fixtures.jsonToPrometheus.forEach(fixture => {
