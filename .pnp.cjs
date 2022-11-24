@@ -33,7 +33,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["@blockfrost/openapi", "npm:0.1.47-beta.7"],\
+            ["@blockfrost/openapi", "npm:0.1.47"],\
             ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.5"],\
             ["@types/node", "npm:16.11.58"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
@@ -69,7 +69,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@blockfrost/blockfrost-utils", "workspace:."],\
-            ["@blockfrost/openapi", "npm:0.1.47-beta.7"],\
+            ["@blockfrost/openapi", "npm:0.1.47"],\
             ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.0.5"],\
             ["@types/node", "npm:16.11.58"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
@@ -92,10 +92,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@blockfrost/openapi", [\
-        ["npm:0.1.47-beta.7", {\
-          "packageLocation": "./.yarn/cache/@blockfrost-openapi-npm-0.1.47-beta.7-4bc0d32bee-aaeb92e882.zip/node_modules/@blockfrost/openapi/",\
+        ["npm:0.1.47", {\
+          "packageLocation": "./.yarn/cache/@blockfrost-openapi-npm-0.1.47-e76d3ea6c0-a4444d6a07.zip/node_modules/@blockfrost/openapi/",\
           "packageDependencies": [\
-            ["@blockfrost/openapi", "npm:0.1.47-beta.7"],\
+            ["@blockfrost/openapi", "npm:0.1.47"],\
             ["@redocly/openapi-cli", "npm:1.0.0-beta.94"],\
             ["yaml", "npm:2.1.3"]\
           ],\
