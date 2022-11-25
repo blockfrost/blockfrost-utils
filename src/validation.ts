@@ -1,6 +1,5 @@
 import { ByronAddress } from '@emurgo/cardano-serialization-lib-nodejs';
 import { bech32 } from 'bech32';
-import { components } from '@blockfrost/openapi';
 
 type BlockfrostNetwork = 'mainnet' | 'testnet' | 'preview' | 'preprod';
 // prefixes based on CIP5 https://github.com/cardano-foundation/CIPs/blob/master/CIP-0005/CIP-0005.md
@@ -262,45 +261,6 @@ export const validateAsset = (input: string): boolean => {
   // policy is always 56 chars long
   // asset name is not mandatory, hence between 0 and 64 chars long (56+64=120)
   return validateHex(input) && input.length >= 56 && input.length <= 120;
-};
-
-export const getOnchainMetadataVersion = (
-  onchainMetadata: components['schemas']['asset']['onchain_metadata'],
-): number => {
-  if (!onchainMetadata?.version) {
-    return 1;
-  }
-
-  return Number(onchainMetadata.version);
-};
-
-export const getOnchainMetadata = (
-  onchainMetadata: components['schemas']['asset']['onchain_metadata'],
-  assetName: components['schemas']['asset']['asset_name'],
-  policyId: components['schemas']['asset']['policy_id'],
-) => {
-  if (!onchainMetadata) return null;
-
-  const version = getOnchainMetadataVersion(onchainMetadata);
-  let assetNameConverted = assetName || '';
-
-  if (version === 1) {
-    assetNameConverted = Buffer.from(assetNameConverted, 'hex').toString(
-      'utf8',
-    );
-  }
-
-  let onchainMetadataResult;
-
-  try {
-    // @ts-expect-error unknown type
-    onchainMetadataResult = onchainMetadata[policyId][assetNameConverted];
-  } catch (error) {
-    console.error('Onchain metadata error', error);
-    return null;
-  }
-
-  return onchainMetadataResult;
 };
 
 export const getCIPstandard = (
