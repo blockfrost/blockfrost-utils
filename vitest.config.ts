@@ -5,7 +5,7 @@ export default defineConfig({
     include: ['./test/tests/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     coverage: {
       statements: 92.55,
-      branches: 94.87,
+      branches: 94.39,
       functions: 94.39,
       lines: 92.55,
       exclude: ['.pnp.cjs', '.pnp.loader.mjs', 'test'],
