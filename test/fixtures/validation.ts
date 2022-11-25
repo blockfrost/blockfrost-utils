@@ -858,4 +858,164 @@ export const parseOnChainMetadataFixtures = [
       ],
     },
   },
+  {
+    name: 'invalid on-chain metadata version 2 with asset_name in UTF-8',
+    data: {
+      asset:
+        'd12d8c05c03484409f157917f21b323824d892130e4085006eaefc4a5041524131323933',
+      policy_id: 'd12d8c05c03484409f157917f21b323824d892130e4085006eaefc4a',
+      asset_name: '5041524131323933',
+      quantity: '1',
+      initial_mint_tx_hash:
+        '2edd088027b6d7c77cff4e0d580ae2764d56f31e4df1ba979b571dc8005e4a05',
+      mint_or_burn_count: '1',
+      onchain_metadata: {
+        version: '2.0',
+        d12d8c05c03484409f157917f21b323824d892130e4085006eaefc4a: {
+          PARA0003: {
+            body: 'Tan normal',
+            eyes: 'Looking down',
+            hair: 'Gerald',
+            name: 'ParaPains #0003',
+            files: [
+              {
+                src: 'ipfs://QmdrL7XUP8jBSzTzw7HSJGxRDwgEmYtk5obJqdi9f62mYC',
+                name: 'ParaPains #0003',
+                mediaType: 'image/jpg',
+              },
+            ],
+            image: 'ipfs://QmdrL7XUP8jBSzTzw7HSJGxRDwgEmYtk5obJqdi9f62mYC',
+            mouth: 'Buck tooth',
+            clothes: 'Dursley knit',
+            website: 'https://www.painsnft.com',
+            eyebrows: 'Blue',
+            mediaType: 'image/jpg',
+            background: 'Cream',
+            accessories: 'Diamond hands',
+          },
+          PARA1293: {
+            body: 'Tan button',
+            eyes: 'Chicken eyes',
+            hair: 'Purple fro',
+            name: 'ParaPains #1293',
+            files: [
+              {
+                src: 'ipfs://QmdhYyHuCXd2CmFo5p5cf5p2ajPLimCWn96WtdNiRVwwJZ',
+                name: 'ParaPains #1293',
+                mediaType: 'image/jpg',
+              },
+            ],
+            image: 'ipfs://QmdhYyHuCXd2CmFo5p5cf5p2ajPLimCWn96WtdNiRVwwJZ',
+            mouth: 'Blue smirk',
+            clothes: 'Charlie brown',
+            website: 'https://www.painsnft.com',
+            eyebrows: 'Blue',
+            mediaType: 'image/jpg',
+            background: 'Mid grey',
+            accessories: 'Happy balloon',
+          },
+          PARA1802: {
+            body: 'Yellow button',
+            eyes: 'Chilled',
+            hair: 'Rapunzel',
+            name: 'ParaPains #1802',
+            files: [
+              {
+                src: 'ipfs://Qmcbs6dd4z52KdjVbU3sHRDTCv6B3vxrbVHTfewXduGK1z',
+                name: 'ParaPains #1802',
+                mediaType: 'image/jpg',
+              },
+            ],
+            image: 'ipfs://Qmcbs6dd4z52KdjVbU3sHRDTCv6B3vxrbVHTfewXduGK1z',
+            mouth: 'Shocked',
+            clothes: 'Maroon T',
+            website: 'https://www.painsnft.com',
+            eyebrows: 'Worried brown',
+            mediaType: 'image/jpg',
+            background: 'Deep green',
+            accessories: 'None',
+          },
+          PARA1913: {
+            body: 'Purple broken',
+            eyes: 'Bloodshot',
+            hair: 'Yellow basquiat',
+            name: 'ParaPains #1913',
+            files: [
+              {
+                src: 'ipfs://QmYPqwszoE3zZtupPADDMT1aZCD4XBP93Aa5qA6eqAHpM2',
+                name: 'ParaPains #1913',
+                mediaType: 'image/jpg',
+              },
+            ],
+            image: 'ipfs://QmYPqwszoE3zZtupPADDMT1aZCD4XBP93Aa5qA6eqAHpM2',
+            mouth: 'Sad blue',
+            clothes: 'Hawaiian shirt',
+            website: 'https://www.painsnft.com',
+            eyebrows: 'Blue',
+            mediaType: 'image/jpg',
+            background: 'Cream',
+            accessories: 'None',
+          },
+        },
+      },
+      metadata: null,
+    },
+    response: {
+      name: 'ParaPains #1293',
+      image: 'ipfs://QmdhYyHuCXd2CmFo5p5cf5p2ajPLimCWn96WtdNiRVwwJZ',
+      body: 'Tan button',
+      eyes: 'Chicken eyes',
+      hair: 'Purple fro',
+      files: [
+        {
+          src: 'ipfs://QmdhYyHuCXd2CmFo5p5cf5p2ajPLimCWn96WtdNiRVwwJZ',
+          name: 'ParaPains #1293',
+          mediaType: 'image/jpg',
+        },
+      ],
+      mouth: 'Blue smirk',
+      clothes: 'Charlie brown',
+      website: 'https://www.painsnft.com',
+      eyebrows: 'Blue',
+      mediaType: 'image/jpg',
+      background: 'Mid grey',
+      accessories: 'Happy balloon',
+    },
+  },
+  {
+    name: 'invalid on-chain metadata version 1 with invalid onchain_metadata structure',
+    data: {
+      asset:
+        '9ed0d6254917ec44fb7368c034324a009e86b339a4dfab8f67dc5e58546865204c6567656e64',
+      policy_id: '9ed0d6254917ec44fb7368c034324a009e86b339a4dfab8f67dc5e58',
+      asset_name: '546865204c6567656e64',
+      quantity: '2',
+      initial_mint_tx_hash:
+        'b06cfcd74cdb80789ef2b0731676eb76173f7384bc7e9a86a88db11ae6f2d2b1',
+      mint_or_burn_count: '2',
+      onchain_metadata: {
+        '9ed0d6254917ec44fb7368c034324a009e86b339a4dfab8f67dc5e58': {
+          thelegend: {
+            id: '1',
+            name: 'The Legend',
+            image: 'ipfs://QmTzQarLF7sC2YhcLMbDnmtjLeunB6WuMrTqQGUC2XJozh',
+            Collection: 'The Saloon Collection',
+            description: 'The Head Bouncer',
+          },
+        },
+      },
+      metadata: null,
+    },
+    response: {
+      '9ed0d6254917ec44fb7368c034324a009e86b339a4dfab8f67dc5e58': {
+        thelegend: {
+          id: '1',
+          name: 'The Legend',
+          image: 'ipfs://QmTzQarLF7sC2YhcLMbDnmtjLeunB6WuMrTqQGUC2XJozh',
+          Collection: 'The Saloon Collection',
+          description: 'The Head Bouncer',
+        },
+      },
+    },
+  },
 ];
