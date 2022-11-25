@@ -153,19 +153,6 @@ describe('validation utils', () => {
     });
   });
 
-  fixtures.parseOnChainMetadataFixtures.map(fixture => {
-    test(fixture.name, async () => {
-      const result = validationUtils.getOnchainMetadata(
-        // @ts-expect-error tests
-        fixture.data.onchain_metadata,
-        fixture.data.asset_name,
-        fixture.data.policy_id,
-      );
-
-      expect(result).toStrictEqual(fixture.response);
-    });
-  });
-
   expect(validationUtils.getCIPstandard(1, false)).toStrictEqual(null);
   expect(validationUtils.getCIPstandard(2, false)).toStrictEqual(null);
   expect(validationUtils.getCIPstandard(1, true)).toStrictEqual('CIP25v1');

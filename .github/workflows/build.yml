@@ -21,3 +21,4 @@ jobs:
       - run: yarn run type-check
       - run: yarn run test
       - run: yarn run build
+      - run: yarn run coverage
