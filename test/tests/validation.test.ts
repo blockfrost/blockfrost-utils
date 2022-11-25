@@ -152,10 +152,4 @@ describe('validation utils', () => {
       expect(result).toStrictEqual(fixture.result);
     });
   });
-
-  expect(validationUtils.getCIPstandard(1, false)).toStrictEqual(null);
-  expect(validationUtils.getCIPstandard(2, false)).toStrictEqual(null);
-  expect(validationUtils.getCIPstandard(1, true)).toStrictEqual('CIP25v1');
-  expect(validationUtils.getCIPstandard(2, true)).toStrictEqual('CIP25v2');
-  expect(validationUtils.getCIPstandard(3, false)).toStrictEqual(null);
 });
