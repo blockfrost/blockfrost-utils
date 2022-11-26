@@ -262,20 +262,3 @@ export const validateAsset = (input: string): boolean => {
   // asset name is not mandatory, hence between 0 and 64 chars long (56+64=120)
   return validateHex(input) && input.length >= 56 && input.length <= 120;
 };
-
-export const getCIPstandard = (
-  version: number,
-  isValid: boolean,
-): 'CIP25v1' | 'CIP25v2' | null => {
-  if (isValid) {
-    if (version === 1) {
-      return 'CIP25v1';
-    }
-
-    if (version === 2) {
-      return 'CIP25v2';
-    }
-  }
-
-  return null;
-};
