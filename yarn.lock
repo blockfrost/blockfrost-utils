@@ -16,12 +16,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blockfrost/blockfrost-utils@workspace:."
   dependencies:
-    "@emurgo/cardano-serialization-lib-nodejs": ^11.0.5
+    "@emurgo/cardano-serialization-lib-nodejs": ^11.2.1
     "@types/node": ^16
+    "@types/utf-8-validate": ^5.0.0
     "@typescript-eslint/eslint-plugin": ^5.30.0
     "@typescript-eslint/parser": 5.27.0
     bech32: ^2.0.0
     c8: ^7.12.0
+    cbor: ^8.1.0
+    crc: ^4.2.0
     eslint: ^8.21.0
     eslint-config-prettier: 8.5.0
     eslint-plugin-import: 2.26.0
@@ -30,16 +33,17 @@ __metadata:
     prettier: 2.6.2
     rimraf: ^3.0.2
     typescript: ^4.7.4
+    utf-8-validate: ^5.0.10
     vite: ^3.0.4
     vitest: ^0.21.0
     yaml: ^2.1.1
   languageName: unknown
   linkType: soft
 
-"@emurgo/cardano-serialization-lib-nodejs@npm:^11.0.5":
-  version: 11.0.5
-  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:11.0.5"
-  checksum: 3efc62504890f7eb9117535280807c0566abd6a4752c86f4c154b59b3f441d3e813160c9634d1439475141204fee69448cdc721537a68f7e685aee8cfd03d909
+"@emurgo/cardano-serialization-lib-nodejs@npm:^11.2.1":
+  version: 11.2.1
+  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:11.2.1"
+  checksum: 467f492f229f75130f68459c7226e381e3f0219ab80fe75834cda92f7b4f2f623584bb1355618887e44f572de9f31086a3469777c3e723236d7e3dc088e77486
   languageName: node
   linkType: hard
 
@@ -259,6 +263,15 @@ __metadata:
   version: 16.11.58
   resolution: "@types/node@npm:16.11.58"
   checksum: efdf14c62e6c1a8e758416aaa3ae4b81015ffd4e1f31c05680d1242817ba23f0b4b1345886fe5aeb3c05d818bcaed1a7af4d637e7cca5723a5e4ac8b759d3ace
+  languageName: node
+  linkType: hard
+
+"@types/utf-8-validate@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@types/utf-8-validate@npm:5.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: 2794d66c7b8ce808128116513d5d580d3d97e43b6f14ffd7f90d9cc6b8fbcb843f99fa8bb22f9fe686f257c73ca2419f0ba4b3b7e60f10a56b96eddf430b7a8b
   languageName: node
   linkType: hard
 
@@ -744,6 +757,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cbor@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "cbor@npm:8.1.0"
+  dependencies:
+    nofilter: ^3.1.0
+  checksum: a90338435dc7b45cc01461af979e3bb6ddd4f2a08584c437586039cd5f2235014c06e49d664295debbfb3514d87b2f06728092ab6aa6175e2e85e9cd7dc0c1fd
+  languageName: node
+  linkType: hard
+
 "chai@npm:^4.3.6":
   version: 4.3.6
   resolution: "chai@npm:4.3.6"
@@ -853,6 +875,15 @@ __metadata:
   version: 0.5.0
   resolution: "cookie@npm:0.5.0"
   checksum: 1f4bd2ca5765f8c9689a7e8954183f5332139eb72b6ff783d8947032ec1fdf43109852c178e21a953a30c0dd42257828185be01b49d1eb1a67fd054ca588a180
+  languageName: node
+  linkType: hard
+
+"crc@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crc@npm:4.2.0"
+  peerDependencies:
+    buffer: ">=6.0.3"
+  checksum: 29eabe6bcbee60b67348ba5e03742300c99617ad66d93d67e3bc62b665f0f2b1584157a35ade5b1037cef65b8a1fd8bedd6e0628c8449555fc9d16a866044318
   languageName: node
   linkType: hard
 
@@ -2557,6 +2588,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-gyp-build@npm:^4.3.0":
+  version: 4.5.0
+  resolution: "node-gyp-build@npm:4.5.0"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: d888bae0fb88335f69af1b57a2294a931c5042f36e413d8d364c992c9ebfa0b96ffe773179a5a2c8f04b73856e8634e09cce108dbb9804396d3cc8c5455ff2db
+  languageName: node
+  linkType: hard
+
 "node-gyp@npm:latest":
   version: 9.1.0
   resolution: "node-gyp@npm:9.1.0"
@@ -2574,6 +2616,13 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: 1437fa4a879b5b9010604128e8da8609b57c66034262087539ee04a8b764b8436af2be01bab66f8fc729a3adba2dcc21b10a32b9f552696c3fa8cd657d134fc4
+  languageName: node
+  linkType: hard
+
+"nofilter@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "nofilter@npm:3.1.0"
+  checksum: 58aa85a5b4b35cbb6e42de8a8591c5e338061edc9f3e7286f2c335e9e9b9b8fa7c335ae45daa8a1f3433164dc0b9a3d187fa96f9516e04a17a1f9ce722becc4f
   languageName: node
   linkType: hard
 
@@ -3514,6 +3563,16 @@ __metadata:
   dependencies:
     punycode: ^2.1.0
   checksum: 7167432de6817fe8e9e0c9684f1d2de2bb688c94388f7569f7dbdb1587c9f4ca2a77962f134ec90be0cc4d004c939ff0d05acc9f34a0db39a3c797dada262633
+  languageName: node
+  linkType: hard
+
+"utf-8-validate@npm:^5.0.10":
+  version: 5.0.10
+  resolution: "utf-8-validate@npm:5.0.10"
+  dependencies:
+    node-gyp: latest
+    node-gyp-build: ^4.3.0
+  checksum: 5579350a023c66a2326752b6c8804cc7b39dcd251bb088241da38db994b8d78352e388dcc24ad398ab98385ba3c5ffcadb6b5b14b2637e43f767869055e46ba6
   languageName: node
   linkType: hard
 
