@@ -186,8 +186,37 @@ export const handleInvalidAddress = (reply: FastifyReply) => {
   );
 };
 
+export const handleInvalidAddressFromTo = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Invalid (malformed or out of range) from/to parameter(s).',
+  );
+};
+
 export const handleInvalidAsset = (reply: FastifyReply) => {
   return handle400Custom(reply, 'Invalid or malformed asset format.');
+};
+
+export const handleInvalidBlockHash = (reply: FastifyReply) => {
+  return handle400Custom(reply, 'Missing or malformed block hash.');
+};
+
+export const handleInvalidBlockNumber = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Missing, out of range or malformed block number.',
+  );
+};
+
+export const handleInvalidEpoch = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Missing, out of range or malformed epoch_number.',
+  );
+};
+
+export const handleInvalidLabel = (reply: FastifyReply) => {
+  return handle400Custom(reply, 'Missing, out of range or malformed label.');
 };
 
 export const handleInvalidPolicy = (reply: FastifyReply) => {
@@ -198,6 +227,28 @@ export const handleInvalidPool = (reply: FastifyReply) => {
   return handle400Custom(reply, 'Invalid or malformed pool id format.');
 };
 
+export const handleInvalidSlot = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Missing, out of range or malformed slot_number.',
+  );
+};
+
 export const handleInvalidStakeAddress = (reply: FastifyReply) => {
   return handle400Custom(reply, 'Invalid or malformed stake address format.');
+};
+
+export const handleInvalidXpub = (reply: FastifyReply) => {
+  return handle400Custom(
+    reply,
+    'Invalid or malformed xpub format. Has to be hex of length 128.',
+  );
+};
+
+export const handleInvalidXpubIndex = (reply: FastifyReply) => {
+  return handle400Custom(reply, 'Missing, out of range or malformed index.');
+};
+
+export const handleInvalidXpubRole = (reply: FastifyReply) => {
+  return handle400Custom(reply, 'Missing, out of range or malformed role.');
 };
