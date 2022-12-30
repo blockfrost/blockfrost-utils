@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Missing custom 400s
+
 ### Changed
 
 - js implementation of utf-8-validate, no longer requiring node-gyp
