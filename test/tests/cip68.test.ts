@@ -54,4 +54,40 @@ describe('cip68 utils', () => {
       ).toStrictEqual(fixture.result);
     });
   });
+
+  test('isValidUTF8: returns true with an empty buffer', () => {
+    expect(cip68Utils.isValidUTF8(Buffer.alloc(0))).toStrictEqual(true);
+  });
+
+  test('isValidUTF8: returns true for a valid utf8 string', () => {
+    expect(
+      cip68Utils.isValidUTF8(
+        Buffer.from('Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+      ),
+    ).toStrictEqual(true);
+  });
+
+  test('isValidUTF8: returns false for an erroneous string', () => {
+    const invalid = Buffer.from([
+      0xce, 0xba, 0xe1, 0xbd, 0xb9, 0xcf, 0x83, 0xce, 0xbc, 0xce, 0xb5, 0xed,
+      0xa0, 0x80, 0x65, 0x64, 0x69, 0x74, 0x65, 0x64,
+    ]);
+
+    expect(cip68Utils.isValidUTF8(invalid)).toStrictEqual(false);
+  });
+
+  test('isValidUTF8: returns true for valid cases from the autobahn test suite', () => {
+    expect(
+      cip68Utils.isValidUTF8(Buffer.from('\xf0\x90\x80\x80')),
+    ).toStrictEqual(true);
+    expect(
+      cip68Utils.isValidUTF8(Buffer.from([0xf0, 0x90, 0x80, 0x80])),
+    ).toStrictEqual(true);
+  });
+
+  test('isValidUTF8: returns false for erroneous autobahn strings', () => {
+    expect(
+      cip68Utils.isValidUTF8(Buffer.from([0xce, 0xba, 0xe1, 0xbd])),
+    ).toStrictEqual(false);
+  });
 });
