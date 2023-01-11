@@ -46,6 +46,18 @@ export const toCip68Assets = [
     },
   },
   {
+    description: 'get all labels for Blockfrost test token',
+    payload:
+      '56455542e52eb9b2a823a045d679ae063c09b2c8c4d9c376294315c00014df10426c6f636b66726f7374546f6b656e',
+    result: {
+      reference_nft:
+        '56455542e52eb9b2a823a045d679ae063c09b2c8c4d9c376294315c0000643b0426c6f636b66726f7374546f6b656e',
+      // ft exists
+      ft: '56455542e52eb9b2a823a045d679ae063c09b2c8c4d9c376294315c00014df10426c6f636b66726f7374546f6b656e',
+      nft: '56455542e52eb9b2a823a045d679ae063c09b2c8c4d9c376294315c0000de140426c6f636b66726f7374546f6b656e',
+    },
+  },
+  {
     description: 'non cip68 asset',
     payload:
       '416958a374690d4597b50428be9c060aed5217e75807310cefdf701062616e616e6173',
@@ -54,6 +66,15 @@ export const toCip68Assets = [
 ];
 
 export const getReferenceNFT = [
+  {
+    description: 'valid 222 ft token',
+    payload:
+      '56455542e52eb9b2a823a045d679ae063c09b2c8c4d9c376294315c00014df10426c6f636b66726f7374546f6b656e',
+    result: {
+      hex: '56455542e52eb9b2a823a045d679ae063c09b2c8c4d9c376294315c0000643b0426c6f636b66726f7374546f6b656e',
+      standard: 'ft',
+    },
+  },
   {
     description: 'valid 222 nft token',
     payload:
@@ -72,6 +93,19 @@ export const getReferenceNFT = [
 ];
 
 export const getMetadataFromOutputDatum = [
+  {
+    description: 'Blockfrost FT',
+    payload:
+      'd8799fa3446e616d654a426c6f636b66726f73744b6465736372697074696f6e5821426c6f636b66726f73742074657374696e672066756e6769626c6520746f6b656e48646563696d616c730201ff',
+    result: {
+      metadata: {
+        decimals: 2,
+        description: 'Blockfrost testing fungible token',
+        name: 'Blockfrost',
+      },
+      version: 1,
+    },
+  },
   {
     description: 'Matrix Berry reference NFT datum',
     payload:
