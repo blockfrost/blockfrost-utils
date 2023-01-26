@@ -1,4 +1,7 @@
-import { ByronAddress } from '@emurgo/cardano-serialization-lib-nodejs';
+import {
+  ByronAddress,
+  PublicKey,
+} from '@emurgo/cardano-serialization-lib-nodejs';
 import { bech32 } from 'bech32';
 
 type BlockfrostNetwork = 'mainnet' | 'testnet' | 'preview' | 'preprod';
@@ -9,6 +12,7 @@ const Prefixes = Object.freeze({
   STAKE: 'stake',
   STAKE_TEST: 'stake_test',
   PAYMENT_KEY_HASH: 'addr_vkh',
+  PAYMENT_KEY: 'addr_vk',
   POOL: 'pool',
 });
 
@@ -90,17 +94,26 @@ export const paymentCredFromBech32Address = (
   // compute paymentCred
   try {
     const bech32Info = bech32.decode(input, 1000);
-
     if (bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH) {
       // valid payment_cred
       const payload = bech32.fromWords(bech32Info.words);
       const paymentCred = `\\x${Buffer.from(payload).toString('hex')}`;
 
       return paymentCred;
+    } else if (bech32Info.prefix === Prefixes.PAYMENT_KEY) {
+      // valid payment_cred
+      const payload = bech32.fromWords(bech32Info.words);
+      const pubKey = PublicKey.from_hex(Buffer.from(payload).toString('hex'));
+
+      const paymentKeyHash = `\\x${pubKey.hash().to_hex()}`;
+      pubKey.free();
+      return paymentKeyHash;
     } else {
       return undefined;
     }
-  } catch {
+  } catch (error) {
+    // Uncomment for awesome debug hack!
+    // console.error(error);
     return undefined;
   }
 };

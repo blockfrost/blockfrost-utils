@@ -68,6 +68,12 @@ export const paymentCredFromBech32Address = [
     result: '\\x1c73279376bf71085068cd4167523f48695f3865564a497dc9292638',
   },
   {
+    // https://cips.cardano.org/cips/cip19/#testvectors
+    description: 'Valid paymentCred address (addr_vk)',
+    input: 'addr_vk1w0l2sr2zgfm26ztc6nl9xy8ghsk5sh6ldwemlpmp9xylzy4dtf7st80zhd',
+    result: '\\x9493315cd92eb5d8c4304e67b7e16ae36d61d34502694657811a2c8e',
+  },
+  {
     description: 'Valid Bech32, but not paymentCred address',
     input:
       'addr1qyw8xfunw6lhzzzsdrx5ze6j8ayxjhecv4ty5jtaey5jvwquwvnexa4lwyy9q6xdg9n4y06gd90nse2kffyhmjffycuq405jv6',

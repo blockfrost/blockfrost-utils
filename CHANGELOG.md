@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+
+- support for `addr_vk` addresses in `paymentCredFromBech32Address`
+
 ### Updated
 
 - fastify dependencies
