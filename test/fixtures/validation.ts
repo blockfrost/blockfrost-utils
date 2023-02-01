@@ -20,6 +20,12 @@ export const detectAndValidateAddressType = [
     network: 'mainnet',
   },
   {
+    description: 'Valid paymentCred address (addr_vk)',
+    input: 'addr_vk1w0l2sr2zgfm26ztc6nl9xy8ghsk5sh6ldwemlpmp9xylzy4dtf7st80zhd',
+    result: 'shelley',
+    network: 'mainnet', // doesn't matter for payment cred
+  },
+  {
     description: 'Valid address, wrong network',
     input:
       'addr1qyw8xfunw6lhzzzsdrx5ze6j8ayxjhecv4ty5jtaey5jvwquwvnexa4lwyy9q6xdg9n4y06gd90nse2kffyhmjffycuq405jv6',

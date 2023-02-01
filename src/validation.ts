@@ -152,7 +152,10 @@ export const detectAndValidateAddressType = (
       ) {
         // valid shelley - addr1 for mainnet or addr_test1 for testnet
         return 'shelley';
-      } else if (bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH) {
+      } else if (
+        bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH ||
+        bech32Info.prefix === Prefixes.PAYMENT_KEY
+      ) {
         // valid shelley - payment_cred
         return 'shelley';
       } else {
