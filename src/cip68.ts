@@ -11,7 +11,75 @@ const ASSET_NAME_LABELS = {
 export interface ReferenceMetadataDatum {
   metadata: Record<string, unknown>;
   version: number;
+  extra: string | null;
 }
+
+type FIELD_FORMAT = {
+  // TODO: split arrray type with items to separate type
+  type: 'bytestring' | 'number' | 'array';
+  optional?: boolean;
+  items?: CIP68_METADATA_FORMAT_ITEM;
+};
+
+type CIP68_METADATA_FORMAT_ITEM = Record<string, FIELD_FORMAT>;
+const CIP68_METADATA_FORMAT: Record<string, CIP68_METADATA_FORMAT_ITEM> = {
+  ft: {
+    name: {
+      type: 'bytestring',
+    },
+    description: {
+      type: 'bytestring',
+    },
+    ticker: {
+      type: 'bytestring',
+      optional: true,
+    },
+    url: {
+      type: 'bytestring',
+      optional: true,
+    },
+    logo: {
+      type: 'bytestring',
+      optional: true,
+    },
+    decimals: {
+      type: 'number',
+      optional: true,
+    },
+  },
+  nft: {
+    name: {
+      type: 'bytestring',
+    },
+    image: {
+      type: 'bytestring',
+    },
+    mediaType: {
+      type: 'bytestring',
+      optional: true,
+    },
+    description: {
+      type: 'bytestring',
+      optional: true,
+    },
+    files: {
+      type: 'array',
+      optional: true,
+      items: {
+        name: {
+          type: 'bytestring',
+          optional: true,
+        },
+        mediaType: {
+          type: 'bytestring',
+        },
+        src: {
+          type: 'bytestring',
+        },
+      },
+    },
+  },
+};
 
 /**
  * https://github.com/websockets/utf-8-validate/blob/master/fallback.js
@@ -208,9 +276,58 @@ export const getReferenceNFT = (
   return null;
 };
 
+const convertDatumValue = (
+  value: unknown,
+  schema: FIELD_FORMAT | CIP68_METADATA_FORMAT_ITEM | null,
+): unknown => {
+  if (!schema) {
+    return null;
+  }
+
+  if (schema.type === 'number' && typeof value === 'number') {
+    return value;
+  } else if (schema.type === 'bytestring' && Buffer.isBuffer(value)) {
+    return toUTF8OrHex(value);
+  } else if (Array.isArray(value)) {
+    const convertedArray = [];
+    for (const [index, arrayItem] of value.entries()) {
+      const arrayItemSchema = 'items' in schema ? schema.items ?? null : null;
+      const v = convertDatumValue(arrayItem, arrayItemSchema);
+      if (v === null) {
+        // Invalid data
+        return null;
+      }
+      convertedArray[index] = v;
+    }
+    return convertedArray;
+  } else if (value instanceof Map) {
+    const metadataMap: Record<string, unknown> = {};
+    for (const [key, mapValue] of value.entries()) {
+      // key and value are converted to utf-8 if their bytes are valid utf-8 sequence, hex otherwise
+      const convertedKey = Buffer.isBuffer(key) ? toUTF8OrHex(key) : key;
+      const valueSchema =
+        //  @ts-expect-error TODO
+        schema && convertedKey in schema ? schema[convertedKey] : null;
+      const convertedValue = convertDatumValue(mapValue, valueSchema);
+      if (convertedValue === null) {
+        return null;
+      }
+      metadataMap[convertedKey] = convertedValue;
+    }
+    return metadataMap;
+  } else {
+    // no conversion
+    return value;
+  }
+};
+
 export const getMetadataFromOutputDatum = (
   datumHex: string,
+  options: {
+    standard: 'ft' | 'nft';
+  },
 ): ReferenceMetadataDatum | null => {
+  const metadataFormat = CIP68_METADATA_FORMAT[options.standard];
   const datum = CardanoWasm.PlutusData.from_hex(datumHex);
 
   const constrPlutusData = datum.as_constr_plutus_data();
@@ -225,6 +342,12 @@ export const getMetadataFromOutputDatum = (
   const datumVersion = Number(
     constrPlutusData.data().get(1).as_integer()?.to_str(),
   );
+
+  // Optional extra data
+  const datumExtra =
+    constrPlutusData.data().len() > 2
+      ? constrPlutusData.data().get(2).to_hex()
+      : null;
 
   if (!datumMap) {
     return null;
@@ -244,18 +367,55 @@ export const getMetadataFromOutputDatum = (
     const decodedKey = cbor.decodeFirstSync(key.to_bytes());
 
     const value = datumMap.get(key);
+
+    if (!value) {
+      throw Error('Key not found in datum map. Should not happen.');
+    }
+
     const decodedValue = value ? cbor.decodeFirstSync(value.to_bytes()) : null;
 
     // key and value are converted to utf-8 if their bytes are valid utf-8 sequence, hex otherwise
     const convertedKey = Buffer.isBuffer(decodedKey)
       ? toUTF8OrHex(decodedKey)
       : decodedKey;
-    const convertedValue = Buffer.isBuffer(decodedValue)
-      ? toUTF8OrHex(decodedValue)
-      : decodedValue;
 
-    metadataMap[convertedKey] = convertedValue;
+    if (!(metadataFormat && convertedKey in metadataFormat)) {
+      // Custom field not covered by CIP58 standard
+      // Return unparsed CBOR data
+      metadataMap[convertedKey] = value?.to_hex();
+    } else {
+      if (
+        metadataFormat[convertedKey].type === 'array' &&
+        Array.isArray(decodedValue)
+      ) {
+        // array
+        // 'files' field contains array of maps
+        const filesValue = convertDatumValue(
+          decodedValue,
+          metadataFormat[convertedKey],
+        );
+        metadataMap[convertedKey] = filesValue ?? value.to_hex();
+      } else if (
+        metadataFormat[convertedKey].type === 'number' &&
+        typeof decodedValue === 'number'
+      ) {
+        // number
+        metadataMap[convertedKey] = decodedValue;
+      } else if (
+        metadataFormat[convertedKey].type === 'bytestring' &&
+        Buffer.isBuffer(decodedValue)
+      ) {
+        // bytestring buffer
+        // convert to utf-8 or return bytes as hex
+        const convertedValue = toUTF8OrHex(decodedValue);
+        metadataMap[convertedKey] = convertedValue;
+      } else {
+        // other
+        // leave it as cbor
+        metadataMap[convertedKey] = value.to_hex();
+      }
+    }
   }
 
-  return { metadata: metadataMap, version: datumVersion };
+  return { metadata: metadataMap, version: datumVersion, extra: datumExtra };
 };

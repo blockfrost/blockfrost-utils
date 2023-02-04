@@ -50,7 +50,7 @@ describe('cip68 utils', () => {
   fixtures.getMetadataFromOutputDatum.map(fixture => {
     test(`getMetadataFromOutputDatum: ${fixture.description}`, async () => {
       expect(
-        cip68Utils.getMetadataFromOutputDatum(fixture.payload),
+        cip68Utils.getMetadataFromOutputDatum(fixture.payload, fixture.options),
       ).toStrictEqual(fixture.result);
     });
   });
