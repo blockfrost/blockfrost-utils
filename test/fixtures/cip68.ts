@@ -106,7 +106,7 @@ export const getMetadataFromOutputDatum = [
         name: '4a426c6f636b66726f7374',
       },
       version: 1,
-      extra: null,
+      extra: undefined,
     },
   },
   {
@@ -130,7 +130,7 @@ export const getMetadataFromOutputDatum = [
         contractData:
           'd879860181581c160c199daaefcfab1489a33aa60f163cf2500c57711847fad9670864d87a80581c1ca3e06a46d694c65601bf8a6a64617b6fc8d783f6710db322681007d87a80d87a80',
       },
-      extra: null,
+      extra: undefined,
     },
   },
   {
@@ -145,7 +145,7 @@ export const getMetadataFromOutputDatum = [
         name: 'Blockfrost',
       },
       version: 1,
-      extra: null,
+      extra: undefined,
     },
   },
   {
@@ -160,7 +160,7 @@ export const getMetadataFromOutputDatum = [
         name: 'Blockfrost',
       },
       version: 1,
-      extra: null,
+      extra: undefined,
     },
   },
   {
@@ -176,7 +176,7 @@ export const getMetadataFromOutputDatum = [
         name: 'Matrix Berry #99',
       },
       version: 1,
-      extra: null,
+      extra: undefined,
     },
   },
   {
@@ -192,7 +192,7 @@ export const getMetadataFromOutputDatum = [
         name: 'jano je najlepsi',
       },
       version: 1,
-      extra: null,
+      extra: undefined,
     },
   },
   {
@@ -208,7 +208,7 @@ export const getMetadataFromOutputDatum = [
         name: '4d61747269782042657272792023c328',
       },
       version: 1,
-      extra: null,
+      extra: undefined,
     },
   },
 ];

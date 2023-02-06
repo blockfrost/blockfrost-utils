@@ -11,7 +11,7 @@ const ASSET_NAME_LABELS = {
 export interface ReferenceMetadataDatum {
   metadata: Record<string, unknown>;
   version: number;
-  extra: string | null;
+  extra: string | undefined;
 }
 
 type FIELD_FORMAT = {
@@ -347,7 +347,7 @@ export const getMetadataFromOutputDatum = (
   const datumExtra =
     constrPlutusData.data().len() > 2
       ? constrPlutusData.data().get(2).to_hex()
-      : null;
+      : undefined;
 
   if (!datumMap) {
     return null;
