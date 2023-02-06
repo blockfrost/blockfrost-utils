@@ -14,15 +14,16 @@ export interface ReferenceMetadataDatum {
   extra: string | undefined;
 }
 
-type FIELD_FORMAT = {
-  // TODO: split arrray type with items to separate type
+type PropertyScheme = {
   type: 'bytestring' | 'number' | 'array';
   optional?: boolean;
-  items?: CIP68_METADATA_FORMAT_ITEM;
+  items?: Record<string, PropertyScheme>;
 };
 
-type CIP68_METADATA_FORMAT_ITEM = Record<string, FIELD_FORMAT>;
-const CIP68_METADATA_FORMAT: Record<string, CIP68_METADATA_FORMAT_ITEM> = {
+type PropertyName = string;
+type MetadataScheme = Record<PropertyName, PropertyScheme>;
+
+const METADATA_SCHEME_MAP: Record<'ft' | 'nft', MetadataScheme> = {
   ft: {
     name: {
       type: 'bytestring',
@@ -277,32 +278,32 @@ export const getReferenceNFT = (
 };
 
 const convertDatumValue = (
-  value: unknown,
-  schema: FIELD_FORMAT | CIP68_METADATA_FORMAT_ITEM | null,
+  decodedValue: unknown,
+  schema: PropertyScheme | Record<string, PropertyScheme> | null,
 ): unknown => {
   if (!schema) {
     return null;
   }
 
-  if (schema.type === 'number' && typeof value === 'number') {
-    return value;
-  } else if (schema.type === 'bytestring' && Buffer.isBuffer(value)) {
-    return toUTF8OrHex(value);
-  } else if (Array.isArray(value)) {
+  if (schema.type === 'number' && typeof decodedValue === 'number') {
+    return decodedValue;
+  } else if (schema.type === 'bytestring' && Buffer.isBuffer(decodedValue)) {
+    return toUTF8OrHex(decodedValue);
+  } else if (Array.isArray(decodedValue)) {
     const convertedArray = [];
-    for (const [index, arrayItem] of value.entries()) {
-      const arrayItemSchema = 'items' in schema ? schema.items ?? null : null;
+    for (const arrayItem of decodedValue) {
+      const arrayItemSchema = schema.items ?? null;
       const v = convertDatumValue(arrayItem, arrayItemSchema);
       if (v === null) {
-        // Invalid data
+        // One of the item has unsupported format which means we keep CBOR value instead
         return null;
       }
-      convertedArray[index] = v;
+      convertedArray.push(v);
     }
     return convertedArray;
-  } else if (value instanceof Map) {
+  } else if (decodedValue instanceof Map) {
     const metadataMap: Record<string, unknown> = {};
-    for (const [key, mapValue] of value.entries()) {
+    for (const [key, mapValue] of decodedValue.entries()) {
       // key and value are converted to utf-8 if their bytes are valid utf-8 sequence, hex otherwise
       const convertedKey = Buffer.isBuffer(key) ? toUTF8OrHex(key) : key;
       const valueSchema =
@@ -310,14 +311,15 @@ const convertDatumValue = (
         schema && convertedKey in schema ? schema[convertedKey] : null;
       const convertedValue = convertDatumValue(mapValue, valueSchema);
       if (convertedValue === null) {
+        // Unsupported format
         return null;
       }
       metadataMap[convertedKey] = convertedValue;
     }
     return metadataMap;
   } else {
-    // no conversion
-    return value;
+    // Unsupported format
+    return null;
   }
 };
 
@@ -327,7 +329,7 @@ export const getMetadataFromOutputDatum = (
     standard: 'ft' | 'nft';
   },
 ): ReferenceMetadataDatum | null => {
-  const metadataFormat = CIP68_METADATA_FORMAT[options.standard];
+  const metadataFormat = METADATA_SCHEME_MAP[options.standard];
   const datum = CardanoWasm.PlutusData.from_hex(datumHex);
 
   const constrPlutusData = datum.as_constr_plutus_data();
@@ -380,7 +382,7 @@ export const getMetadataFromOutputDatum = (
       : decodedKey;
 
     if (!(metadataFormat && convertedKey in metadataFormat)) {
-      // Custom field not covered by CIP58 standard
+      // Custom field not covered by CIP68 standard
       // Return unparsed CBOR data
       metadataMap[convertedKey] = value?.to_hex();
     } else {
@@ -394,6 +396,8 @@ export const getMetadataFromOutputDatum = (
           decodedValue,
           metadataFormat[convertedKey],
         );
+        // If convertDatumValue returns null then the decodedValue has unsupported format,
+        // return CBOR hex instead
         metadataMap[convertedKey] = filesValue ?? value.to_hex();
       } else if (
         metadataFormat[convertedKey].type === 'number' &&
@@ -407,8 +411,7 @@ export const getMetadataFromOutputDatum = (
       ) {
         // bytestring buffer
         // convert to utf-8 or return bytes as hex
-        const convertedValue = toUTF8OrHex(decodedValue);
-        metadataMap[convertedKey] = convertedValue;
+        metadataMap[convertedKey] = toUTF8OrHex(decodedValue);
       } else {
         // other
         // leave it as cbor
