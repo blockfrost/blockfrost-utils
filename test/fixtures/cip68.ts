@@ -94,9 +94,50 @@ export const getReferenceNFT = [
 
 export const getMetadataFromOutputDatum = [
   {
+    description: 'invalid standard, every value returned as cbor',
+    payload:
+      'd8799fa3446e616d654a426c6f636b66726f73744b6465736372697074696f6e5821426c6f636b66726f73742074657374696e672066756e6769626c6520746f6b656e48646563696d616c730201ff',
+    options: { standard: 'invalid' } as const,
+    result: {
+      metadata: {
+        decimals: '02',
+        description:
+          '5821426c6f636b66726f73742074657374696e672066756e6769626c6520746f6b656e',
+        name: '4a426c6f636b66726f7374',
+      },
+      version: 1,
+      extra: undefined,
+    },
+  },
+  {
+    description: 'NFT with files',
+    payload:
+      'd87982a5446e616d65464e46542023314566696c657381a3437372635835697066733a2f2f516d503774507877396b636e785045564e53374e524a7579523756567a3963345a6168787a33674e384c4574464d446e616d65464e4654202331496d656469615479706549696d6167652f706e6745696d6167655835697066733a2f2f516d503774507877396b636e785045564e53374e524a7579523756567a3963345a6168787a33674e384c4574464d496d656469615479706549696d6167652f706e674c636f6e747261637444617461d879860181581c160c199daaefcfab1489a33aa60f163cf2500c57711847fad9670864d87a80581c1ca3e06a46d694c65601bf8a6a64617b6fc8d783f6710db322681007d87a80d87a8001',
+    options: { standard: 'nft' } as const,
+    result: {
+      version: 1,
+      metadata: {
+        files: [
+          {
+            src: 'ipfs://QmP7tPxw9kcnxPEVNS7NRJuyR7VVz9c4Zahxz3gN8LEtFM',
+            name: 'NFT #1',
+            mediaType: 'image/png',
+          },
+        ],
+        image: 'ipfs://QmP7tPxw9kcnxPEVNS7NRJuyR7VVz9c4Zahxz3gN8LEtFM',
+        mediaType: 'image/png',
+        name: 'NFT #1',
+        contractData:
+          'd879860181581c160c199daaefcfab1489a33aa60f163cf2500c57711847fad9670864d87a80581c1ca3e06a46d694c65601bf8a6a64617b6fc8d783f6710db322681007d87a80d87a80',
+      },
+      extra: undefined,
+    },
+  },
+  {
     description: 'Blockfrost FT',
     payload:
       'd8799fa3446e616d654a426c6f636b66726f73744b6465736372697074696f6e5821426c6f636b66726f73742074657374696e672066756e6769626c6520746f6b656e48646563696d616c730201ff',
+    options: { standard: 'ft' } as const,
     result: {
       metadata: {
         decimals: 2,
@@ -104,48 +145,70 @@ export const getMetadataFromOutputDatum = [
         name: 'Blockfrost',
       },
       version: 1,
+      extra: undefined,
+    },
+  },
+  {
+    description: 'Blockfrost FT parsed as NFT',
+    payload:
+      'd8799fa3446e616d654a426c6f636b66726f73744b6465736372697074696f6e5821426c6f636b66726f73742074657374696e672066756e6769626c6520746f6b656e48646563696d616c730201ff',
+    options: { standard: 'nft' } as const,
+    result: {
+      metadata: {
+        decimals: '02', // decimals are not part of NFT standard so they are left as CBOR
+        description: 'Blockfrost testing fungible token',
+        name: 'Blockfrost',
+      },
+      version: 1,
+      extra: undefined,
     },
   },
   {
     description: 'Matrix Berry reference NFT datum',
     payload:
       'd8799fa4446e616d65504d61747269782042657272792023393945696d6167655835697066733a2f2f516d594e795162774c4359766a503734334a6e756431626f7a6346504453584679594e59556d66516a597335415142696418634b6465736372697074696f6e4001ff',
+    options: { standard: 'nft' } as const,
     result: {
       metadata: {
         description: '',
-        id: 99,
+        id: '1863',
         image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
         name: 'Matrix Berry #99',
       },
       version: 1,
+      extra: undefined,
     },
   },
   {
     description: 'jano je najlepsi reference NFT datum',
     payload:
       'd8799fa4446e616d65506A616E6F206A65206E616A6C6570736945696d6167655835697066733a2f2f516d594e795162774c4359766a503734334a6e756431626f7a6346504453584679594e59556d66516a597335415142696418634b6465736372697074696f6e4001ff',
+    options: { standard: 'nft' } as const,
     result: {
       metadata: {
         description: '',
-        id: 99,
+        id: '1863', // 99 encoded as cbor
         image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
         name: 'jano je najlepsi',
       },
       version: 1,
+      extra: undefined,
     },
   },
   {
     description: 'NFT datum with non-utf8 name (cr28 at the end of the name)',
     payload:
       'd8799fa4446e616d65504d61747269782042657272792023c32845696d6167655835697066733a2f2f516d594e795162774c4359766a503734334a6e756431626f7a6346504453584679594e59556d66516a597335415142696418634b6465736372697074696f6e4001ff',
+    options: { standard: 'nft' } as const,
     result: {
       metadata: {
         description: '',
-        id: 99,
+        id: '1863',
         image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
         name: '4d61747269782042657272792023c328',
       },
       version: 1,
+      extra: undefined,
     },
   },
 ];
