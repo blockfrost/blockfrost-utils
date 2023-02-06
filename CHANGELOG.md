@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - support for `addr_vk` addresses in `paymentCredFromBech32Address`
 - `getPaymentPartBech32` for generating partial bech32 address consisting of bech32 prefix, addr header and payment part
 
-### Updated
+### Changed
 
 - fastify dependencies
 
