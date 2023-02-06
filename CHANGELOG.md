@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - js implementation of utf-8-validate, no longer requiring node-gyp
 
-## [2.1.0 - 2022-12-28]
+## [2.1.0] - 2022-12-28
 
 ### Added
 
@@ -44,8 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- BREAKING CHANGE: `getSchemaForEndpoint` is now part of the `@blockrost/openapi` package
-- `@blockrost/openapi` dependency
+- BREAKING CHANGE: `getSchemaForEndpoint` is now part of the `@blockfrost/openapi` package
+- `@blockfrost/openapi` dependency
 
 ## [1.1.0] - 2022-11-02
 
