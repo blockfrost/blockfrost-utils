@@ -35,7 +35,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.2.1"],\
             ["@types/node", "npm:16.11.58"],\
-            ["@types/utf-8-validate", "npm:5.0.0"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
             ["@typescript-eslint/parser", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.27.0"],\
             ["bech32", "npm:2.0.0"],\
@@ -73,7 +72,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@blockfrost/blockfrost-utils", "workspace:."],\
             ["@emurgo/cardano-serialization-lib-nodejs", "npm:11.2.1"],\
             ["@types/node", "npm:16.11.58"],\
-            ["@types/utf-8-validate", "npm:5.0.0"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.32.0"],\
             ["@typescript-eslint/parser", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:5.27.0"],\
             ["bech32", "npm:2.0.0"],\
@@ -358,16 +356,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:18.6.3", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.6.3-29cdfaa5cd-38495b8fd2.zip/node_modules/@types/node/",\
           "packageDependencies": [\
-            ["@types/node", "npm:18.6.3"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@types/utf-8-validate", [\
-        ["npm:5.0.0", {\
-          "packageLocation": "./.yarn/cache/@types-utf-8-validate-npm-5.0.0-10de4ec0f4-2794d66c7b.zip/node_modules/@types/utf-8-validate/",\
-          "packageDependencies": [\
-            ["@types/utf-8-validate", "npm:5.0.0"],\
             ["@types/node", "npm:18.6.3"]\
           ],\
           "linkType": "HARD"\
