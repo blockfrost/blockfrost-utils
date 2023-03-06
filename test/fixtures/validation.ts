@@ -22,7 +22,7 @@ export const detectAndValidateAddressType = [
   {
     description: 'Valid paymentCred address (addr_vk)',
     input: 'addr_vk1w0l2sr2zgfm26ztc6nl9xy8ghsk5sh6ldwemlpmp9xylzy4dtf7st80zhd',
-    result: 'shelley',
+    result: undefined,
     network: 'mainnet', // doesn't matter for payment cred
   },
   {

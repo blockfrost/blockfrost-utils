@@ -181,7 +181,6 @@ export const detectAndValidateAddressType = (
         return 'shelley';
       } else if (
         bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH ||
-        bech32Info.prefix === Prefixes.PAYMENT_KEY ||
         bech32Info.prefix === Prefixes.SCRIPT
       ) {
         // valid shelley - payment_cred
