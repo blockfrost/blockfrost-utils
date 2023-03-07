@@ -22,7 +22,7 @@ export const detectAndValidateAddressType = [
   {
     description: 'Valid paymentCred address (addr_vk)',
     input: 'addr_vk1w0l2sr2zgfm26ztc6nl9xy8ghsk5sh6ldwemlpmp9xylzy4dtf7st80zhd',
-    result: 'shelley',
+    result: undefined,
     network: 'mainnet', // doesn't matter for payment cred
   },
   {
@@ -71,13 +71,46 @@ export const paymentCredFromBech32Address = [
   {
     description: 'Valid paymentCred address',
     input: 'addr_vkh1r3ej0ymkhacss5rge4qkw53lfp547wr92e9yjlwf9ynrsk5q93m',
-    result: '\\x1c73279376bf71085068cd4167523f48695f3865564a497dc9292638',
+    result: {
+      paymentCred:
+        '\\x1c73279376bf71085068cd4167523f48695f3865564a497dc9292638',
+      prefix: 'addr_vkh',
+    },
   },
   {
     // https://cips.cardano.org/cips/cip19/#testvectors
     description: 'Valid paymentCred address (addr_vk)',
     input: 'addr_vk1w0l2sr2zgfm26ztc6nl9xy8ghsk5sh6ldwemlpmp9xylzy4dtf7st80zhd',
-    result: '\\x9493315cd92eb5d8c4304e67b7e16ae36d61d34502694657811a2c8e',
+    result: {
+      paymentCred:
+        '\\x9493315cd92eb5d8c4304e67b7e16ae36d61d34502694657811a2c8e',
+      prefix: 'addr_vk',
+    },
+  },
+  {
+    // https://cips.cardano.org/cips/cip19/#testvectors
+    description: 'Valid bech32 address (with script hash payment cred, type 7)',
+    input: 'addr1w8phkx6acpnf78fuvxn0mkew3l0fd058hzquvz7w36x4gtcyjy7wx',
+    result: undefined,
+  },
+  {
+    // https://cips.cardano.org/cips/cip19/#testvectors
+    description: 'Valid paymentCred address (script addr)',
+    input: 'script1cda3khwqv60360rp5m7akt50m6ttapacs8rqhn5w342z7r35m37',
+    result: {
+      paymentCred:
+        '\\xc37b1b5dc0669f1d3c61a6fddb2e8fde96be87b881c60bce8e8d542f',
+      prefix: 'script',
+    },
+  },
+  {
+    description: 'Valid paymentCred address (script addr)',
+    input: 'script1tx3c5y302fupjrm0xs3skumkaw97h2le97rjgrfzw8spydzr5ej',
+    result: {
+      paymentCred:
+        '\\x59a38a122f5278190f6f34230b7376eb8bebabf92f87240d2271e012',
+      prefix: 'script',
+    },
   },
   {
     description: 'Valid Bech32, but not paymentCred address',
@@ -118,9 +151,32 @@ export const validateAndConvertPool = [
 
 export const paymentCredToBech32Address = [
   {
-    description: 'Valid paymentCred address',
+    description: 'Valid payment key hash address',
     input: '1c73279376bf71085068cd4167523f48695f3865564a497dc9292638',
+    prefix: 'addr_vkh',
     result: 'addr_vkh1r3ej0ymkhacss5rge4qkw53lfp547wr92e9yjlwf9ynrsk5q93m',
+  },
+  {
+    description: 'Valid script address',
+    input: 'c37b1b5dc0669f1d3c61a6fddb2e8fde96be87b881c60bce8e8d542f',
+    prefix: 'script',
+    result: 'script1cda3khwqv60360rp5m7akt50m6ttapacs8rqhn5w342z7r35m37',
+  },
+  {
+    // TODO: With addr_vk prefix we assume payment key was already converted
+    // to the key hash, so we cannot restore the original key.
+    // Due to the above the function returns payment key hash (input) with addr_vkh prefix instead of the original addr_vk.
+    // Alternatively, we could just drop support for addr_vk.
+    description: 'Valid payment key from addr_vk gets converted to addr_vkh',
+    input: 'c37b1b5dc0669f1d3c61a6fddb2e8fde96be87b881c60bce8e8d542f',
+    prefix: 'addr_vk',
+    result: 'addr_vkh1cda3khwqv60360rp5m7akt50m6ttapacs8rqhn5w342z7lydx4l',
+  },
+  {
+    description: 'Valid script address',
+    input: '59a38a122f5278190f6f34230b7376eb8bebabf92f87240d2271e012',
+    prefix: 'script',
+    result: 'script1tx3c5y302fupjrm0xs3skumkaw97h2le97rjgrfzw8spydzr5ej',
   },
 ];
 
@@ -451,38 +507,38 @@ export const getAddressTypeAndPaymentCred = [
     address:
       'DdzFFzCqrhsixScxYMqkcp1Q8p1m7Zg7VU3WiMNfVivwqdMNu8aSYm2wVGGw5hZjp1CHpLfuwoZMRtxf2QhChhbZNeT3ioChYzcBRhcs',
     network: 'mainnet',
-    result: { addressType: 'byron', paymentCred: undefined },
+    result: { addressType: 'byron' },
   },
   {
     description: 'Valid byron address, mainnet',
     address: 'Ae2tdPwUPEYwNguM7TB3dMnZMfZxn1pjGHyGdjaF4mFqZF9L3bj6cdhiH8t',
     network: 'mainnet',
-    result: { addressType: 'byron', paymentCred: undefined },
+    result: { addressType: 'byron' },
   },
   {
     description: 'Valid shelley address, mainnet',
     address:
       'addr1qyg5yk36ee0rhl5hw5kxcfng5ygrsv55tuchs0nxjmh9uqmpmpaxya7n6kzmyy6f72st0akwx8zg5n6emrxa5mhywg9q3v23dv',
     network: 'mainnet',
-    result: { addressType: 'shelley', paymentCred: undefined },
+    result: { addressType: 'shelley' },
   },
   {
     description: 'Valid shelley address, testnet',
     address: 'addr_test1wruv9whqljf3jhv3tk5q8v0e6aa5dqap8tz3yw64q3d4vtsfzmhu7',
     network: 'testnet',
-    result: { addressType: 'shelley', paymentCred: undefined },
+    result: { addressType: 'shelley' },
   },
   {
     description: 'Valid shelley address, preview',
     address: 'addr_test1vpfwv0ezc5g8a4mkku8hhy3y3vp92t7s3ul8g778g5yegsgalc6gc',
     network: 'preview',
-    result: { addressType: 'shelley', paymentCred: undefined },
+    result: { addressType: 'shelley' },
   },
   {
     description: 'Valid shelley address, preprod',
     address: 'addr_test1vpfwv0ezc5g8a4mkku8hhy3y3vp92t7s3ul8g778g5yegsgalc6gc',
     network: 'preprod',
-    result: { addressType: 'shelley', paymentCred: undefined },
+    result: { addressType: 'shelley' },
   },
   {
     description: 'Valid paymentCred address, mainnet',
@@ -492,26 +548,27 @@ export const getAddressTypeAndPaymentCred = [
       addressType: 'shelley',
       paymentCred:
         '\\xff2231362174834aadc68a8992a2a805871a9bd8206bc1acffe014a9',
+      paymentCredPrefix: 'addr_vkh',
     },
   },
   {
     description: 'Invalid shelley address, valid network',
     address: 'addr1stonks',
     network: 'mainnet',
-    result: { addressType: undefined, paymentCred: undefined },
+    result: { addressType: undefined },
   },
   {
     description: 'Valid shelley address, invalid network',
     address:
       'addr1qyg5yk36ee0rhl5hw5kxcfng5ygrsv55tuchs0nxjmh9uqmpmpaxya7n6kzmyy6f72st0akwx8zg5n6emrxa5mhywg9q3v23dv',
     network: 'testnet',
-    result: { addressType: undefined, paymentCred: undefined },
+    result: { addressType: undefined },
   },
   {
     description: 'Inalid paymentCred address, valid network',
     address: 'addr_vkh1luluwu',
     network: 'mainnet',
-    result: { addressType: undefined, paymentCred: undefined },
+    result: { addressType: undefined },
   },
 ] as const;
 

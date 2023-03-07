@@ -14,7 +14,10 @@ const Prefixes = Object.freeze({
   PAYMENT_KEY_HASH: 'addr_vkh',
   PAYMENT_KEY: 'addr_vk',
   POOL: 'pool',
+  SCRIPT: 'script',
 });
+
+type SUPPORTED_PAYMENT_CRED_PREFIX = 'addr_vkh' | 'addr_vk' | 'script';
 
 const MAX_UNSIGNED_INT = 2_147_483_648;
 const MAX_SIGNED_INT = 2_147_483_647;
@@ -90,7 +93,12 @@ export const validateAndConvertPool = (input: string): string | undefined => {
 
 export const paymentCredFromBech32Address = (
   input: string,
-): string | undefined => {
+):
+  | {
+      paymentCred: string;
+      prefix: SUPPORTED_PAYMENT_CRED_PREFIX;
+    }
+  | undefined => {
   // compute paymentCred
   try {
     const bech32Info = bech32.decode(input, 1000);
@@ -99,15 +107,20 @@ export const paymentCredFromBech32Address = (
       const payload = bech32.fromWords(bech32Info.words);
       const paymentCred = `\\x${Buffer.from(payload).toString('hex')}`;
 
-      return paymentCred;
+      return { paymentCred, prefix: bech32Info.prefix };
     } else if (bech32Info.prefix === Prefixes.PAYMENT_KEY) {
       // valid payment_cred
       const payload = bech32.fromWords(bech32Info.words);
       const pubKey = PublicKey.from_hex(Buffer.from(payload).toString('hex'));
-
       const paymentKeyHash = `\\x${pubKey.hash().to_hex()}`;
       pubKey.free();
-      return paymentKeyHash;
+      return { paymentCred: paymentKeyHash, prefix: bech32Info.prefix };
+    } else if (bech32Info.prefix === Prefixes.SCRIPT) {
+      const payload = bech32.fromWords(bech32Info.words);
+      const payloadHex = Buffer.from(payload).toString('hex');
+      const paymentCred = `\\x${payloadHex}`;
+
+      return { paymentCred, prefix: bech32Info.prefix };
     } else {
       return undefined;
     }
@@ -120,15 +133,29 @@ export const paymentCredFromBech32Address = (
 
 export const paymentCredToBech32Address = (
   input: string,
+  prefix: SUPPORTED_PAYMENT_CRED_PREFIX,
 ): string | undefined => {
-  // compute paymentCred
+  // Encodes payment credential into its original bech32 prefixed form
   try {
     if (!validateHex(input)) return undefined;
 
     const words = bech32.toWords(Buffer.from(input, 'hex'));
-    // if it's in hex, we'll convert it to Bech32
 
-    return bech32.encode(Prefixes.PAYMENT_KEY_HASH, words);
+    switch (prefix) {
+      case Prefixes.PAYMENT_KEY_HASH:
+      case Prefixes.SCRIPT:
+        // add prefix to payment cred and encode it as bech32
+        return bech32.encode(prefix, words);
+      case Prefixes.PAYMENT_KEY:
+        // Payment key was already converted to key hash, so we cannot restore the original key.
+        // We could supply orig via a parameter and then compare its hash to the input, but that's too much trouble.
+        // Due to the above return payment key hash (input) with addr_vkh prefix instead of the original addr_vk
+        return bech32.encode(Prefixes.PAYMENT_KEY_HASH, words);
+      default:
+        throw Error(
+          `Prefix ${prefix} is not supported by paymentCredToBech32Address`,
+        );
+    }
   } catch {
     return undefined;
   }
@@ -154,7 +181,7 @@ export const detectAndValidateAddressType = (
         return 'shelley';
       } else if (
         bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH ||
-        bech32Info.prefix === Prefixes.PAYMENT_KEY
+        bech32Info.prefix === Prefixes.SCRIPT
       ) {
         // valid shelley - payment_cred
         return 'shelley';
@@ -182,7 +209,17 @@ export const getAddressTypeAndPaymentCred = (
       ? paymentCredFromBech32Address(address)
       : undefined;
 
-  return { addressType, paymentCred };
+  if (paymentCred) {
+    return {
+      addressType,
+      paymentCred: paymentCred.paymentCred,
+      paymentCredPrefix: paymentCred.prefix,
+    };
+  } else {
+    return {
+      addressType,
+    };
+  }
 };
 
 // Decode bech32 script address, drop its first byte (header)

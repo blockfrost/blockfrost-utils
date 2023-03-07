@@ -17,7 +17,7 @@ describe('validation utils', () => {
       const result = validationUtils.paymentCredFromBech32Address(
         fixture.input,
       );
-      expect(result).toBe(fixture.result);
+      expect(result).toStrictEqual(fixture.result);
     });
   });
   fixtures.validateAndConvertPool.map(fixture => {
@@ -32,7 +32,11 @@ describe('validation utils', () => {
   });
   fixtures.paymentCredToBech32Address.map(fixture => {
     test(`validateAndConvertPool ${fixture.description}`, async () => {
-      const result = validationUtils.paymentCredToBech32Address(fixture.input);
+      const result = validationUtils.paymentCredToBech32Address(
+        fixture.input,
+        // @ts-expect-error string doesn't match string literal
+        fixture.prefix,
+      );
       expect(result).toMatchObject(fixture.result);
     });
   });

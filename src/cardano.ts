@@ -17,13 +17,14 @@ export const getPaymentPartBech32 = (
     network: 'mainnet' | 'testnets';
   },
 ) => {
-  // Constructs invalid bech32 address consisting only from an address header and a payment part.
+  // Constructs invalid bech32 address consisting only of an address header and a payment part.
   // Useful for matching payment credentials against bech32 address
   const NETWORK_TAG = options.network === 'mainnet' ? 1 : 0;
   const paymentCredHexWithBytesPrefix =
     paymentCredFromBech32Address(paymentCred);
 
-  const paymentCredHex = paymentCredHexWithBytesPrefix?.slice(2);
+  // slice off \\x prefix
+  const paymentCredHex = paymentCredHexWithBytesPrefix?.paymentCred.slice(2);
 
   if (!paymentCredHex) return null;
 

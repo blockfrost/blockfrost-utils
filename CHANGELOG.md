@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Support for ScriptHash payment credential using `script` addresses.
+
 ### Changed
 
 - do not leak framework in errors
@@ -16,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - CIP68 `getMetadataFromOutputDatum` parsing of `files` and custom fields
+
+### Removed
+
+- `addr_vk` is no longer valid address type as returned by `detectAndValidateAddressType`
 
 ## 2.3.0 - 2023-02-02
 
