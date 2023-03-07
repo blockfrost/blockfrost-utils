@@ -168,12 +168,13 @@ export const handleFastifyError = (
   if (process.env.NODE_ENV !== 'test') {
     console.error(`Error in ${request.url}.`, error);
   }
+
   return reply
     .code(error.statusCode)
     .header('Content-Type', 'application/json; charset=utf-8')
     .send({
       // error.name is always "FastifyError", use error.code to provide more info to a client (eg. FST_ERR_CTP_INVALID_MEDIA_TYPE)
-      error: error.name,
+      error: error.name === 'FastifyError' ? 'error' : error.name,
       message: error.message,
       status_code: error.statusCode,
     });
