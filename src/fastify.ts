@@ -1,4 +1,5 @@
 import type { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
+import stream from 'stream';
 
 type FastifyErrorWithStatusCode = FastifyError & {
   statusCode: NonNullable<FastifyError['statusCode']>;
@@ -252,4 +253,30 @@ export const handleInvalidXpubIndex = (reply: FastifyReply) => {
 
 export const handleInvalidXpubRole = (reply: FastifyReply) => {
   return handle400Custom(reply, 'Missing, out of range or malformed role.');
+};
+
+export const convertStreamToString = async (payloadStream: unknown) => {
+  const payload = await new Promise<string>((resolve, reject) => {
+    if (payloadStream instanceof stream.Readable) {
+      // receive error response from the payload stream
+      const chunks: Buffer[] = [];
+
+      payloadStream.on('data', chunk => {
+        chunks.push(chunk);
+      });
+      payloadStream.on('error', error => {
+        reject(error);
+      });
+      payloadStream.on('end', () => {
+        resolve(Buffer.concat(chunks).toString());
+      });
+    } else if (typeof payloadStream === 'string') {
+      // If payloadStream is just a string then return it
+      resolve(payloadStream);
+    } else {
+      reject(new Error(`Invalid payload type: ${typeof payload}`));
+    }
+  });
+
+  return payload;
 };
