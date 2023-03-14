@@ -133,7 +133,7 @@ export const paymentCredFromBech32Address = (
 
 export const paymentCredToBech32Address = (
   input: string,
-  prefix: Extract<PaymentCredPrefix, 'addr_vkh' | 'script'>,
+  prefix: PaymentCredPrefix,
 ): string | undefined => {
   // Encodes payment credential into its original bech32 prefixed form
   try {
