@@ -21,6 +21,7 @@ export const getPaymentPartBech32 = [
   },
   {
     // https://cips.cardano.org/cips/cip19/#testvectors
+    // converted to PKH: addr_vkh1jjfnzhxe966a33psfenm0ct2udkkr569qf55v4uprgkgu8zsvmg
     description: 'addr_vk addr type 0',
     paymentCred:
       'addr_vk1w0l2sr2zgfm26ztc6nl9xy8ghsk5sh6ldwemlpmp9xylzy4dtf7st80zhd',
