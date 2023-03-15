@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Removed
+- `addr_vk` support in `paymentCredToBech32Address`
+
 ## 2.3.2 - 2023-03-07
 ### Added
 - Support for ScriptHash payment credential using `script` addresses.
