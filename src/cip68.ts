@@ -6,6 +6,7 @@ const ASSET_NAME_LABELS = {
   reference_nft: 100, // Reference NFT locked at a script containing the datum
   nft: 222, // NFT hold by the user's wallet making use of CIP-0025 inner structure
   ft: 333, // FT hold by the user's wallet making use of Cardano foundation off-chain registry inner structure
+  rft: 444, // RFT hold by the user's wallet making use of the union of CIP-0025 inner structure AND the Cardano foundation off-chain registry inner structure
 } as const;
 
 export interface ReferenceMetadataDatum {
@@ -22,8 +23,9 @@ type PropertyScheme = {
 
 type PropertyName = string;
 type MetadataScheme = Record<PropertyName, PropertyScheme>;
+type TokenStandard = 'ft' | 'nft' | 'rft';
 
-const METADATA_SCHEME_MAP: Record<'ft' | 'nft', MetadataScheme> = {
+const METADATA_SCHEME_MAP: Record<TokenStandard, MetadataScheme> = {
   ft: {
     name: {
       type: 'bytestring',
@@ -61,6 +63,42 @@ const METADATA_SCHEME_MAP: Record<'ft' | 'nft', MetadataScheme> = {
     },
     description: {
       type: 'bytestring',
+      optional: true,
+    },
+    files: {
+      type: 'array',
+      optional: true,
+      items: {
+        name: {
+          type: 'bytestring',
+          optional: true,
+        },
+        mediaType: {
+          type: 'bytestring',
+        },
+        src: {
+          type: 'bytestring',
+        },
+      },
+    },
+  },
+  rft: {
+    name: {
+      type: 'bytestring',
+    },
+    image: {
+      type: 'bytestring',
+    },
+    mediaType: {
+      type: 'bytestring',
+      optional: true,
+    },
+    description: {
+      type: 'bytestring',
+      optional: true,
+    },
+    decimals: {
+      type: 'number',
       optional: true,
     },
     files: {
@@ -233,6 +271,7 @@ export const toCip68Assets = (hex: string) => {
     const referenceLabel = toLabel(ASSET_NAME_LABELS.reference_nft);
     const nftLabel = toLabel(ASSET_NAME_LABELS.nft);
     const ftLabel = toLabel(ASSET_NAME_LABELS.ft);
+    const rftLabel = toLabel(ASSET_NAME_LABELS.rft);
 
     // Build reference asset hex (policy_id|reference_label|name)
     const assets = {
@@ -251,6 +290,11 @@ export const toCip68Assets = (hex: string) => {
         ftLabel,
         assetNameWithoutLabelPrefix,
       ),
+      rft: buildAssetHex(
+        assetParts.policyId,
+        rftLabel,
+        assetNameWithoutLabelPrefix,
+      ),
     };
 
     return assets;
@@ -261,17 +305,18 @@ export const toCip68Assets = (hex: string) => {
 
 export const getReferenceNFT = (
   assetHex: string,
-): { hex: string; standard: 'ft' | 'nft' } | null => {
+): { hex: string; standard: TokenStandard } | null => {
   const cip68Assets = toCip68Assets(assetHex);
 
   if (!cip68Assets) return null;
-  const isFT = cip68Assets.ft === assetHex;
-  const isNFT = cip68Assets.nft === assetHex;
 
-  if (isFT || isNFT) {
+  const availableStandards: TokenStandard[] = ['ft', 'nft', 'rft'];
+  const standard = availableStandards.find(s => cip68Assets[s] === assetHex);
+
+  if (standard) {
     return {
       hex: cip68Assets.reference_nft,
-      standard: isFT ? 'ft' : 'nft',
+      standard: standard,
     };
   }
   return null;
@@ -326,7 +371,7 @@ const convertDatumValue = (
 export const getMetadataFromOutputDatum = (
   datumHex: string,
   options: {
-    standard: 'ft' | 'nft';
+    standard: TokenStandard;
   },
 ): ReferenceMetadataDatum | null => {
   const metadataFormat = METADATA_SCHEME_MAP[options.standard];
