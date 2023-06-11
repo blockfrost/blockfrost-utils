@@ -163,16 +163,6 @@ export const paymentCredToBech32Address = [
     result: 'script1cda3khwqv60360rp5m7akt50m6ttapacs8rqhn5w342z7r35m37',
   },
   {
-    // TODO: With addr_vk prefix we assume payment key was already converted
-    // to the key hash, so we cannot restore the original key.
-    // Due to the above the function returns payment key hash (input) with addr_vkh prefix instead of the original addr_vk.
-    // Alternatively, we could just drop support for addr_vk.
-    description: 'Valid payment key from addr_vk gets converted to addr_vkh',
-    input: 'c37b1b5dc0669f1d3c61a6fddb2e8fde96be87b881c60bce8e8d542f',
-    prefix: 'addr_vk',
-    result: 'addr_vkh1cda3khwqv60360rp5m7akt50m6ttapacs8rqhn5w342z7lydx4l',
-  },
-  {
     description: 'Valid script address',
     input: '59a38a122f5278190f6f34230b7376eb8bebabf92f87240d2271e012',
     prefix: 'script',

@@ -17,7 +17,7 @@ const Prefixes = Object.freeze({
   SCRIPT: 'script',
 });
 
-type SUPPORTED_PAYMENT_CRED_PREFIX = 'addr_vkh' | 'addr_vk' | 'script';
+type PaymentCredPrefix = 'addr_vkh' | 'addr_vk' | 'script';
 
 const MAX_UNSIGNED_INT = 2_147_483_648;
 const MAX_SIGNED_INT = 2_147_483_647;
@@ -96,7 +96,7 @@ export const paymentCredFromBech32Address = (
 ):
   | {
       paymentCred: string;
-      prefix: SUPPORTED_PAYMENT_CRED_PREFIX;
+      prefix: PaymentCredPrefix;
     }
   | undefined => {
   // compute paymentCred
@@ -133,7 +133,7 @@ export const paymentCredFromBech32Address = (
 
 export const paymentCredToBech32Address = (
   input: string,
-  prefix: SUPPORTED_PAYMENT_CRED_PREFIX,
+  prefix: PaymentCredPrefix,
 ): string | undefined => {
   // Encodes payment credential into its original bech32 prefixed form
   try {
@@ -146,11 +146,6 @@ export const paymentCredToBech32Address = (
       case Prefixes.SCRIPT:
         // add prefix to payment cred and encode it as bech32
         return bech32.encode(prefix, words);
-      case Prefixes.PAYMENT_KEY:
-        // Payment key was already converted to key hash, so we cannot restore the original key.
-        // We could supply orig via a parameter and then compare its hash to the input, but that's too much trouble.
-        // Due to the above return payment key hash (input) with addr_vkh prefix instead of the original addr_vk
-        return bech32.encode(Prefixes.PAYMENT_KEY_HASH, words);
       default:
         throw Error(
           `Prefix ${prefix} is not supported by paymentCredToBech32Address`,
