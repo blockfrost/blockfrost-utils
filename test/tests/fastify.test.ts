@@ -5,8 +5,14 @@ import {
   notFoundHandler,
   handle400,
   handle400Custom,
+  handle402,
   handleInvalidAddress,
   handleFastifyError,
+  handle403,
+  handle403Custom,
+  handle415,
+  handle404,
+  handle500,
 } from './../../src/fastify';
 
 test('notFoundHandler should return 400 status code with correct message', () => {
@@ -95,6 +101,7 @@ test('handleFastifyError should return error status code with error message', ()
   error.statusCode = 404;
   error.name = 'FastifyError';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const request = { url: '/test' } as any;
   const reply = {
     code: sinon.stub().returnsThis(),
@@ -120,6 +127,7 @@ test('handleFastifyError should handle error not named FastifyError', () => {
   error.statusCode = 404;
   error.name = 'OtherError';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const request = { url: '/test' } as any;
   const reply = {
     code: sinon.stub().returnsThis(),
@@ -137,5 +145,131 @@ test('handleFastifyError should handle error not named FastifyError', () => {
     error: 'OtherError',
     message: 'Test error',
     status_code: 404,
+  });
+});
+
+test('handle402 should return 402 status code with Project Over Limit message', () => {
+  const reply = {
+    code: sinon.stub().returnsThis(),
+    header: sinon.stub().returnsThis(),
+    send: sinon.stub().returnsThis(),
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle402(reply as any);
+
+  expect(reply.code.args[0][0]).toBe(402);
+  expect(reply.header.args[0][0]).toBe('Content-Type');
+  expect(reply.header.args[0][1]).toBe('application/json; charset=utf-8');
+  expect(reply.send.args[0][0]).toStrictEqual({
+    error: 'Project Over Limit',
+    message: 'Usage is over limit.',
+    status_code: 402,
+  });
+});
+
+test('handle403 should return 403 status code with Forbidden message', () => {
+  const reply = {
+    code: sinon.stub().returnsThis(),
+    header: sinon.stub().returnsThis(),
+    send: sinon.stub().returnsThis(),
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle403(reply as any);
+
+  expect(reply.code.args[0][0]).toBe(403);
+  expect(reply.header.args[0][0]).toBe('Content-Type');
+  expect(reply.header.args[0][1]).toBe('application/json; charset=utf-8');
+  expect(reply.send.args[0][0]).toStrictEqual({
+    error: 'Forbidden',
+    message: 'Invalid project token.',
+    status_code: 403,
+  });
+});
+
+test('handle403Custom should return 403 status code with custom Forbidden message', () => {
+  const reply = {
+    code: sinon.stub().returnsThis(),
+    header: sinon.stub().returnsThis(),
+    send: sinon.stub().returnsThis(),
+  };
+  const customMessage = 'Custom forbidden message';
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle403Custom(reply as any, customMessage);
+
+  expect(reply.code.args[0][0]).toBe(403);
+  expect(reply.header.args[0][0]).toBe('Content-Type');
+  expect(reply.header.args[0][1]).toBe('application/json; charset=utf-8');
+  expect(reply.send.args[0][0]).toStrictEqual({
+    error: 'Forbidden',
+    message: customMessage,
+    status_code: 403,
+  });
+});
+
+test('handle404 should return 404 status code with Not Found error message', () => {
+  const reply = {
+    code: sinon.stub().returnsThis(),
+    header: sinon.stub().returnsThis(),
+    send: sinon.stub().returnsThis(),
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle404(reply as any);
+
+  expect(reply.code.args[0][0]).toBe(404);
+  expect(reply.header.args[0][0]).toBe('Content-Type');
+  expect(reply.header.args[0][1]).toBe('application/json; charset=utf-8');
+  expect(reply.send.args[0][0]).toStrictEqual({
+    error: 'Not Found',
+    message: 'The requested component has not been found.',
+    status_code: 404,
+  });
+});
+
+test('handle415 should return 415 status code with Unsupported Media Type error message', () => {
+  const reply = {
+    code: sinon.stub().returnsThis(),
+    header: sinon.stub().returnsThis(),
+    send: sinon.stub().returnsThis(),
+  };
+  const error = { message: 'Unsupported Media Type' };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle415(reply as any, error as any);
+
+  expect(reply.code.args[0][0]).toBe(415);
+  expect(reply.header.args[0][0]).toBe('Content-Type');
+  expect(reply.header.args[0][1]).toBe('application/json; charset=utf-8');
+  expect(reply.send.args[0][0]).toStrictEqual({
+    error: 'Unsupported Media Type',
+    message: error.message,
+    status_code: 415,
+  });
+});
+
+test('handle500 should return 500 status code with Internal Server Error message', () => {
+  const reply = {
+    code: sinon.stub().returnsThis(),
+    header: sinon.stub().returnsThis(),
+    send: sinon.stub().returnsThis(),
+  };
+  const request = { url: 'http://test-url.com' };
+  const error = {
+    message: 'An unexpected response was received from the backend.',
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle500(reply as any, error, request as any);
+
+  expect(reply.code.args[0][0]).toBe(500);
+  expect(reply.header.args[0][0]).toBe('Content-Type');
+  expect(reply.header.args[0][1]).toBe('application/json; charset=utf-8');
+  expect(reply.send.args[0][0]).toStrictEqual({
+    error: 'Internal Server Error',
+    message: error.message,
+    status_code: 500,
   });
 });
