@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import { FastifyRequest, FastifyReply, FastifyError } from 'fastify';
 import {
   notFoundHandler,
-  handle400,
   handle400Custom,
   handle402,
   handleInvalidAddress,
@@ -13,6 +12,7 @@ import {
   handle415,
   handle404,
   handle500,
+  handle400,
 } from './../../src/fastify';
 
 const mockReply = () => {
