@@ -1,7 +1,7 @@
 import { register, Gauge } from 'prom-client';
 import pm2, { ProcessDescription } from 'pm2';
 
-async function pm2Metrics() {
+export const pm2Metrics = async () => {
   const memoryGauge = new Gauge({
     name: 'worker_memory_bytes',
     help: 'Worker memory usage in bytes',
@@ -101,6 +101,4 @@ async function pm2Metrics() {
   } catch {
     throw new Error('Error fetching PM2 metrics');
   }
-}
-
-export default pm2Metrics;
+};
