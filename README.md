@@ -17,10 +17,3 @@ npm i @blockfrost/blockfrost-utils
 ```console
 yarn add @blockfrost/blockfrost-utils
 ```
-
-## Functions
-
-### fasty
-
-| Function | Description |
-| isValidUTF8 | Checks if a given buffer contains only correct UTF-8. |
