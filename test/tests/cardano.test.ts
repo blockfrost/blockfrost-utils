@@ -1,5 +1,7 @@
 import { expect, describe, test } from 'vitest';
 import * as cardanoUtils from '../../src/cardano';
+import stream from 'stream';
+import * as fastifyUtils from '../../src/fastify';
 import * as fixtures from '../fixtures/cardano';
 
 describe('cardano utils', () => {
@@ -14,5 +16,27 @@ describe('cardano utils', () => {
 
       expect(result).toStrictEqual(fixture.result);
     });
+  });
+});
+
+describe('fastify utils', () => {
+  test('returns a string from a readable stream', async () => {
+    const payload = 'hello world';
+    const payloadStream = new stream.Readable({
+      read() {
+        this.push(payload);
+        this.push(null);
+      },
+    });
+    const result = await fastifyUtils.convertStreamToString(payloadStream);
+
+    expect(result).toBe(payload);
+  });
+
+  test('returns the original string payload', async () => {
+    const payload = 'hello world';
+    const result = await fastifyUtils.convertStreamToString(payload);
+
+    expect(result).toBe(payload);
   });
 });
