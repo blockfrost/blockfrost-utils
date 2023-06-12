@@ -15,12 +15,16 @@ import {
   handle500,
 } from './../../src/fastify';
 
-test('notFoundHandler should return 400 status code with correct message', () => {
-  const reply = {
+const mockReply = () => {
+  return {
     code: sinon.stub().returnsThis(),
     header: sinon.stub().returnsThis(),
     send: sinon.stub().returnsThis(),
   };
+};
+
+test('notFoundHandler should return 400 status code with correct message', () => {
+  const reply = mockReply();
 
   notFoundHandler({} as FastifyRequest, reply as FastifyReply);
 
@@ -36,11 +40,7 @@ test('notFoundHandler should return 400 status code with correct message', () =>
 
 test('handle400 should return 400 status code with correct message', () => {
   const error = new Error('Test error');
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle400(reply as any, error as any);
@@ -57,11 +57,7 @@ test('handle400 should return 400 status code with correct message', () => {
 
 test('handle400Custom should return 400 status code with custom message', () => {
   const customMessage = 'Custom error message';
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle400Custom(reply as any, customMessage);
@@ -77,11 +73,7 @@ test('handle400Custom should return 400 status code with custom message', () => 
 });
 
 test('handleInvalidAddress should return 400 status code with custom message', () => {
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleInvalidAddress(reply as any);
@@ -103,11 +95,7 @@ test('handleFastifyError should return error status code with error message', ()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const request = { url: '/test' } as any;
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFastifyError(reply as any, error as any, request);
@@ -129,11 +117,7 @@ test('handleFastifyError should handle error not named FastifyError', () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const request = { url: '/test' } as any;
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFastifyError(reply as any, error as any, request);
@@ -149,11 +133,7 @@ test('handleFastifyError should handle error not named FastifyError', () => {
 });
 
 test('handle402 should return 402 status code with Project Over Limit message', () => {
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle402(reply as any);
@@ -169,11 +149,7 @@ test('handle402 should return 402 status code with Project Over Limit message', 
 });
 
 test('handle403 should return 403 status code with Forbidden message', () => {
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle403(reply as any);
@@ -189,11 +165,7 @@ test('handle403 should return 403 status code with Forbidden message', () => {
 });
 
 test('handle403Custom should return 403 status code with custom Forbidden message', () => {
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
   const customMessage = 'Custom forbidden message';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -210,11 +182,7 @@ test('handle403Custom should return 403 status code with custom Forbidden messag
 });
 
 test('handle404 should return 404 status code with Not Found error message', () => {
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle404(reply as any);
@@ -230,11 +198,7 @@ test('handle404 should return 404 status code with Not Found error message', () 
 });
 
 test('handle415 should return 415 status code with Unsupported Media Type error message', () => {
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
   const error = { message: 'Unsupported Media Type' };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -251,11 +215,7 @@ test('handle415 should return 415 status code with Unsupported Media Type error 
 });
 
 test('handle500 should return 500 status code with Internal Server Error message', () => {
-  const reply = {
-    code: sinon.stub().returnsThis(),
-    header: sinon.stub().returnsThis(),
-    send: sinon.stub().returnsThis(),
-  };
+  const reply = mockReply();
   const request = { url: 'http://test-url.com' };
   const error = {
     message: 'An unexpected response was received from the backend.',
