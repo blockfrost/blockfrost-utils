@@ -384,6 +384,11 @@ export const getMetadataFromOutputDatum = (
     return null;
   }
 
+  if (constrPlutusData.data().len() < 2) {
+    // Invalid format, [metadata, version] are mandatory
+    return null;
+  }
+
   // Lookup metadata by going into the first field of constructor 0.
   const datumMap = constrPlutusData.data().get(0).as_map();
   const datumVersion = Number(
