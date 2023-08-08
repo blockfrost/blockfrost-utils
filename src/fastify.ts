@@ -280,3 +280,73 @@ export const convertStreamToString = async (payloadStream: unknown) => {
 
   return payload;
 };
+
+export const getAdditionalParametersFromRequest = (
+  from?: string,
+  to?: string,
+) => {
+  type ParameterType = number | undefined;
+  const parameterArray: [
+    ParameterType,
+    ParameterType,
+    ParameterType,
+    ParameterType,
+  ] = [undefined, undefined, undefined, undefined];
+
+  try {
+    const minInt = 0;
+    const maxInt = 2_147_483_647;
+
+    if (from !== undefined) {
+      const fromTokens = from.split(':');
+      const requestParameterIsOK = fromTokens.length <= 2;
+
+      if (requestParameterIsOK) {
+        const [heightString, indexString] = fromTokens;
+        const height = Number.parseInt(heightString, 10);
+        const index = indexString
+          ? Number.parseInt(indexString, 10)
+          : undefined; // NaN in case of missing index
+
+        if (
+          height >= minInt &&
+          height <= maxInt &&
+          (index === undefined || (index >= minInt && index <= maxInt))
+        ) {
+          parameterArray[0] = height;
+          parameterArray[1] = index;
+        } else {
+          return 'outOfRangeOrMalformedErr';
+        }
+      }
+    }
+
+    if (to !== undefined) {
+      const toTokens = to.split(':');
+      const requestParameterIsOK = toTokens.length <= 2;
+
+      if (requestParameterIsOK) {
+        const [heightString, indexString] = toTokens;
+        const height = Number.parseInt(heightString, 10);
+        const index = indexString
+          ? Number.parseInt(indexString, 10)
+          : undefined;
+
+        if (
+          height >= minInt &&
+          height <= maxInt &&
+          (index === undefined || (index >= minInt && index <= maxInt))
+        ) {
+          parameterArray[2] = height;
+          parameterArray[3] = index;
+        } else {
+          return 'outOfRangeOrMalformedErr';
+        }
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    return 'outOfRangeOrMalformedErr';
+  }
+  return parameterArray;
+};

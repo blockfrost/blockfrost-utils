@@ -13,6 +13,7 @@ import {
   handle404,
   handle500,
   handle400,
+  getAdditionalParametersFromRequest,
 } from './../../src/fastify';
 
 const mockReply = () => {
@@ -232,4 +233,67 @@ test('handle500 should return 500 status code with Internal Server Error message
     message: error.message,
     status_code: 500,
   });
+});
+
+test('getAdditionalParametersFromRequest', () => {
+  expect(getAdditionalParametersFromRequest('1', '2')).toStrictEqual([
+    1,
+    undefined,
+    2,
+    undefined,
+  ]);
+  expect(getAdditionalParametersFromRequest('1:3', '2')).toStrictEqual([
+    1,
+    3,
+    2,
+    undefined,
+  ]);
+  expect(getAdditionalParametersFromRequest('1', '2:4')).toStrictEqual([
+    1,
+    undefined,
+    2,
+    4,
+  ]);
+  expect(getAdditionalParametersFromRequest('1:3', '2:4')).toStrictEqual([
+    1, 3, 2, 4,
+  ]);
+  expect(getAdditionalParametersFromRequest('1')).toStrictEqual([
+    1,
+    undefined,
+    undefined,
+    undefined,
+  ]);
+  expect(getAdditionalParametersFromRequest('1:3')).toStrictEqual([
+    1,
+    3,
+    undefined,
+    undefined,
+  ]);
+  expect(getAdditionalParametersFromRequest(undefined, '2')).toStrictEqual([
+    undefined,
+    undefined,
+    2,
+    undefined,
+  ]);
+  expect(getAdditionalParametersFromRequest(undefined, '2:4')).toStrictEqual([
+    undefined,
+    undefined,
+    2,
+    4,
+  ]);
+  expect(getAdditionalParametersFromRequest()).toStrictEqual([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
+  expect(getAdditionalParametersFromRequest('abc:d', 'abc:d')).toStrictEqual(
+    'outOfRangeOrMalformedErr',
+  );
+  expect(getAdditionalParametersFromRequest('1:54545454545')).toStrictEqual(
+    'outOfRangeOrMalformedErr',
+  );
+  expect(getAdditionalParametersFromRequest(undefined, '-1:44')).toStrictEqual(
+    'outOfRangeOrMalformedErr',
+  );
 });
