@@ -242,6 +242,9 @@ test('getAdditionalParametersFromRequest', () => {
     2,
     undefined,
   ]);
+  expect(getAdditionalParametersFromRequest('1abc', '2abc')).toStrictEqual(
+    'outOfRangeOrMalformedErr',
+  );
   expect(getAdditionalParametersFromRequest('1:3', '2')).toStrictEqual([
     1,
     3,

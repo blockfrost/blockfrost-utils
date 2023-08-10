@@ -303,10 +303,8 @@ export const getAdditionalParametersFromRequest = (
 
       if (requestParameterIsOK) {
         const [heightString, indexString] = fromTokens;
-        const height = Number.parseInt(heightString, 10);
-        const index = indexString
-          ? Number.parseInt(indexString, 10)
-          : undefined; // NaN in case of missing index
+        const height = Number(heightString);
+        const index = indexString ? Number(indexString) : undefined; // NaN in case of missing index
 
         if (
           height >= minInt &&
@@ -327,10 +325,8 @@ export const getAdditionalParametersFromRequest = (
 
       if (requestParameterIsOK) {
         const [heightString, indexString] = toTokens;
-        const height = Number.parseInt(heightString, 10);
-        const index = indexString
-          ? Number.parseInt(indexString, 10)
-          : undefined;
+        const height = Number(heightString);
+        const index = indexString ? Number(indexString) : undefined;
 
         if (
           height >= minInt &&
