@@ -281,6 +281,20 @@ export const convertStreamToString = async (payloadStream: unknown) => {
   return payload;
 };
 
+export const fromGtTo = (fromToParameters: (number | undefined)[]) => {
+  return (
+    // from and to heights defined && from height > to height OR
+    // from and to height is the same and from index > to index
+    (fromToParameters[0] !== undefined &&
+      fromToParameters[2] !== undefined &&
+      fromToParameters[0] > fromToParameters[2]) ||
+    (fromToParameters[1] !== undefined &&
+      fromToParameters[3] !== undefined &&
+      fromToParameters[0] === fromToParameters[2] &&
+      fromToParameters[1] > fromToParameters[3])
+  );
+};
+
 export const getAdditionalParametersFromRequest = (
   from?: string,
   to?: string,
@@ -344,5 +358,10 @@ export const getAdditionalParametersFromRequest = (
     console.error(error);
     return 'outOfRangeOrMalformedErr';
   }
+
+  if (fromGtTo(parameterArray)) {
+    return 'outOfRangeOrMalformedErr';
+  }
+
   return parameterArray;
 };

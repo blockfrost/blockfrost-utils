@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `getAdditionalParametersFromRequest` returns `outOfRangeOrMalformedErr` if a string parameter contains non-numeric characters (eg. `123a`)
+- `getAdditionalParametersFromRequest` returns `outOfRangeOrMalformedErr` if a from parameter > to parameter
 
 ## 2.7.0 - 2023-08-08
 
