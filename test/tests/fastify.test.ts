@@ -14,6 +14,7 @@ import {
   handle500,
   handle400,
   getAdditionalParametersFromRequest,
+  fromGtTo,
 } from './../../src/fastify';
 
 const mockReply = () => {
@@ -287,6 +288,12 @@ test('getAdditionalParametersFromRequest', () => {
     undefined,
     undefined,
   ]);
+  expect(getAdditionalParametersFromRequest('1abc', '2abc')).toStrictEqual(
+    'outOfRangeOrMalformedErr',
+  );
+  expect(getAdditionalParametersFromRequest('2', '1')).toStrictEqual(
+    'outOfRangeOrMalformedErr',
+  );
   expect(getAdditionalParametersFromRequest('abc:d', 'abc:d')).toStrictEqual(
     'outOfRangeOrMalformedErr',
   );
@@ -296,4 +303,14 @@ test('getAdditionalParametersFromRequest', () => {
   expect(getAdditionalParametersFromRequest(undefined, '-1:44')).toStrictEqual(
     'outOfRangeOrMalformedErr',
   );
+});
+
+test('fromGtTo', () => {
+  expect(fromGtTo([2, undefined, 1, undefined])).toBe(true);
+  expect(fromGtTo([2, 2, 2, 1])).toBe(true);
+  expect(fromGtTo([2, 0, 1, 1])).toBe(true);
+  expect(fromGtTo([1, 0, 1, 1])).toBe(false);
+  expect(fromGtTo([undefined, undefined, undefined, undefined])).toBe(false);
+  expect(fromGtTo([1, undefined, undefined, undefined])).toBe(false);
+  expect(fromGtTo([undefined, undefined, 2, undefined])).toBe(false);
 });

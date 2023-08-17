@@ -281,6 +281,20 @@ export const convertStreamToString = async (payloadStream: unknown) => {
   return payload;
 };
 
+export const fromGtTo = (fromToParameters: (number | undefined)[]) => {
+  return (
+    // from and to heights defined && from height > to height OR
+    // from and to height is the same and from index > to index
+    (fromToParameters[0] !== undefined &&
+      fromToParameters[2] !== undefined &&
+      fromToParameters[0] > fromToParameters[2]) ||
+    (fromToParameters[1] !== undefined &&
+      fromToParameters[3] !== undefined &&
+      fromToParameters[0] === fromToParameters[2] &&
+      fromToParameters[1] > fromToParameters[3])
+  );
+};
+
 export const getAdditionalParametersFromRequest = (
   from?: string,
   to?: string,
@@ -303,10 +317,8 @@ export const getAdditionalParametersFromRequest = (
 
       if (requestParameterIsOK) {
         const [heightString, indexString] = fromTokens;
-        const height = Number.parseInt(heightString, 10);
-        const index = indexString
-          ? Number.parseInt(indexString, 10)
-          : undefined; // NaN in case of missing index
+        const height = Number(heightString);
+        const index = indexString ? Number(indexString) : undefined; // NaN in case of missing index
 
         if (
           height >= minInt &&
@@ -327,10 +339,8 @@ export const getAdditionalParametersFromRequest = (
 
       if (requestParameterIsOK) {
         const [heightString, indexString] = toTokens;
-        const height = Number.parseInt(heightString, 10);
-        const index = indexString
-          ? Number.parseInt(indexString, 10)
-          : undefined;
+        const height = Number(heightString);
+        const index = indexString ? Number(indexString) : undefined;
 
         if (
           height >= minInt &&
@@ -348,5 +358,10 @@ export const getAdditionalParametersFromRequest = (
     console.error(error);
     return 'outOfRangeOrMalformedErr';
   }
+
+  if (fromGtTo(parameterArray)) {
+    return 'outOfRangeOrMalformedErr';
+  }
+
   return parameterArray;
 };
