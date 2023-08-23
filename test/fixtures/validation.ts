@@ -531,6 +531,12 @@ export const getAddressTypeAndPaymentCred = [
     result: { addressType: 'shelley' },
   },
   {
+    description: 'Valid shelley address, sanchonet',
+    address: 'addr_test1vpfwv0ezc5g8a4mkku8hhy3y3vp92t7s3ul8g778g5yegsgalc6gc',
+    network: 'sanchonet',
+    result: { addressType: 'shelley' },
+  },
+  {
     description: 'Valid paymentCred address, mainnet',
     address: 'addr_vkh1lu3rzd3pwjp54twx32ye9g4gqkr34x7cyp4urt8luq22jvjx5ul',
     network: 'mainnet',

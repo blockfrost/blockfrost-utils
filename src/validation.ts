@@ -4,7 +4,12 @@ import {
 } from '@emurgo/cardano-serialization-lib-nodejs';
 import { bech32 } from 'bech32';
 
-type BlockfrostNetwork = 'mainnet' | 'testnet' | 'preview' | 'preprod';
+type BlockfrostNetwork =
+  | 'mainnet'
+  | 'testnet'
+  | 'preview'
+  | 'preprod'
+  | 'sanchonet';
 // prefixes based on CIP5 https://github.com/cardano-foundation/CIPs/blob/master/CIP-0005/CIP-0005.md
 const Prefixes = Object.freeze({
   ADDR: 'addr',
