@@ -372,6 +372,7 @@ export const getMetadataFromOutputDatum = (
   datumHex: string,
   options: {
     standard: TokenStandard;
+    convertAdditionalPropsToUTF8: boolean;
   },
 ): ReferenceMetadataDatum | null => {
   const metadataFormat = METADATA_SCHEME_MAP[options.standard];
@@ -431,10 +432,26 @@ export const getMetadataFromOutputDatum = (
       ? toUTF8OrHex(decodedKey)
       : decodedKey;
 
-    if (!(metadataFormat && convertedKey in metadataFormat)) {
+    if (!metadataFormat) {
+      // Invalid CIp68 standard return CBOR hex of the value
+      metadataMap[convertedKey] = value.to_hex();
+    } else if (!(convertedKey in metadataFormat)) {
       // Custom field not covered by CIP68 standard
-      // Return unparsed CBOR data
-      metadataMap[convertedKey] = value?.to_hex();
+
+      if (options.convertAdditionalPropsToUTF8) {
+        // If the value is buffer (bytes):
+        // - Try to convert them to utf8 string.
+        // - If the bytes are not valid utf8 string return unparsed CBOR
+        // If the value is not a buffer (could be whatever is possible to define in CBOR) then just return unparsed CBOR
+        const convertedValue =
+          Buffer.isBuffer(decodedValue) && isValidUTF8(decodedValue)
+            ? decodedValue.toString('utf8')
+            : value.to_hex();
+        metadataMap[convertedKey] = convertedValue;
+      } else {
+        // return CBOR hex of the value
+        metadataMap[convertedKey] = value.to_hex();
+      }
     } else {
       if (
         metadataFormat[convertedKey].type === 'array' &&
@@ -470,5 +487,8 @@ export const getMetadataFromOutputDatum = (
     }
   }
 
+  datumMap.free();
+  constrPlutusData.free();
+  datum.free();
   return { metadata: metadataMap, version: datumVersion, extra: datumExtra };
 };
