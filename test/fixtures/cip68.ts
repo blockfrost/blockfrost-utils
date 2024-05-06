@@ -116,6 +116,11 @@ export const getMetadataFromOutputDatum = [
           '5821426c6f636b66726f73742074657374696e672066756e6769626c6520746f6b656e',
         name: '4a426c6f636b66726f7374',
       },
+      plutusDataJson: {
+        decimals: 2,
+        description: 'Blockfrost testing fungible token',
+        name: 'Blockfrost',
+      },
       version: 1,
       extra: undefined,
     },
@@ -141,6 +146,38 @@ export const getMetadataFromOutputDatum = [
         contractData:
           'd879860181581c160c199daaefcfab1489a33aa60f163cf2500c57711847fad9670864d87a80581c1ca3e06a46d694c65601bf8a6a64617b6fc8d783f6710db322681007d87a80d87a80',
       },
+      plutusDataJson: {
+        files: [
+          {
+            src: 'ipfs://QmP7tPxw9kcnxPEVNS7NRJuyR7VVz9c4Zahxz3gN8LEtFM',
+            name: 'NFT #1',
+            mediaType: 'image/png',
+          },
+        ],
+        image: 'ipfs://QmP7tPxw9kcnxPEVNS7NRJuyR7VVz9c4Zahxz3gN8LEtFM',
+        mediaType: 'image/png',
+        name: 'NFT #1',
+        contractData: {
+          constructor: 0,
+          fields: [
+            1,
+            ['0x160c199daaefcfab1489a33aa60f163cf2500c57711847fad9670864'],
+            {
+              constructor: 1,
+              fields: [],
+            },
+            '0x1ca3e06a46d694c65601bf8a6a64617b6fc8d783f6710db322681007',
+            {
+              constructor: 1,
+              fields: [],
+            },
+            {
+              constructor: 1,
+              fields: [],
+            },
+          ],
+        },
+      },
       extra: undefined,
     },
   },
@@ -151,6 +188,11 @@ export const getMetadataFromOutputDatum = [
     options: { standard: 'ft' } as const,
     result: {
       metadata: {
+        decimals: 2,
+        description: 'Blockfrost testing fungible token',
+        name: 'Blockfrost',
+      },
+      plutusDataJson: {
         decimals: 2,
         description: 'Blockfrost testing fungible token',
         name: 'Blockfrost',
@@ -170,6 +212,11 @@ export const getMetadataFromOutputDatum = [
         description: 'Blockfrost testing fungible token',
         name: 'Blockfrost',
       },
+      plutusDataJson: {
+        decimals: 2,
+        description: 'Blockfrost testing fungible token',
+        name: 'Blockfrost',
+      },
       version: 1,
       extra: undefined,
     },
@@ -186,20 +233,32 @@ export const getMetadataFromOutputDatum = [
         image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
         name: 'Matrix Berry #99',
       },
+      plutusDataJson: {
+        description: '',
+        id: 99,
+        image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
+        name: 'Matrix Berry #99',
+      },
       version: 1,
       extra: undefined,
     },
   },
   {
     description:
-      'unknown prop with number still encoded as cbor even with convertAdditionalPropsToUTF8: true',
+      'unknown prop with number still encoded as cbor even with convertAdditionalProps: true',
     payload:
       'd8799fa4446e616d65506A616E6F206A65206E616A6C6570736945696d6167655835697066733a2f2f516d594e795162774c4359766a503734334a6e756431626f7a6346504453584679594e59556d66516a597335415142696418634b6465736372697074696f6e4001ff',
-    options: { standard: 'nft', convertAdditionalPropsToUTF8: true } as const,
+    options: { standard: 'nft', convertAdditionalProps: true } as const,
     result: {
       metadata: {
         description: '',
-        id: '1863', // 99 encoded as cbor
+        id: 99, // 99 encoded as cbor
+        image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
+        name: 'jano je najlepsi',
+      },
+      plutusDataJson: {
+        description: '',
+        id: 99,
         image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
         name: 'jano je najlepsi',
       },
@@ -219,6 +278,12 @@ export const getMetadataFromOutputDatum = [
         image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
         name: '4d61747269782042657272792023c328',
       },
+      plutusDataJson: {
+        description: '',
+        id: 99,
+        image: 'ipfs://QmYNyQbwLCYvjP743Jnud1bozcFPDSXFyYNYUmfQjYs5AQ',
+        name: '0x4d61747269782042657272792023c328',
+      },
       version: 1,
       extra: undefined,
     },
@@ -233,9 +298,33 @@ export const getMetadataFromOutputDatum = [
         image: 'ipfs://QmSkgqaCapgw99Y2oAZ72tj9iGRb89DzM7kJPetvsj7NND',
         name: 'handles_bg_boat_2',
       },
+      plutusDataJson: {
+        image: 'ipfs://QmSkgqaCapgw99Y2oAZ72tj9iGRb89DzM7kJPetvsj7NND',
+        name: 'handles_bg_boat_2',
+      },
       version: 1,
-      extra:
-        'd8799fac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324671725f646f744f726f756e6465642c236666363133304b666f6e745f636f6c6f72739f4723666636313330ff4c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f492331323534363239344723373937393836ff517066705f626f726465725f636f6c6f72739f49233132353436323934ff52666f6e745f736861646f775f636f6c6f72739f472330613166643347233232643161664723333162633233ff52746578745f726962626f6e5f636f6c6f72739f472330303030303049233132353436323934ff5371725f6261636b67726f756e645f636f6c6f724923303030303030303054746578745f726962626f6e5f6772616469656e744672616469616cff',
+      extra: {
+        hex: 'd8799fac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324671725f646f744f726f756e6465642c236666363133304b666f6e745f636f6c6f72739f4723666636313330ff4c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f492331323534363239344723373937393836ff517066705f626f726465725f636f6c6f72739f49233132353436323934ff52666f6e745f736861646f775f636f6c6f72739f472330613166643347233232643161664723333162633233ff52746578745f726962626f6e5f636f6c6f72739f472330303030303049233132353436323934ff5371725f6261636b67726f756e645f636f6c6f724923303030303030303054746578745f726962626f6e5f6772616469656e744672616469616cff',
+        json: {
+          constructor: 0,
+          fields: [
+            {
+              border_colors: ['#12546294', '#797986'],
+              font: 'Tilt Prism,https://tinyurl.com/2an5pb5a',
+              font_colors: ['#ff6130'],
+              font_shadow_colors: ['#0a1fd3', '#22d1af', '#31bc23'],
+              pfp_border_colors: ['#12546294'],
+              price: 50,
+              qr_background_color: '#00000000',
+              qr_dot: 'rounded,#ff6130',
+              qr_inner_eye: 'square,#f2f285',
+              qr_outer_eye: 'rounded,#f2f285',
+              text_ribbon_colors: ['#000000', '#12546294'],
+              text_ribbon_gradient: 'radial',
+            },
+          ],
+        },
+      },
     },
   },
   {
@@ -243,7 +332,7 @@ export const getMetadataFromOutputDatum = [
       'NFT datum with unknown props (utf8 and bytes) with conversion of unknown string props',
     payload:
       'd8799fa6446e616d65581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e4b6465736372697074696f6e581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e45696d6167655835697066733a2f2f516d5543584d546376754a7077484633674142527236396365515232754547324673696b3943795768384d556f514b756e6b6e6f776e50726f705576657279206d756368207574663820737472696e6750756e6b6e6f776e427974657350726f704aaca8129ef33d442b0cb7466e6573746564a24b756e6b6e6f776e50726f705576657279206d756368207574663820737472696e6750756e6b6e6f776e427974657350726f704aaca8129ef33d442b0cb702ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616cff',
-    options: { standard: 'nft', convertAdditionalPropsToUTF8: true } as const,
+    options: { standard: 'nft', convertAdditionalProps: true } as const,
     result: {
       metadata: {
         name: 'Blockfrost NFT v2 testing token',
@@ -255,16 +344,43 @@ export const getMetadataFromOutputDatum = [
         nested:
           'a24b756e6b6e6f776e50726f705576657279206d756368207574663820737472696e6750756e6b6e6f776e427974657350726f704aaca8129ef33d442b0cb7',
       },
+      plutusDataJson: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        // unknownProp: '5576657279206d756368207574663820737472696e67', // before converting unknown bytes props to utf8
+        unknownProp: 'very much utf8 string',
+        unknownBytesProp: '0xaca8129ef33d442b0cb7',
+        nested: {
+          unknownProp: 'very much utf8 string',
+          unknownBytesProp: '0xaca8129ef33d442b0cb7',
+        },
+      },
       version: 2,
-      extra:
-        'ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616c',
+      extra: {
+        hex: 'ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616c',
+        json: {
+          border_colors: ['0x12546294', '0x797986'],
+          font: 'Tilt Prism,https://tinyurl.com/2an5pb5a',
+          font_color: '0xff6130',
+          font_shadow_colors: ['0x0a1fd3', '"ѯ', '0x31bc23'],
+          pfp_border_colors: ['0x12546294'],
+          price: 50,
+          qr_bg_color: '0x00000000',
+          qr_dot: 'rounded,#ff6130',
+          qr_inner_eye: 'square,#f2f285',
+          qr_outer_eye: 'rounded,#f2f285',
+          text_ribbon_colors: ['0x000000', '0x12546294'],
+          text_ribbon_gradient: 'radial',
+        },
+      },
     },
   },
   {
     description: 'NFT datum with unknown props (utf8 and bytes)',
     payload:
       'd8799fa6446e616d65581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e4b6465736372697074696f6e581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e45696d6167655835697066733a2f2f516d5543584d546376754a7077484633674142527236396365515232754547324673696b3943795768384d556f514b756e6b6e6f776e50726f705576657279206d756368207574663820737472696e6750756e6b6e6f776e427974657350726f704aaca8129ef33d442b0cb7466e6573746564a24b756e6b6e6f776e50726f705576657279206d756368207574663820737472696e6750756e6b6e6f776e427974657350726f704aaca8129ef33d442b0cb702ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616cff',
-    options: { standard: 'nft', convertAdditionalPropsToUTF8: false } as const,
+    options: { standard: 'nft', convertAdditionalProps: false } as const,
     result: {
       metadata: {
         name: 'Blockfrost NFT v2 testing token',
@@ -276,9 +392,126 @@ export const getMetadataFromOutputDatum = [
         nested:
           'a24b756e6b6e6f776e50726f705576657279206d756368207574663820737472696e6750756e6b6e6f776e427974657350726f704aaca8129ef33d442b0cb7',
       },
+      plutusDataJson: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        // unknownProp: '5576657279206d756368207574663820737472696e67', // before converting unknown bytes props to utf8
+        unknownProp: 'very much utf8 string',
+        unknownBytesProp: '0xaca8129ef33d442b0cb7',
+        nested: {
+          unknownProp: 'very much utf8 string',
+          unknownBytesProp: '0xaca8129ef33d442b0cb7',
+        },
+      },
       version: 2,
-      extra:
-        'ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616c',
+      extra: {
+        hex: 'ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616c',
+        json: {
+          border_colors: ['0x12546294', '0x797986'],
+          font: 'Tilt Prism,https://tinyurl.com/2an5pb5a',
+          font_color: '0xff6130',
+          font_shadow_colors: ['0x0a1fd3', '"ѯ', '0x31bc23'],
+          pfp_border_colors: ['0x12546294'],
+          price: 50,
+          qr_bg_color: '0x00000000',
+          qr_dot: 'rounded,#ff6130',
+          qr_inner_eye: 'square,#f2f285',
+          qr_outer_eye: 'rounded,#f2f285',
+          text_ribbon_colors: ['0x000000', '0x12546294'],
+          text_ribbon_gradient: 'radial',
+        },
+      },
+    },
+  },
+  {
+    description: 'NFT datum with bigint',
+    payload:
+      'd8799fa4446e616d65581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e4b6465736372697074696f6e581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e45696d6167655835697066733a2f2f516d5543584d546376754a7077484633674142527236396365515232754547324673696b3943795768384d556f51466269676e756dc24b01056e0f36a6443de2df7902ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616cff',
+    options: { standard: 'nft', convertAdditionalProps: true } as const,
+    result: {
+      metadata: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        // unknownProp: '5576657279206d756368207574663820737472696e67', // before converting unknown bytes props to utf8
+        bignum: 1234567890123456789012345n,
+      },
+      plutusDataJson: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        bignum: '1234567890123456789012345', // CSL supports bigint conversion only in CSL v12 nad up
+      },
+      version: 2,
+      extra: {
+        hex: 'ac44666f6e74582754696c7420507269736d2c68747470733a2f2f74696e7975726c2e636f6d2f32616e357062356145707269636518324a666f6e745f636f6c6f7243ff61304671725f646f744f726f756e6465642c236666363133304c71725f696e6e65725f6579654e7371756172652c236632663238354c71725f6f757465725f6579654f726f756e6465642c236632663238354d626f726465725f636f6c6f72739f441254629443797986ff517066705f626f726465725f636f6c6f72739f4412546294ff52666f6e745f736861646f775f636f6c6f72739f430a1fd34322d1af4331bc23ff52746578745f726962626f6e5f636f6c6f72739f430000004412546294ff4b71725f62675f636f6c6f72440000000054746578745f726962626f6e5f6772616469656e744672616469616c',
+        json: {
+          border_colors: ['0x12546294', '0x797986'],
+          font: 'Tilt Prism,https://tinyurl.com/2an5pb5a',
+          font_color: '0xff6130',
+          font_shadow_colors: ['0x0a1fd3', '"ѯ', '0x31bc23'],
+          pfp_border_colors: ['0x12546294'],
+          price: 50,
+          qr_bg_color: '0x00000000',
+          qr_dot: 'rounded,#ff6130',
+          qr_inner_eye: 'square,#f2f285',
+          qr_outer_eye: 'rounded,#f2f285',
+          text_ribbon_colors: ['0x000000', '0x12546294'],
+          text_ribbon_gradient: 'radial',
+        },
+      },
+    },
+  },
+  {
+    description:
+      'NFT datum with non-utf8 prop (0xdeadbeef) convertAdditionalProps: false',
+    payload:
+      'd8799fa6446e616d65581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e4b6465736372697074696f6e581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e45696d6167655835697066733a2f2f516d5543584d546376754a7077484633674142527236396365515232754547324673696b3943795768384d556f5148646561646265656643616e6f44deadbeef426e65545b6f626a6563742041727261794275666665725dc24b01056e0f36a6443de2df7902ff',
+    options: { standard: 'nft', convertAdditionalProps: false } as const,
+    result: {
+      metadata: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        deadbeef: '426e65',
+        '[object ArrayBuffer]': 'c24b01056e0f36a6443de2df79',
+      },
+      plutusDataJson: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        '0xdeadbeef': 'ne',
+        deadbeef: 'ano',
+        '[object ArrayBuffer]': '1234567890123456789012345',
+      },
+      version: 2,
+      extra: undefined,
+    },
+  },
+  {
+    description: 'NFT datum with non-utf8 prop (0xdeadbeef)',
+    payload:
+      'd8799fa6446e616d65581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e4b6465736372697074696f6e581f426c6f636b66726f7374204e46542076322074657374696e6720746f6b656e45696d6167655835697066733a2f2f516d5543584d546376754a7077484633674142527236396365515232754547324673696b3943795768384d556f5148646561646265656643616e6f44deadbeef426e65545b6f626a6563742041727261794275666665725dc24b01056e0f36a6443de2df7902ff',
+    options: { standard: 'nft', convertAdditionalProps: true } as const,
+    result: {
+      metadata: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        deadbeef: 'ne',
+        '[object ArrayBuffer]': 1234567890123456789012345n,
+      },
+      plutusDataJson: {
+        name: 'Blockfrost NFT v2 testing token',
+        description: 'Blockfrost NFT v2 testing token',
+        image: 'ipfs://QmUCXMTcvuJpwHF3gABRr69ceQR2uEG2Fsik9CyWh8MUoQ',
+        '0xdeadbeef': 'ne',
+        deadbeef: 'ano',
+        '[object ArrayBuffer]': '1234567890123456789012345',
+      },
+      version: 2,
+      extra: undefined,
     },
   },
   {

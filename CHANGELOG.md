@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- CIP68: Conversion of additional/unknown top-level string metadata props to UTF8 with an option param `convertAdditionalPropsToUTF8: true` passed to `getMetadataFromOutputDatum` fn
+- CIP68: Conversion of additional/unknown top-level string metadata props to UTF8 with an option param `convertAdditionalProps: true` passed to `getMetadataFromOutputDatum` fn
 
 ## 2.8.0 - 2023-08-23
 

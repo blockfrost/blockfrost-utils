@@ -1,6 +1,7 @@
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import crc8 from 'crc/crc8';
 import cbor from 'cbor';
+import { parse } from 'lossless-json';
 
 const ASSET_NAME_LABELS = {
   reference_nft: 100, // Reference NFT locked at a script containing the datum
@@ -11,8 +12,9 @@ const ASSET_NAME_LABELS = {
 
 export interface ReferenceMetadataDatum {
   metadata: Record<string, unknown>;
+  plutusDataJson: unknown;
   version: number;
-  extra: string | undefined;
+  extra: { hex: string; json: unknown } | undefined;
 }
 
 type PropertyScheme = {
@@ -368,11 +370,28 @@ const convertDatumValue = (
   }
 };
 
+const reviveBigNumAsString = (_key: string, value: unknown) => {
+  // Converts LosslessNumber instance to number or stringified bigint
+  if (value && typeof value === 'object' && 'isLosslessNumber' in value) {
+    try {
+      const primitiveValue = value.valueOf();
+      if (typeof primitiveValue === 'bigint') {
+        return primitiveValue.toString();
+      }
+      return primitiveValue;
+    } catch (err) {
+      return value.toString();
+    }
+  } else {
+    return value;
+  }
+};
+
 export const getMetadataFromOutputDatum = (
   datumHex: string,
   options: {
     standard: TokenStandard;
-    convertAdditionalPropsToUTF8: boolean;
+    convertAdditionalProps: boolean;
   },
 ): ReferenceMetadataDatum | null => {
   const metadataFormat = METADATA_SCHEME_MAP[options.standard];
@@ -391,16 +410,11 @@ export const getMetadataFromOutputDatum = (
   }
 
   // Lookup metadata by going into the first field of constructor 0.
-  const datumMap = constrPlutusData.data().get(0).as_map();
+  const constrPlutusData0 = constrPlutusData.data().get(0);
+  const datumMap = constrPlutusData0.as_map();
   const datumVersion = Number(
     constrPlutusData.data().get(1).as_integer()?.to_str(),
   );
-
-  // Optional extra data
-  const datumExtra =
-    constrPlutusData.data().len() > 2
-      ? constrPlutusData.data().get(2).to_hex()
-      : undefined;
 
   if (!datumMap) {
     return null;
@@ -410,6 +424,12 @@ export const getMetadataFromOutputDatum = (
     // missing version
     return null;
   }
+
+  // Optional extra data
+  const datumExtra =
+    constrPlutusData.data().len() > 2
+      ? constrPlutusData.data().get(2)
+      : undefined;
 
   // Parsing metadata keys and its values (with conversion to utf-8 if possible)
   const metadataMap: Record<string, unknown> = {};
@@ -433,26 +453,37 @@ export const getMetadataFromOutputDatum = (
       : decodedKey;
 
     if (!metadataFormat) {
-      // Invalid CIp68 standard return CBOR hex of the value
+      // Invalid CIP68 standard (i.e. not NFT/FT/RFT) return CBOR hex of the value
       metadataMap[convertedKey] = value.to_hex();
     } else if (!(convertedKey in metadataFormat)) {
       // Custom field not covered by CIP68 standard
-
-      if (options.convertAdditionalPropsToUTF8) {
+      if (options.convertAdditionalProps) {
+        // New behavior introduced in 2.9.0
         // If the value is buffer (bytes):
         // - Try to convert them to utf8 string.
         // - If the bytes are not valid utf8 string return unparsed CBOR
         // If the value is not a buffer (could be whatever is possible to define in CBOR) then just return unparsed CBOR
-        const convertedValue =
-          Buffer.isBuffer(decodedValue) && isValidUTF8(decodedValue)
-            ? decodedValue.toString('utf8')
-            : value.to_hex();
-        metadataMap[convertedKey] = convertedValue;
+        if (Buffer.isBuffer(decodedValue) && isValidUTF8(decodedValue)) {
+          metadataMap[convertedKey] = decodedValue.toString('utf8');
+        } else if (
+          typeof decodedValue === 'boolean' ||
+          typeof decodedValue === 'number' ||
+          typeof decodedValue === 'bigint' ||
+          typeof decodedValue === null
+        ) {
+          // Primitive types are returned as such
+          metadataMap[convertedKey] = decodedValue;
+        } else {
+          // return CBOR hex of the value
+          metadataMap[convertedKey] = value.to_hex();
+        }
       } else {
+        // Old behavior (pre 2.9.0)
         // return CBOR hex of the value
         metadataMap[convertedKey] = value.to_hex();
       }
     } else {
+      // Known key specified in metadata format map
       if (
         metadataFormat[convertedKey].type === 'array' &&
         Array.isArray(decodedValue)
@@ -487,8 +518,59 @@ export const getMetadataFromOutputDatum = (
     }
   }
 
+  const datumExtraHex = datumExtra?.to_hex();
+
+  // Caveats with auto-conversion to JSON:
+  // 1. Output is string, big numbers are encoded as 123...89n.
+  // In order to convert it to JS object bigints are converted to strings (without n suffix).
+  // Alternative would be to keep the whole JSON as string (as returned by .to_json()) and
+  // return it as a response, however JS consumers would lose precision
+  // while parsing the json using native JSON.parse.
+
+  /**
+   * CardanoWasm.PlutusDatumSchema.BasicConversions
+   * ScriptDataJsonNoSchema in cardano-node.
+   *
+   * This is the format used by --script-data-value in cardano-cli
+   * This tries to accept most JSON but does not support the full spectrum of Plutus datums.
+   * * To JSON:
+   * * ConstrPlutusData not supported in ANY FORM (neither keys nor values)
+   * * Lists not supported in keys
+   * * Maps not supported in keys
+   */
+
+  // CSL.to_json() could throw while parsing an unsupported CBOR structures
+  let datumExtraJson: unknown;
+  let plutusDataJson: unknown;
+  try {
+    datumExtraJson = datumExtra
+      ? parse(
+          datumExtra.to_json(CardanoWasm.PlutusDatumSchema.BasicConversions),
+          reviveBigNumAsString,
+        )
+      : undefined;
+    plutusDataJson = parse(
+      constrPlutusData0.to_json(CardanoWasm.PlutusDatumSchema.BasicConversions),
+      reviveBigNumAsString,
+    );
+  } catch (error) {
+    console.error(`Parsing CBOR datum failed. Datum:  ${datumHex} `);
+    throw error;
+  }
+
+  datumExtra?.free();
   datumMap.free();
+  constrPlutusData0.free();
   constrPlutusData.free();
   datum.free();
-  return { metadata: metadataMap, version: datumVersion, extra: datumExtra };
+
+  return {
+    metadata: metadataMap,
+    plutusDataJson: plutusDataJson,
+    version: datumVersion,
+    extra:
+      datumExtraJson && datumExtraHex
+        ? { hex: datumExtraHex, json: datumExtraJson }
+        : undefined,
+  };
 };
