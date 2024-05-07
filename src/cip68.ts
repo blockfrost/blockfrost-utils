@@ -325,7 +325,6 @@ export const getReferenceNFT = (
 const convertDatumValue = (
   decodedValue: unknown,
   schema: PropertyScheme | Record<string, PropertyScheme> | null,
-  version: number,
 ): unknown => {
   if (!schema) {
     return null;
@@ -335,11 +334,7 @@ const convertDatumValue = (
     return decodedValue;
   } else if (schema.type === 'bytestring' && Buffer.isBuffer(decodedValue)) {
     return toUTF8OrHex(decodedValue);
-  } else if (
-    version === 3 &&
-    schema.type === 'bytestring' &&
-    Array.isArray(decodedValue)
-  ) {
+  } else if (schema.type === 'bytestring' && Array.isArray(decodedValue)) {
     // bytestring, but encoded as array of bytes
     // concat chunks and convert to utf-8 or return bytes as hex
     return toUTF8OrHex(Buffer.concat(decodedValue));
@@ -347,7 +342,7 @@ const convertDatumValue = (
     const convertedArray = [];
     for (const arrayItem of decodedValue) {
       const arrayItemSchema = schema.items ?? null;
-      const v = convertDatumValue(arrayItem, arrayItemSchema, version);
+      const v = convertDatumValue(arrayItem, arrayItemSchema);
       if (v === null) {
         // One of the item has unsupported format which means we keep CBOR value instead
         return null;
@@ -363,7 +358,7 @@ const convertDatumValue = (
       const valueSchema =
         //  @ts-expect-error TODO
         schema && convertedKey in schema ? schema[convertedKey] : null;
-      const convertedValue = convertDatumValue(mapValue, valueSchema, version);
+      const convertedValue = convertDatumValue(mapValue, valueSchema);
       if (convertedValue === null) {
         // Unsupported format
         return null;
@@ -448,7 +443,6 @@ export const getMetadataFromOutputDatum = (
       const convertedValue = convertDatumValue(
         decodedValue,
         metadataFormat[convertedKey],
-        datumVersion,
       );
 
       // use converted value if available, otherwise leave it as cbor
