@@ -8,8 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## 2.8.0 - 2023-08-23
+
 ### Added
 - `sanchonet` network support
+
+### Changed
+- CIP68: allow byte string fields to be encoded as an array of bytes
 
 ## 2.7.1 - 2023-08-17
 ### Changed
