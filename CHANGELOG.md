@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.8.1 - 2024-10-10
+
 ### Changed
 
 - CIP68: allow byte string fields to be encoded as an array of bytes
