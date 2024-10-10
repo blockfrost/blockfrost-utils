@@ -334,6 +334,10 @@ const convertDatumValue = (
     return decodedValue;
   } else if (schema.type === 'bytestring' && Buffer.isBuffer(decodedValue)) {
     return toUTF8OrHex(decodedValue);
+  } else if (schema.type === 'bytestring' && Array.isArray(decodedValue)) {
+    // bytestring, but encoded as array of bytes
+    // concat chunks and convert to utf-8 or return bytes as hex
+    return toUTF8OrHex(Buffer.concat(decodedValue));
   } else if (Array.isArray(decodedValue)) {
     const convertedArray = [];
     for (const arrayItem of decodedValue) {
@@ -436,37 +440,14 @@ export const getMetadataFromOutputDatum = (
       // Return unparsed CBOR data
       metadataMap[convertedKey] = value?.to_hex();
     } else {
-      if (
-        metadataFormat[convertedKey].type === 'array' &&
-        Array.isArray(decodedValue)
-      ) {
-        // array
-        // 'files' field contains array of maps
-        const filesValue = convertDatumValue(
-          decodedValue,
-          metadataFormat[convertedKey],
-        );
-        // If convertDatumValue returns null then the decodedValue has unsupported format,
-        // return CBOR hex instead
-        metadataMap[convertedKey] = filesValue ?? value.to_hex();
-      } else if (
-        metadataFormat[convertedKey].type === 'number' &&
-        typeof decodedValue === 'number'
-      ) {
-        // number
-        metadataMap[convertedKey] = decodedValue;
-      } else if (
-        metadataFormat[convertedKey].type === 'bytestring' &&
-        Buffer.isBuffer(decodedValue)
-      ) {
-        // bytestring buffer
-        // convert to utf-8 or return bytes as hex
-        metadataMap[convertedKey] = toUTF8OrHex(decodedValue);
-      } else {
-        // other
-        // leave it as cbor
-        metadataMap[convertedKey] = value.to_hex();
-      }
+      const convertedValue = convertDatumValue(
+        decodedValue,
+        metadataFormat[convertedKey],
+      );
+
+      // use converted value if available, otherwise leave it as cbor
+      metadataMap[convertedKey] =
+        convertedValue !== null ? convertedValue : value.to_hex();
     }
   }
 
