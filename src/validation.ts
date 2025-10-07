@@ -11,11 +11,13 @@ type BlockfrostNetwork =
   | 'preprod'
   | 'sanchonet';
 // prefixes based on CIP5 https://github.com/cardano-foundation/CIPs/blob/master/CIP-0005/CIP-0005.md
-const Prefixes = Object.freeze({
+const PREFIXES = Object.freeze({
   ADDR: 'addr',
   ADDR_TEST: 'addr_test',
   STAKE: 'stake',
   STAKE_TEST: 'stake_test',
+  STAKE_KEY_HASH: 'stake_vkh',
+  STAKE_KEY: 'stake_vk',
   PAYMENT_KEY_HASH: 'addr_vkh',
   PAYMENT_KEY: 'addr_vk',
   POOL: 'pool',
@@ -47,8 +49,8 @@ export const validateStakeAddress = (
     const bech32Info = bech32.decode(input, 1000);
 
     if (
-      (bech32Info.prefix === Prefixes.STAKE && network === 'mainnet') ||
-      (bech32Info.prefix === Prefixes.STAKE_TEST && network !== 'mainnet')
+      (bech32Info.prefix === PREFIXES.STAKE && network === 'mainnet') ||
+      (bech32Info.prefix === PREFIXES.STAKE_TEST && network !== 'mainnet')
     )
       return true;
     else {
@@ -70,8 +72,8 @@ export const convertStakeAddress = (
     // if it's in hex, we'll convert it to Bech32
 
     return network === 'mainnet'
-      ? bech32.encode(Prefixes.STAKE, words)
-      : bech32.encode(Prefixes.STAKE_TEST, words);
+      ? bech32.encode(PREFIXES.STAKE, words)
+      : bech32.encode(PREFIXES.STAKE_TEST, words);
   } catch {
     return undefined;
   }
@@ -89,7 +91,7 @@ export const validateAndConvertPool = (input: string): string | undefined => {
     } else {
       const bech32Info = bech32.decode(input, 1000);
 
-      return bech32Info.prefix === Prefixes.POOL ? input : undefined;
+      return bech32Info.prefix === PREFIXES.POOL ? input : undefined;
     }
   } catch {
     return undefined;
@@ -107,20 +109,20 @@ export const paymentCredFromBech32Address = (
   // compute paymentCred
   try {
     const bech32Info = bech32.decode(input, 1000);
-    if (bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH) {
+    if (bech32Info.prefix === PREFIXES.PAYMENT_KEY_HASH) {
       // valid payment_cred
       const payload = bech32.fromWords(bech32Info.words);
       const paymentCred = `\\x${Buffer.from(payload).toString('hex')}`;
 
       return { paymentCred, prefix: bech32Info.prefix };
-    } else if (bech32Info.prefix === Prefixes.PAYMENT_KEY) {
+    } else if (bech32Info.prefix === PREFIXES.PAYMENT_KEY) {
       // valid payment_cred
       const payload = bech32.fromWords(bech32Info.words);
       const pubKey = PublicKey.from_hex(Buffer.from(payload).toString('hex'));
       const paymentKeyHash = `\\x${pubKey.hash().to_hex()}`;
       pubKey.free();
       return { paymentCred: paymentKeyHash, prefix: bech32Info.prefix };
-    } else if (bech32Info.prefix === Prefixes.SCRIPT) {
+    } else if (bech32Info.prefix === PREFIXES.SCRIPT) {
       const payload = bech32.fromWords(bech32Info.words);
       const payloadHex = Buffer.from(payload).toString('hex');
       const paymentCred = `\\x${payloadHex}`;
@@ -147,8 +149,8 @@ export const paymentCredToBech32Address = (
     const words = bech32.toWords(Buffer.from(input, 'hex'));
 
     switch (prefix) {
-      case Prefixes.PAYMENT_KEY_HASH:
-      case Prefixes.SCRIPT:
+      case PREFIXES.PAYMENT_KEY_HASH:
+      case PREFIXES.SCRIPT:
         // add prefix to payment cred and encode it as bech32
         return bech32.encode(prefix, words);
       default:
@@ -174,14 +176,14 @@ export const detectAndValidateAddressType = (
       // check if it's not shelley (also check network mismatch i.e. mainnet/testnet)
       const bech32Info = bech32.decode(input, 1000);
       if (
-        (bech32Info.prefix === Prefixes.ADDR && network === 'mainnet') ||
-        (bech32Info.prefix === Prefixes.ADDR_TEST && network !== 'mainnet')
+        (bech32Info.prefix === PREFIXES.ADDR && network === 'mainnet') ||
+        (bech32Info.prefix === PREFIXES.ADDR_TEST && network !== 'mainnet')
       ) {
         // valid shelley - addr1 for mainnet or addr_test1 for testnet
         return 'shelley';
       } else if (
-        bech32Info.prefix === Prefixes.PAYMENT_KEY_HASH ||
-        bech32Info.prefix === Prefixes.SCRIPT
+        bech32Info.prefix === PREFIXES.PAYMENT_KEY_HASH ||
+        bech32Info.prefix === PREFIXES.SCRIPT
       ) {
         // valid shelley - payment_cred
         return 'shelley';
@@ -236,6 +238,189 @@ export const scriptHashFromBech32Address = (
     return hash;
   } catch {
     return undefined;
+  }
+};
+
+const getStakeAddressHeaderByte = (
+  type: 'keyHash' | 'scriptHash',
+  network: BlockfrostNetwork,
+) => {
+  const headerAddrType = type === 'keyHash' ? 0b1110 : 0b1111; // header for stake key hash/script hash
+  const headerMainnet = 0b0001;
+  const headerTestnet = 0b0000;
+  const header =
+    (headerAddrType << 4) |
+    (network === 'mainnet' ? headerMainnet : headerTestnet); // Combine nibbles
+
+  const headerBuff = Buffer.alloc(1); // Allocate a 1-byte buffer (adjust size as needed)
+  headerBuff.writeUInt8(header, 0);
+  return headerBuff;
+};
+
+/**
+ * Constructs a Cardano stake address in db-sync format (bech32) from a stake credential.
+ *
+ * The function prepends the appropriate header byte (indicating key hash or script hash and network)
+ * to the provided stake credential, then encodes the result as a bech32 stake address.
+ *
+ * @param stakeCred - Hex-encoded stake credential (key hash or script hash)
+ * @param type - Type of credential: 'keyHash' or 'scriptHash'
+ * @param network - Cardano network ('mainnet', 'testnet', etc.)
+ * @returns Bech32-encoded stake address suitable for db-sync
+ *
+ * @example
+ * getDbSyncStakeAddress('cda3khwqv60360rp5m7akt50m6ttapacs8rqhn5w342z7r35m37', 'scriptHash', 'mainnet');
+ * // => 'stake1...'
+ */
+export const getDbSyncStakeAddress = (
+  stakeCred: string,
+  type: 'keyHash' | 'scriptHash',
+  network: BlockfrostNetwork,
+): string => {
+  const headerBuff = getStakeAddressHeaderByte(type, network);
+  const keyWithHeader = Buffer.concat([
+    headerBuff,
+    Buffer.from(stakeCred, 'hex'),
+  ]);
+
+  const dbSyncAddr = bech32.encode(
+    network === 'mainnet' ? PREFIXES.STAKE : PREFIXES.STAKE_TEST,
+    bech32.toWords(keyWithHeader),
+  );
+  return dbSyncAddr;
+};
+
+/**
+ * Validates and extracts the stake credential from a Cardano stake address or stake credential.
+ *
+ * Supported input formats:
+ * - Stake address (bech32): stake1..., stake_test1...
+ * - Stake key (bech32): stake_vk...
+ * - Stake key hash (bech32): stake_vkh...
+ * - Script hash (bech32): script...
+ *
+ * For stake addresses, the function checks the header byte to determine if the credential is a key hash or script hash.
+ * For stake keys, it derives the key hash from the public key.
+ * For script hashes, it extracts the hash directly.
+ *
+ * Returns an object containing:
+ * - stakeCred: Hex-encoded stake credential (key hash or script hash)
+ * - prefix: Bech32 prefix of the input
+ * - type: 'keyHash' or 'scriptHash'
+ * - dbSyncAddr: Stake address in db-sync format (bech32)
+ *
+ * Returns undefined if the input is invalid or not recognized.
+ *
+ * @param input - Bech32-encoded stake address or credential
+ * @param network - Cardano network ('mainnet', 'testnet', etc.)
+ * @returns Object with stakeCred, prefix, type, dbSyncAddr, or undefined if invalid
+ */
+export const validateStakeCred = (
+  input: string,
+  network: BlockfrostNetwork,
+) => {
+  // Supported formats: stake, stake_test, stake_vkh, stake_vk, script
+
+  try {
+    const { prefix, words } = bech32.decode(input, 1000);
+
+    switch (prefix) {
+      case PREFIXES.STAKE:
+      case PREFIXES.STAKE_TEST: {
+        const payload = bech32.fromWords(words);
+
+        // 1110.... stake key hash
+        // 1111.... stake script hash
+        const firstByte = payload[0];
+        const addrTypeNibble = (firstByte & 0xf0) >> 4; // Get first 4 bits
+        let type = null;
+        switch (addrTypeNibble) {
+          case 0b1110:
+            // stake key hash
+            type = 'keyHash';
+            break;
+          case 0b1111:
+            // stake script hash
+            type = 'scriptHash';
+            break;
+          default:
+            return;
+        }
+
+        const stakeCred = Buffer.from(payload).slice(1).toString('hex');
+
+        return { prefix: prefix, type, stakeCred, dbSyncAddr: input };
+      }
+      case PREFIXES.STAKE_KEY: {
+        const payload = bech32.fromWords(words);
+        const pubKey = PublicKey.from_hex(Buffer.from(payload).toString('hex'));
+        const stakeCredKeyHash = pubKey.hash().to_hex();
+        pubKey.free();
+
+        const headerBuff = getStakeAddressHeaderByte('keyHash', network);
+        const keyWithHeader = Buffer.concat([
+          headerBuff,
+          Buffer.from(stakeCredKeyHash, 'hex'),
+        ]);
+
+        const dbSyncAddr = bech32.encode(
+          network === 'mainnet' ? PREFIXES.STAKE : PREFIXES.STAKE_TEST,
+          bech32.toWords(keyWithHeader),
+        );
+
+        return {
+          stakeCred: stakeCredKeyHash,
+          prefix: prefix,
+          type: 'keyHash',
+          dbSyncAddr,
+        };
+      }
+      case PREFIXES.STAKE_KEY_HASH: {
+        const payload = bech32.fromWords(words);
+        const stakeCred = Buffer.from(payload).toString('hex');
+
+        const headerBuff = getStakeAddressHeaderByte('keyHash', network);
+        const keyWithHeader = Buffer.concat([headerBuff, Buffer.from(payload)]);
+
+        const dbSyncAddr = bech32.encode(
+          network === 'mainnet' ? PREFIXES.STAKE : PREFIXES.STAKE_TEST,
+          bech32.toWords(keyWithHeader),
+        );
+
+        return {
+          stakeCred: stakeCred,
+          prefix: prefix,
+          type: 'keyHash',
+          dbSyncAddr,
+        };
+      }
+      case PREFIXES.SCRIPT: {
+        const payload = bech32.fromWords(words);
+        const stakeCred = Buffer.from(payload).toString('hex');
+
+        const headerBuff = getStakeAddressHeaderByte('scriptHash', network);
+        const keyWithHeader = Buffer.concat([headerBuff, Buffer.from(payload)]);
+
+        const dbSyncAddr = bech32.encode(
+          network === 'mainnet' ? PREFIXES.STAKE : PREFIXES.STAKE_TEST,
+          bech32.toWords(keyWithHeader),
+        );
+
+        return {
+          stakeCred: stakeCred,
+          prefix: prefix,
+          type: 'scriptHash',
+          dbSyncAddr,
+        };
+      }
+      default: {
+        return undefined;
+      }
+    }
+  } catch (error) {
+    // Uncomment for awesome debug hack!
+    // console.error(error);
+    return;
   }
 };
 
