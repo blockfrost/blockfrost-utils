@@ -210,6 +210,91 @@ export const validateStakeAddress = [
   },
 ] as const;
 
+export const validateStakeCred = [
+  {
+    description: 'Valid stake address type-14 (key hash)',
+    input: 'stake1uyehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gh6ffgw',
+    network: 'mainnet',
+    result: {
+      prefix: 'stake',
+      type: 'keyHash',
+      stakeCred: '337b62cfff6403a06a3acbc34f8c46003c69fe79a3628cefa9c47251',
+      dbSyncAddr: 'stake1uyehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gh6ffgw',
+    },
+  },
+  {
+    // hash_raw \xe10107002fe533cfabc484a0e1725234b0a2d9962ec8ffb2e0c6c1f4b1
+    description: 'Valid stake address type-14 (key hash)',
+    input: 'stake1uyqswqp0u5eul27ysjswzujjxjc29kvk9my0lvhqcmqlfvg7z6zve',
+    network: 'mainnet',
+    result: {
+      prefix: 'stake',
+      type: 'keyHash',
+      stakeCred: '0107002fe533cfabc484a0e1725234b0a2d9962ec8ffb2e0c6c1f4b1',
+      dbSyncAddr: 'stake1uyqswqp0u5eul27ysjswzujjxjc29kvk9my0lvhqcmqlfvg7z6zve',
+    },
+  },
+  {
+    description: 'valid stake_vk cred (cip 19 test vector)',
+    input:
+      'stake_vk1px4j0r2fk7ux5p23shz8f3y5y2qam7s954rgf3lg5merqcj6aetsft99wu',
+    network: 'mainnet',
+    result: {
+      prefix: 'stake_vk',
+      type: 'keyHash',
+      stakeCred: '337b62cfff6403a06a3acbc34f8c46003c69fe79a3628cefa9c47251',
+      dbSyncAddr: 'stake1uyehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gh6ffgw',
+    },
+  },
+  {
+    description: 'Valid testnet stake address type-14 (key hash)',
+    input: 'stake_test1uqehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gssrtvn',
+    network: 'preview',
+    result: {
+      prefix: 'stake_test',
+      type: 'keyHash',
+      stakeCred: '337b62cfff6403a06a3acbc34f8c46003c69fe79a3628cefa9c47251',
+      dbSyncAddr:
+        'stake_test1uqehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gssrtvn',
+    },
+  },
+  {
+    description: 'Valid stake address type-15 (script)',
+    input: 'stake178phkx6acpnf78fuvxn0mkew3l0fd058hzquvz7w36x4gtcccycj5',
+    network: 'mainnet',
+    result: {
+      prefix: 'stake',
+      type: 'scriptHash',
+      stakeCred: 'c37b1b5dc0669f1d3c61a6fddb2e8fde96be87b881c60bce8e8d542f',
+      dbSyncAddr: 'stake178phkx6acpnf78fuvxn0mkew3l0fd058hzquvz7w36x4gtcccycj5',
+    },
+  },
+  {
+    description: 'valid script addr (cip 19 test vector)',
+    input: 'script1cda3khwqv60360rp5m7akt50m6ttapacs8rqhn5w342z7r35m37',
+    network: 'mainnet',
+    result: {
+      prefix: 'script',
+      type: 'scriptHash',
+      stakeCred: 'c37b1b5dc0669f1d3c61a6fddb2e8fde96be87b881c60bce8e8d542f',
+      dbSyncAddr: 'stake178phkx6acpnf78fuvxn0mkew3l0fd058hzquvz7w36x4gtcccycj5',
+    },
+  },
+  {
+    // addr_test1qzamu40sglnsrylzv9jylekjmzgaqsg5v5z9u6yk3jpnnxjwck77fqu8deuumsvnazjnjhwasc2eetfqpa2pvygts78ssd5388
+    description: 'valid stake_vkh',
+    input: 'stake_vkh1fmzmmeyrsah8nnwpj0522w2amkrpt89dyq84g9s3pwrc7dqjnfu',
+    network: 'preview',
+    result: {
+      prefix: 'stake_vkh',
+      type: 'keyHash',
+      stakeCred: '4ec5bde483876e79cdc193e8a5395ddd86159cad200f5416110b878f',
+      dbSyncAddr:
+        'stake_test1up8vt00yswrku7wdcxf73ffethwcv9vu45sq74qkzy9c0rc5lytmp',
+    },
+  },
+] as const;
+
 export const convertStakeAddress = [
   {
     description: 'Valid onchain address',

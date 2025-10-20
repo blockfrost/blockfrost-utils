@@ -125,4 +125,13 @@ describe('validation utils', () => {
       expect(result).toStrictEqual(fixture.result);
     });
   });
+  fixtures.validateStakeCred.map(fixture => {
+    test(`validateStakeCred ${fixture.description}`, async () => {
+      const result = validationUtils.validateStakeCred(
+        fixture.input,
+        fixture.network,
+      );
+      expect(result).toMatchObject(fixture.result);
+    });
+  });
 });
