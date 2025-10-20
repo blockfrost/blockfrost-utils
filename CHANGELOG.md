@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.9.0 - 2024-10-20
+
 ### Added
 
 - `validateStakeCred`: Validates and extracts stake credentials from Cardano stake addresses, stake keys, and script addresses, returning the credential type, hex value, and db-sync stake address.
