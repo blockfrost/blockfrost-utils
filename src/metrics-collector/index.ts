@@ -3,7 +3,7 @@ import { jsonToPrometheus } from './utils';
 export class MetricsCollector {
   metrics = {};
   prefix: string;
-  intervalId: NodeJS.Timer | undefined;
+  intervalId: NodeJS.Timeout | undefined;
   getAdditionalMetrics: (() => Promise<Record<string, unknown>>) | undefined;
 
   constructor(
@@ -15,7 +15,7 @@ export class MetricsCollector {
   ) {
     this.prefix = options.prefix;
     this.getAdditionalMetrics = options.getAdditionalMetrics;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+
     this.startCollector(interval);
   }
 

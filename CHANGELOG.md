@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 3.0.0 - 2026-06-18
+
+### Changed
+
+- **BREAKING**: minimum required Node.js version is now `20.19`
+- Updated runtime dependencies: `@emurgo/cardano-serialization-lib-nodejs` 11 → 15, `cbor` 9 → 10, `yaml` 2.3 → 2.9
+- Updated dev toolchain: ESLint 8 → 10 (migrated to flat config), TypeScript 5 → 6, Vitest 0.32 → 4, Prettier 2 → 3, Fastify 4 → 5 and other dev dependencies to their latest versions
+
+### Removed
+
+- `pm2Metrics` (unused, was never exported from the package's public API)
+
 ## 2.9.0 - 2024-10-20
 
 ### Added

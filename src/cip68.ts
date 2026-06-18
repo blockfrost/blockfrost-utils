@@ -223,9 +223,7 @@ export const toUTF8OrHex = (hexOrBuffer: string | Buffer) => {
 };
 
 const cip67Checksum = (number_: string): string => {
-  return crc8(Uint8Array.from(Buffer.from(number_, 'hex')))
-    .toString(16)
-    .padStart(2, '0');
+  return crc8(Buffer.from(number_, 'hex')).toString(16).padStart(2, '0');
 };
 
 export const toLabel = (number_: number): string => {
@@ -422,13 +420,15 @@ export const getMetadataFromOutputDatum = (
     const key = keys.get(index);
     const decodedKey = cbor.decodeFirstSync(key.to_bytes());
 
-    const value = datumMap.get(key);
+    // Since csl 15 PlutusMap.get returns a PlutusMapValues collection;
+    // CIP68 metadata keys map to a single value, so take the first one.
+    const value = datumMap.get(key)?.get(0);
 
     if (!value) {
       throw Error('Key not found in datum map. Should not happen.');
     }
 
-    const decodedValue = value ? cbor.decodeFirstSync(value.to_bytes()) : null;
+    const decodedValue = cbor.decodeFirstSync(value.to_bytes());
 
     // key and value are converted to utf-8 if their bytes are valid utf-8 sequence, hex otherwise
     const convertedKey = Buffer.isBuffer(decodedKey)
@@ -438,7 +438,7 @@ export const getMetadataFromOutputDatum = (
     if (!(metadataFormat && convertedKey in metadataFormat)) {
       // Custom field not covered by CIP68 standard
       // Return unparsed CBOR data
-      metadataMap[convertedKey] = value?.to_hex();
+      metadataMap[convertedKey] = value.to_hex();
     } else {
       const convertedValue = convertDatumValue(
         decodedValue,
