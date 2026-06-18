@@ -31,7 +31,7 @@ const RAW_RUNTIME_STATE =
           ["@blockfrost/blockfrost-utils", "workspace:."],\
           ["@emurgo/cardano-serialization-lib-nodejs", "npm:15.0.3"],\
           ["@eslint/js", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:10.0.1"],\
-          ["@types/node", "npm:25.9.3"],\
+          ["@types/node", "npm:20.19.43"],\
           ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:8.61.1"],\
           ["@typescript-eslint/parser", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:8.61.1"],\
           ["@vitest/coverage-v8", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:4.1.9"],\
@@ -108,7 +108,7 @@ const RAW_RUNTIME_STATE =
           ["@blockfrost/blockfrost-utils", "workspace:."],\
           ["@emurgo/cardano-serialization-lib-nodejs", "npm:15.0.3"],\
           ["@eslint/js", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:10.0.1"],\
-          ["@types/node", "npm:25.9.3"],\
+          ["@types/node", "npm:20.19.43"],\
           ["@typescript-eslint/eslint-plugin", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:8.61.1"],\
           ["@typescript-eslint/parser", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:8.61.1"],\
           ["@vitest/coverage-v8", "virtual:3e84321f1380b4710f82c32878bd39262c084a8533e8f4c7002c1998e7ba7851dd7f4ed7b4adc10344c775b14187bc7f005868e85c2db3fc8152f8f2a4e48a88#npm:4.1.9"],\
@@ -754,11 +754,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:25.9.3", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-25.9.3-8c1909db0e-40c5f5c914.zip/node_modules/@types/node/",\
+      ["npm:20.19.43", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-20.19.43-198d0ea14c-cb060ea17e.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:25.9.3"],\
-          ["undici-types", "npm:7.24.6"]\
+          ["@types/node", "npm:20.19.43"],\
+          ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3782,10 +3782,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["undici-types", [\
-      ["npm:7.24.6", {\
-        "packageLocation": "./.yarn/cache/undici-types-npm-7.24.6-8759b28e34-defc9538b9.zip/node_modules/undici-types/",\
+      ["npm:6.21.0", {\
+        "packageLocation": "./.yarn/cache/undici-types-npm-6.21.0-eb2b0ed56a-ec8f41aa43.zip/node_modules/undici-types/",\
         "packageDependencies": [\
-          ["undici-types", "npm:7.24.6"]\
+          ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3843,7 +3843,7 @@ const RAW_RUNTIME_STATE =
           ["@types/esbuild", null],\
           ["@types/jiti", null],\
           ["@types/less", null],\
-          ["@types/node", "npm:25.9.3"],\
+          ["@types/node", "npm:20.19.43"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -3915,7 +3915,7 @@ const RAW_RUNTIME_STATE =
           ["@types/edge-runtime__vm", null],\
           ["@types/happy-dom", null],\
           ["@types/jsdom", null],\
-          ["@types/node", "npm:25.9.3"],\
+          ["@types/node", "npm:20.19.43"],\
           ["@types/opentelemetry__api", null],\
           ["@types/vite", null],\
           ["@types/vitest__browser-playwright", null],\
